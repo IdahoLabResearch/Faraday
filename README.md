@@ -33,7 +33,7 @@ Jeremy Hartvigsen `jeremy.hartvigsen@inl.gov`
 ### Cite Me
 
 ```
-Woodruff, N., Casteel, M., Kane, N., & Hartvigsen, J. (2024). Faraday. GitHub. https://github.com/IdahoLabResearch/Faraday
+Woodruff, N., Casteel, M., Kane, N., Hartvigsen, J., & Folks, D. (2024). Faraday. GitHub. https://github.com/IdahoLabResearch/Faraday
 ```
 
 ### Developers
