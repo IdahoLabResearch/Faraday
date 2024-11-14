@@ -8,13 +8,13 @@ Further, Faraday transmits button-cell data to a server application where electr
 
 Faraday users can compare two button cells by adding them to a comparison module, and generating reports to visualize their performance side-by-side.
 
-### Contacts
+### Research Contacts
 
 #### Principle Investigator
 
 Micah Casteel `micah.casteel@inl.gov`
 
-#### Digital Engineering
+#### Scientific Computing and AI
 
 Nathan Woodruff `nathan.woodruff@inl.gov`
 
@@ -30,6 +30,10 @@ Jeremy Hartvigsen `jeremy.hartvigsen@inl.gov`
 Woodruff, N., Casteel, M., Kane, N., & Hartvigsen, J. (2024). Faraday. GitHub. https://github.com/IdahoLabResearch/Faraday
 ```
 
-### Acknowledgements
+### Developers
 
-Thanks to Drake Folks for contributing to this software.
+This software was developed by the following contributors
+
+`Nathan Woodruff`
+
+`Drake Folks`
