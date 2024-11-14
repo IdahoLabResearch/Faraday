@@ -1,0 +1,7 @@
+Lib
+lib
+Scripts
+scripts
+pyvenv.cfg
+__pycache__
+!.env.sample

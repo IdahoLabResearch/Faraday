@@ -1,0 +1,19 @@
+services:
+  next:
+    build:
+      context: ./app
+      dockerfile: Dockerfiles/Dockerfile.prod
+    env_file:
+      - ./app/.env.local
+    ports:
+      - "3000:3000"
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfiles/Dockerfile.local
+    env_file:
+      - ./postgres/.env.local
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./postgres:/usr/src/database"

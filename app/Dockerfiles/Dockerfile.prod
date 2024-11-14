@@ -1,0 +1,30 @@
+FROM node:alpine as build
+
+RUN apk update && apk upgrade
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN npm install
+RUN npm run build
+
+FROM node:alpine as cirrus
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/.next ./.next
+COPY --from=build /usr/src/app/package*.json ./
+COPY --from=build /usr/src/app/public ./public
+
+RUN apk update && apk upgrade
+
+WORKDIR /usr/src/app
+
+RUN npm install --production
+
+RUN adduser --disabled-password developer
+RUN chown -R developer /usr/src/app
+USER developer
+
+CMD [ "npm", "run", "prod" ]

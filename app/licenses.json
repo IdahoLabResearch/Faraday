@@ -1,0 +1,74 @@
+{
+  "@emotion/react@11.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/emotion-js/emotion/tree/main/packages/react",
+    "licenseUrl": "https://github.com/emotion-js/emotion/tree/main/packages/react/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "@emotion/styled@11.13.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/emotion-js/emotion/tree/main/packages/styled",
+    "licenseUrl": "https://github.com/emotion-js/emotion/tree/main/packages/styled/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "@mui/icons-material@5.16.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mui/material-ui",
+    "licenseUrl": "https://github.com/mui/material-ui/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "@mui/material@5.16.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mui/material-ui",
+    "licenseUrl": "https://github.com/mui/material-ui/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "@reduxjs/toolkit@2.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/reduxjs/redux-toolkit",
+    "licenseUrl": "https://github.com/reduxjs/redux-toolkit/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "axios@1.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/axios/axios",
+    "licenseUrl": "https://github.com/axios/axios/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "lodash@4.17.21": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "licenseUrl": "https://github.com/lodash/lodash/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "next@14.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vercel/next.js",
+    "licenseUrl": "https://github.com/vercel/next.js/raw/master/license.md",
+    "parents": "faraday"
+  },
+  "react-dom@18.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "react-redux@9.1.2": {
+    "licenses": "MIT",
+    "repository": "github:reduxjs/react-redux",
+    "licenseUrl": "github:reduxjs/react-redux",
+    "parents": "faraday"
+  },
+  "react@18.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+    "parents": "faraday"
+  },
+  "recharts@2.12.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/recharts/recharts",
+    "licenseUrl": "https://github.com/recharts/recharts/raw/master/LICENSE",
+    "parents": "faraday"
+  }
+}

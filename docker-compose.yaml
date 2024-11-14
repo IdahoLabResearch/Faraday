@@ -1,0 +1,31 @@
+services:
+  next:
+    build:
+      context: ./app
+      dockerfile: Dockerfiles/Dockerfile.local
+    command: ["npm", "run", "start"]
+    env_file:
+      - ./app/.env.local
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./app:/usr/src/app"
+      - /usr/src/app/node_modules
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfiles/Dockerfile.local
+    env_file:
+      - ./postgres/.env.local
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./postgres:/usr/src/database"
+  pgAdmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    env_file:
+      - ./postgres/.env.local
+    depends_on:
+      - postgres
