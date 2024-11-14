@@ -8,6 +8,12 @@ Further, Faraday transmits button-cell data to a server application where electr
 
 Faraday users can compare two button cells by adding them to a comparison module, and generating reports to visualize their performance side-by-side.
 
+#### Alpha Release
+
+This software is in alpha. Presently it requires access to a DeepLynx development environment only accessible through the Idaho National Laboratory.
+
+Future releases (2025) will further develop this software, and deploy it on the internet.
+
 ### Research Contacts
 
 #### Principle Investigator
