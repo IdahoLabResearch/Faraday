@@ -1,3 +1,13 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: dark;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: true;
+  --color-accent: palegoldenrod;
+}
+
 @plugin "@tailwindcss/typography";

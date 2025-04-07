@@ -5,7 +5,7 @@ import Footer from "../footer";
 
 // Carousel data
 const carouselItems = [
-  <div key={1} className="card bg-base-300 h-24">
+  <div key={1} className="card bg-inherit h-24">
     <div className="prose">
       <p>
         Faraday is a data warehousing and visualization platform for
@@ -13,7 +13,7 @@ const carouselItems = [
       </p>
     </div>
   </div>,
-  <div key={2} className="card bg-base-300 h-24 flex">
+  <div key={2} className="card bg-inherit h-24 flex">
     <div className="prose">
       <p>
         We catalog data from multiple providers in the INL open-source DeepLynx
@@ -22,7 +22,7 @@ const carouselItems = [
     </div>
     <br />
   </div>,
-  <div key={3} className="card bg-base-300 h-24 flex">
+  <div key={3} className="card bg-inherit h-24 flex">
     <div className="prose">
       <p>
         Users can analyze button cell data using a library of scientific plugins
@@ -45,7 +45,7 @@ const Carousel = () => {
   }, []);
 
   return (
-    <div className="bg-base-300 relative overflow-hidden w-4/5">
+    <div className="bg-inherit relative overflow-hidden w-4/5">
       <div className="flex w-full">
         <div className="prose">
           <h1>Faraday</h1>
@@ -66,7 +66,7 @@ const Carousel = () => {
       <Footer />
       <div className="w-full flex justify-center">
         <div className="prose">
-          <small>Developed by the Idaho National Laboratory</small>
+          <small>Developed by Digital Engineering</small>
         </div>
       </div>
     </div>

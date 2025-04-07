@@ -15,18 +15,18 @@ export const Home = () => {
 
   return (
     <>
-      <div className="h-screen w-screen">
-        <div className="grid grid-cols-12 w-full">
-          <div className="col-span-6 flex justify-center">
-            <div>
-              <img
-                src={"/faraday-white.png"}
-                alt="Faraday"
-                className="w-72 p-4"
-              />
-              <br />
-              <br />
-              <div className="justify-center flex">
+      <div className="w-screen h-screen bg-base-100">
+        <div className="grid grid-cols-12 h-full w-full">
+          <div className="col-span-6 flex justify-center items-center">
+            <div className="grid grid-rows-2 gap-8">
+              <div className="row-span-1">
+                <img
+                  src={"/faraday-white.png"}
+                  alt="Faraday"
+                  className="w-96"
+                />
+              </div>
+              <div className="row-span-1 flex justify-center">
                 {auth.token ? (
                   <button
                     className="btn btn-md"
@@ -47,11 +47,10 @@ export const Home = () => {
                   </button>
                 )}
               </div>
-              <br />
             </div>
           </div>
-          <div className="col-span-6 flex h-full">
-            Carousel{/* <Carousel /> */}
+          <div className="col-span-6 flex justify-center items-center">
+            <Carousel />
           </div>
         </div>
       </div>
