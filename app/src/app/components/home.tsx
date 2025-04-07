@@ -19,17 +19,17 @@ export const Home = () => {
         <div className="grid grid-cols-12 h-full w-full">
           <div className="col-span-6 flex justify-center items-center">
             <div className="grid grid-rows-2 gap-8">
-              <div className="row-span-1">
+              <div className="row-span-1 flex justify-center">
                 <img
                   src={"/faraday-white.png"}
                   alt="Faraday"
-                  className="w-96"
+                  className="w-1/2"
                 />
               </div>
               <div className="row-span-1 flex justify-center">
                 {auth.token ? (
                   <button
-                    className="btn btn-md"
+                    className="btn btn-md btn-accent w-1/4"
                     onClick={() => {
                       navigate("/data");
                     }}
@@ -38,7 +38,7 @@ export const Home = () => {
                   </button>
                 ) : (
                   <button
-                    className="btn btn-md btn-accent w-1/2"
+                    className="btn btn-sm btn-accent w-1/4"
                     onClick={() => {
                       navigate("/auth");
                     }}
