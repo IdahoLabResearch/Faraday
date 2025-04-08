@@ -30,10 +30,10 @@ const router = createBrowserRouter([
         path: "/auth",
         element: <Auth />,
       },
-      // {
-      //   path: "/data",
-      //   element: <Faraday />,
-      // },
+      {
+        path: "/data",
+        element: <Faraday />,
+      },
     ],
   },
 ]);

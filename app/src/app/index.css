@@ -11,3 +11,18 @@
 }
 
 @plugin "@tailwindcss/typography";
+
+@layer base {
+  input,
+  label {
+    @apply !outline-none;
+  }
+
+  input:focus,
+  label:focus {
+    @apply !outline-none;
+  }
+  select:focus {
+    @apply !outline-1 !ring-0;
+  }
+}
