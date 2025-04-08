@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "@/lib/store/hooks";
 
 // Functions
-import { SigmoidRegression } from "@/lib/api/server";
+import { SigmoidRegression } from "@/lib/client/faraday";
 import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
 
 type PropsT = {

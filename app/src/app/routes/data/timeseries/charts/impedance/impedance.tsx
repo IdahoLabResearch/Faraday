@@ -6,7 +6,7 @@ import { Visualization } from "./visualization";
 import { DRT } from "./drt";
 
 // Functions
-import { FetchDRT } from "@/lib/api/server";
+import { FetchDRT } from "@/lib/client/faraday";
 
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
@@ -25,7 +25,7 @@ export function Impedance(props: Props) {
   useEffect(() => {
     if (props.data.length) {
       // Filter impedance data for just the selected cell
-      let subset = props.data.filter((record: any) =>
+      const subset = props.data.filter((record: any) =>
         sweeps.includes(record.time.toString())
       );
       setData(subset);

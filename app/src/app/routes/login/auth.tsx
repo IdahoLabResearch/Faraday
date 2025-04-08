@@ -27,7 +27,7 @@ const Auth = () => {
 
     if (token) {
       storeDispatch(deeplynxActions.token(token));
-      navigate("/app");
+      navigate("/data");
     }
   };
 

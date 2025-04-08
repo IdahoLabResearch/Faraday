@@ -1,5 +1,5 @@
 // Hooks
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router";
 
 // Store
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -7,7 +7,8 @@ import { serverActions } from "@/lib/store/features/server";
 
 export const Buttons = () => {
   // Router
-  const router = useRouter();
+  const navigate = useNavigate();
+
   // Store
   const category = useAppSelector((state) => state.server.category);
   const type = useAppSelector((state) => state.server.type);
@@ -27,7 +28,7 @@ export const Buttons = () => {
   return (
     <>
       <div className="flex justify-items p-2">
-        <button className="btn btn-sm" onClick={() => router.push("/")}>
+        <button className="btn btn-sm" onClick={() => navigate("/")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"

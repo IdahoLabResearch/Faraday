@@ -19,6 +19,7 @@
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
     "fernet-nodejs": "^1.0.6",
+    "html-to-image": "^1.11.13",
     "lodash": "^4.17.21",
     "react": "^19.0.0",
     "react-cookie": "^7.2.2",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",

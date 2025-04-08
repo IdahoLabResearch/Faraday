@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 // Functions
-import { LinearRegression } from "@/lib/api/server";
+import { LinearRegression } from "@/lib/client/faraday";
 
 type PropsT = {
   setRegression: Dispatch<

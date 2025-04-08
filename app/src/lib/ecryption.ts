@@ -1,10 +1,10 @@
-import { Fernet } from "fernet-nodejs";
+// import { Fernet } from "fernet-nodejs";
 
-const key = process.env.ENCRYPTION_KEY!;
+// const key = process.env.ENCRYPTION_KEY!;
 
-const f = new Fernet(key);
+// const f = new Fernet(key);
 
-export function decrypt(message: string) {
-  const decoded = message.split("'");
-  return f.decrypt(decoded[1]);
-}
+// export function decrypt(message: string) {
+//   const decoded = message.split("'");
+//   return f.decrypt(decoded[1]);
+// }

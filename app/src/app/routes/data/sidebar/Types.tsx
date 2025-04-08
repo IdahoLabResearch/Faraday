@@ -1,10 +1,8 @@
-"use client";
-
 // Hooks
 import { useEffect } from "react";
 
 // Functions
-import { FetchGraph } from "@/lib/api/client";
+import { FetchGraph } from "@/lib/client/deeplynx";
 
 // Store
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";

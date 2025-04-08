@@ -1,6 +1,4 @@
-"use server";
-
-const base = import.meta.env.DEEPLYNX_BASE;
+const base = import.meta.env.VITE_DEEPLYNX_BASE;
 const key = import.meta.env.DEEPLYNX_KEY!;
 const secret = import.meta.env.DEEPLYNX_SECRET!;
 const expiry = import.meta.env.DEEPLYNX_EXPIRY!;
@@ -11,23 +9,21 @@ import { uniqBy } from "lodash";
 
 // HTTP
 import axios from "axios";
-import { agent } from "@/lib/api/agent";
 
 // Encryption
-import { decrypt } from "@/lib/ecryption";
+// import { decrypt } from "@/lib/ecryption";
 
 // Types
 import { NodeResponseT } from "@/lib/types/graphql";
 
 export const FetchToken = async () => {
-  let token = await axios
+  const token = await axios
     .get(`${base}/oauth/token`, {
       headers: {
         "x-api-key": key,
         "x-api-secret": secret,
         "x-api-expiry": expiry,
       },
-      httpsAgent: agent,
     })
     .then((response) => {
       return response.data;
@@ -352,7 +348,7 @@ export const FetchTimeseries = async (
   encrypted_token: string
 ) => {
   let data;
-  let token = decrypt(encrypted_token).replace(/['"]/g, "");
+  const token = decrypt(encrypted_token).replace(/['"]/g, "");
 
   if (type === "Pulse Width Modulation Accelerated Stress Test") {
     data = await axios

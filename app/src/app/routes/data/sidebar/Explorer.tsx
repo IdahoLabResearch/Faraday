@@ -1,10 +1,8 @@
-"use client";
-
 // Hooks
 import { useEffect } from "react";
 
 // Functions
-import { FetchTimeseries } from "@/lib/api/client";
+import { FetchTimeseries } from "@/lib/client/deeplynx";
 
 // Components
 import Buttons from "./Buttons";

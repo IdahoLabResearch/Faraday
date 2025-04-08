@@ -1,8 +1,6 @@
-"use client";
-
 // Hooks
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router";
 
 // Store
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
@@ -18,7 +16,7 @@ export default function Visualizer({
   children: React.ReactNode;
 }) {
   // Hooks
-  const router = useRouter();
+  const navigate = useNavigate();
   const token = useAppSelector((state) => state.user.auth.token);
 
   // Store
@@ -35,9 +33,9 @@ export default function Visualizer({
   // Retrieve a token
   useEffect(() => {
     if (!token) {
-      router.push("/login");
+      navigate("/auth");
     }
-  }, [router, token]);
+  }, [navigate, token]);
 
   return token ? (
     <div>

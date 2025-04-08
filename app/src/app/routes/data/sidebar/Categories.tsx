@@ -1,15 +1,12 @@
-"use client";
-
 // Hooks
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
 
 // Store
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { serverActions } from "@/lib/store/features/server";
 
 // Types
-import { FetchCategories } from "@/lib/api/client";
+import { FetchCategories } from "@/lib/client/deeplynx";
 
 const Categories = () => {
   // Auth

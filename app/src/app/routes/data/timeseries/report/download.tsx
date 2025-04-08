@@ -1,10 +1,4 @@
-// Next
-import dynamic from "next/dynamic";
-
-// Components
-const PDF = dynamic(() => import("@/app/components/report/pdf"), {
-  ssr: false,
-});
+import PDF from "@/app/components/report/pdf";
 
 export const Download = () => {
   return <PDF />;
