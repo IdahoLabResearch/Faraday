@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 // Hooks
 import { useNavigate } from "react-router";
 
@@ -19,10 +20,22 @@ export const Buttons = () => {
 
   const handleBack = () => {
     // When the user clicks the back button, clear the state from the previous selection
-    (cell && storeDispatch(warehouseActions.cell(undefined))) ||
-      (batch && storeDispatch(warehouseActions.batch(undefined))) ||
-      (type && storeDispatch(warehouseActions.type(undefined))) ||
-      (category && storeDispatch(warehouseActions.category(undefined)));
+    if (cell) {
+      storeDispatch(warehouseActions.cell(undefined));
+      storeDispatch(warehouseActions.batch(undefined));
+      return;
+    }
+    if (batch) {
+      storeDispatch(warehouseActions.batch(undefined));
+      return;
+    }
+    if (type) {
+      storeDispatch(warehouseActions.type(undefined));
+      return;
+    }
+    if (category) {
+      storeDispatch(warehouseActions.category(undefined));
+    }
   };
 
   return (
