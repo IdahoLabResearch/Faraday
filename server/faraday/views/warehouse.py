@@ -23,7 +23,7 @@ def types(request):
 
     category = json.loads(request.body).get('category')
 
-    qs = list(Type.objects.filter(category__name=category).values())
+    qs = list(Type.objects.filter(category__id=category).values())
     return JsonResponse({'data': qs})
 
 
