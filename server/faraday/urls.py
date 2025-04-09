@@ -6,9 +6,9 @@ urlpatterns = [
     path('statistics', statistics.statistics, name='statistics'),
     path('pydrt', statistics.pydrt, name='drt'),
     path('warehouse/', include([
-        path('categories/', warehouse.categories),
-        path('types/', warehouse.types),
-        path('batches/', warehouse.batches),
+        path('categories', warehouse.categories),
+        path('types', warehouse.types),
+        path('batches', warehouse.batches),
         path('cells', warehouse.cells),
     ])),
 ]
