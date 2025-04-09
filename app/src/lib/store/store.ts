@@ -1,18 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 // Reducers
-import user from "./features/user";
 import deeplynx from "./features/deeplynx";
-import server from "./features/server";
+import warehouse from "./features/warehouse";
 import report from "./features/report";
 import ux from "./features/ux";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      user,
       deeplynx,
-      server,
+      warehouse,
       report,
       ux,
     },

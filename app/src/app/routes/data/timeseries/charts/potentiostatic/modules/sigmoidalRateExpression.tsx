@@ -23,7 +23,7 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
       }
     | undefined
   >();
-  const cell = useAppSelector((state) => state.server.cell!);
+  const cell = useAppSelector((state) => state.warehouse.cell!);
 
   useEffect(() => {
     if (sigmoid) {

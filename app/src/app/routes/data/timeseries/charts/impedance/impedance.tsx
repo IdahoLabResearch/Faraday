@@ -11,6 +11,9 @@ import { FetchDRT } from "@/lib/client/faraday";
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
 
+// Types
+import { CellT } from "@/lib/types/warehouse";
+
 type Props = {
   data: Array<any>;
 };
@@ -20,7 +23,7 @@ export function Impedance(props: Props) {
   const [analytics, setAnalytics] = useState<Array<any> | undefined>();
   const [sweeps, setSweeps] = useState<Array<string>>(["0"]);
 
-  const cell: { cell: string } = useAppSelector((state) => state.server.cell!);
+  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
 
   useEffect(() => {
     if (props.data.length) {
@@ -50,7 +53,7 @@ export function Impedance(props: Props) {
       <div className="col-span-6">
         <div className="prose">
           <h2>Analytics</h2>
-          <p>Compute distribution relaxation times for {cell.cell}</p>
+          <p>Compute distribution relaxation times for {cell.name}</p>
         </div>
         <div className="divider w-3/4"></div>
         <button onClick={handlePyDRT} className="btn btn-accent">

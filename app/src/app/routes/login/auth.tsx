@@ -7,11 +7,14 @@ import { Login } from "@/lib/client/auth";
 
 // Store
 import { useAppDispatch } from "@/lib/store/hooks";
-import { deeplynxActions } from "@/lib/store/features/deeplynx";
+import { warehouseActions } from "@/lib/store/features/warehouse";
+
+// Types
+import { UserT } from "@/lib/types/warehouse";
 
 const Auth = () => {
   // Hooks
-  const [user, setUser] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   // Stores
@@ -21,12 +24,11 @@ const Auth = () => {
   const navigate = useNavigate();
 
   const authenticate = async () => {
-    const token = await Login(user, password).then((data) => {
-      return data;
-    });
+    const user: UserT = await Login(username, password);
 
-    if (token) {
-      storeDispatch(deeplynxActions.token(token));
+    if (user) {
+      console.log(user);
+      storeDispatch(warehouseActions.user(user));
       navigate("/data");
     }
   };
@@ -48,9 +50,9 @@ const Auth = () => {
             type="email"
             placeholder="Email"
             required
-            value={user}
+            value={username}
             onChange={(event) => {
-              setUser(event.target.value);
+              setUsername(event.target.value);
             }}
           />
         </label>

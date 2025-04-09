@@ -3,41 +3,36 @@ import { useEffect } from "react";
 
 // Store
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+import { warehouseActions } from "@/lib/store/features/warehouse";
 
 // Types
-import { FetchCategories } from "@/lib/client/deeplynx";
+import { CategoryT, UserT } from "@/lib/types/warehouse";
+
+// Functions
+import { FetchCategories } from "@/lib/client/warehouse";
 
 const Categories = () => {
-  // Auth
-  const auth: { code: string | undefined; token: string | undefined } =
-    useAppSelector((state) => state.user.auth);
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
+  );
 
   // Store
-  const categories = useAppSelector((state) => state.server.categories);
+  const categories = useAppSelector((state) => state.warehouse.categories);
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
     const fetch = async () => {
-      if (auth.code && auth.token) {
-        await FetchCategories(auth.code, auth.token).then(
-          (
-            data: Array<{
-              id: string;
-              metatype_name: string;
-            }>
-          ) => {
-            storeDispatch(serverActions.categories(data));
-          }
-        );
+      if (user) {
+        const data: Array<CategoryT> = await FetchCategories();
+        storeDispatch(warehouseActions.categories(data));
       }
     };
     fetch();
-  }, [storeDispatch, auth]);
+  }, [storeDispatch, user]);
 
-  const handleCategory = (category: { id: string; metatype_name: string }) => {
-    storeDispatch(serverActions.types(undefined));
-    storeDispatch(serverActions.category(category));
+  const handleCategory = (category: CategoryT) => {
+    storeDispatch(warehouseActions.types(undefined));
+    storeDispatch(warehouseActions.category(category));
   };
 
   return (
@@ -49,7 +44,7 @@ const Categories = () => {
         </div>
         <div className="divider"></div>
         {categories ? (
-          categories.map((category: { id: string; metatype_name: string }) => {
+          categories.map((category: CategoryT) => {
             return (
               <>
                 <div key={category.id}>
@@ -58,7 +53,7 @@ const Categories = () => {
                     className="btn"
                     onClick={() => handleCategory(category)}
                   >
-                    {category.metatype_name}
+                    {category.name}
                   </button>
                   <br />
                 </div>

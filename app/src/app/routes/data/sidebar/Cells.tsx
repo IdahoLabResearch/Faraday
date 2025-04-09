@@ -2,43 +2,40 @@
 import { useEffect } from "react";
 
 // Functions
-import { FetchCells } from "@/lib/client/deeplynx";
+import { FetchCells } from "@/lib/client/warehouse";
 
 // Store
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+import { warehouseActions } from "@/lib/store/features/warehouse";
+
+// Types
+import { TypeT, BatchT, CellT, UserT } from "@/lib/types/warehouse";
 
 const Cells = () => {
   // Hooks
-  const type: { id: string; class: string } = useAppSelector(
-    (state) => state.server.type!
-  );
-  const batch: { cell_batch: string } = useAppSelector(
-    (state) => state.server.batch!
-  );
-  const cells: Array<{ cell: string }> | undefined = useAppSelector(
-    (state) => state.server.cells
+  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
+  const batch: BatchT = useAppSelector((state) => state.warehouse.batch!);
+  const cells: Array<CellT> | undefined = useAppSelector(
+    (state) => state.warehouse.cells
   );
 
   const storeDispatch = useAppDispatch();
-  const token: string | undefined = useAppSelector(
-    (state) => state.user.auth.token
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
   );
 
   useEffect(() => {
     const fetch = async () => {
-      if (token)
-        await FetchCells(type.id, type.class, batch.cell_batch, token).then(
-          (data: Array<{ cell: string }>) => {
-            storeDispatch(serverActions.cells(data));
-          }
-        );
+      if (user) {
+        const data = await FetchCells(batch.id);
+        storeDispatch(warehouseActions.cells(data));
+      }
     };
     fetch();
-  }, [storeDispatch, type, batch, token]);
+  }, [storeDispatch, type, batch, user]);
 
-  const handleCell = (cell: { cell: string }) => {
-    storeDispatch(serverActions.cell(cell));
+  const handleCell = (cell: CellT) => {
+    storeDispatch(warehouseActions.cell(cell));
   };
 
   return (
@@ -50,16 +47,16 @@ const Cells = () => {
         </div>
         <div className="divider"></div>
         {cells ? (
-          cells.map((cell: { cell: string }) => {
+          cells.map((cell: CellT) => {
             return (
               <>
                 <button
-                  key={cell.cell}
+                  key={cell.id}
                   style={{ display: "block", width: "100%" }}
                   className="btn"
                   onClick={() => handleCell(cell)}
                 >
-                  {cell.cell}
+                  {cell.name}
                 </button>
                 <br />
               </>

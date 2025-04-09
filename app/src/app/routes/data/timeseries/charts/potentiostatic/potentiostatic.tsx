@@ -11,6 +11,9 @@ import { SigmoidalRateExpressionModule } from "./modules/sigmoidalRateExpression
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
 
+// Types
+import { CellT } from "@/lib/types/warehouse";
+
 type Props = {
   data: Array<any>;
 };
@@ -29,12 +32,12 @@ export function Potentiostatic(props: Props) {
     | undefined
   >();
 
-  const cell: { cell: string } = useAppSelector((state) => state.server.cell!);
+  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
 
   useEffect(() => {
     if (props.data.length) {
       // Filter potentiostatic data for just the selected cell
-      let subset = props.data.filter(
+      const subset = props.data.filter(
         (record: any) => record.voltage == voltage
       );
       setData(subset);
@@ -60,7 +63,7 @@ export function Potentiostatic(props: Props) {
         <div className="prose">
           <h2>Analytics</h2>
           <p>
-            Compute statistical regressions for {cell.cell} at {voltage} volts
+            Compute statistical regressions for {cell.name} at {voltage} volts
           </p>
         </div>
         <div className="divider w-3/4"></div>

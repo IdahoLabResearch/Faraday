@@ -6,7 +6,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 
 export function PWM() {
   const data: Array<any> | undefined = useAppSelector(
-    (state) => state.server.data
+    (state) => state.warehouse.data
   );
 
   return (

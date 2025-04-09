@@ -7,11 +7,16 @@ import { useAppSelector } from "@/lib/store/hooks";
 // Components
 import Carousel from "./ux/carousel";
 
+// Types
+import { UserT } from "@/lib/types/warehouse";
+
 export const Home = () => {
   // Router
   const navigate = useNavigate();
 
-  const auth = useAppSelector((state) => state.user.auth);
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
+  );
 
   return (
     <>
@@ -27,7 +32,7 @@ export const Home = () => {
                 />
               </div>
               <div className="row-span-1 flex justify-center">
-                {auth.token ? (
+                {user ? (
                   <button
                     className="btn btn-md btn-accent w-1/4"
                     onClick={() => {

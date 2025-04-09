@@ -17,7 +17,9 @@ export default function Compare() {
   const comparedCells: Array<any> = useAppSelector(
     (state) => state.report.cells
   );
-  const cell: { cell: string } = useAppSelector((state) => state.server.cell!);
+  const cell: { cell: string } = useAppSelector(
+    (state) => state.warehouse.cell!
+  );
   const snackbar: boolean = useAppSelector((state) => state.ux.snackbar);
 
   const handleFab = () => {

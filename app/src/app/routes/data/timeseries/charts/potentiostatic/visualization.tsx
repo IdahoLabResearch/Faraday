@@ -18,6 +18,9 @@ import { useAppSelector } from "@/lib/store/hooks";
 // Components
 import { PotentiostaticTooltip } from "../../helpers/tooltips";
 
+// Types
+import { TypeT, CellT } from "@/lib/types/warehouse";
+
 type Props = {
   data: Array<any>;
   regression:
@@ -36,15 +39,12 @@ export function Visualization(props: Props) {
   const voltage = props.voltage;
   const [ticks, setTicks] = useState<any>();
 
-  const type: { id: string; class: string } = useAppSelector(
-    (state) => state.server.type!
-  );
-  const cell: { cell: string } = useAppSelector((state) => state.server.cell!);
+  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
+  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
 
   useEffect(() => {
     if (props.data.length) {
-      console.log(props.data);
-      let subset = props.data.filter(
+      const subset = props.data.filter(
         (record: any) => record.voltage === parseFloat(voltage)
       );
       setData(subset);
@@ -73,8 +73,7 @@ export function Visualization(props: Props) {
       <div className="prose">
         <h2>Visualization</h2>
         <p>
-          Visualize {type.class.split(" ")[0].toLowerCase()} data for{" "}
-          {cell.cell}
+          Visualize {type.name.split(" ")[0].toLowerCase()} data for {cell.name}
         </p>
         <div className="divider w-3/4"></div>
       </div>
@@ -145,7 +144,7 @@ export function Visualization(props: Props) {
         ) : (
           <div className="prose">
             <small>
-              There is no {voltage}V data for {cell.cell}
+              There is no {voltage}V data for {cell.name}
             </small>
           </div>
         )}

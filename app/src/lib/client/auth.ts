@@ -1,22 +1,18 @@
-const server = import.meta.env.VITE_DJANGO_PROXY;
+// Environment
+const base = import.meta.env.VITE_DJANGO_PROXY;
+
+// Types
+import { UserT } from "@/lib/types/warehouse";
 
 export const Login = async (user: string, password: string) => {
-  try {
-    const response = await fetch(`${server}/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user: user, password: password }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-
-    const auth = await response.json();
-    return auth;
-  } catch (error) {
-    return error;
-  }
+  return await fetch(`${base}/user/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user: user, password: password }),
+  }).then(async (response) => {
+    const auth: { data: UserT } = await response.json();
+    return auth.data;
+  });
 };

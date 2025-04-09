@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 
 // Functions
-import { FetchTimeseries } from "@/lib/client/deeplynx";
+import { FetchTimeseries } from "@/lib/client/warehouse";
 
 // Components
 import Buttons from "./Buttons";
@@ -13,35 +13,38 @@ import Cells from "./Cells";
 
 // Store
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+
+// Types
+import { UserT, CellT, TypeT, CategoryT, BatchT } from "@/lib/types/warehouse";
 
 export const Explorer = () => {
-  const token = useAppSelector((state) => state.user.auth.token);
-  const category = useAppSelector((state) => state.server.category);
-  const type = useAppSelector((state) => state.server.type);
-  const batch = useAppSelector((state) => state.server.batch);
-  const cell = useAppSelector((state) => state.server.cell);
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
+  );
+  const category: CategoryT | undefined = useAppSelector(
+    (state) => state.warehouse.category
+  );
+  const type: TypeT | undefined = useAppSelector(
+    (state) => state.warehouse.type
+  );
+  const batch: BatchT | undefined = useAppSelector(
+    (state) => state.warehouse.batch
+  );
+  const cell: CellT | undefined = useAppSelector(
+    (state) => state.warehouse.cell
+  );
 
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
     const fetch = async () => {
       // Query timeseries data for a given test type based on the cell
-      await FetchTimeseries(
-        type!.id,
-        cell!.cell,
-        batch!.cell_batch,
-        type!.class,
-        token!
-      ).then((data) => {
-        storeDispatch(serverActions.data(data));
-      });
     };
 
-    if (type && batch && cell && token) {
+    if (type && batch && cell && user) {
       fetch();
     }
-  }, [storeDispatch, type, batch, cell, token]);
+  }, [storeDispatch, type, batch, cell, user]);
 
   return (
     <>

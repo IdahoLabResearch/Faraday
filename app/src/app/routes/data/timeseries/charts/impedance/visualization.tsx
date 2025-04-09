@@ -21,6 +21,7 @@ import { ImpedanceTooltip } from "../../helpers/tooltips";
 
 // Types
 import { RefObject } from "react";
+import { TypeT, CellT } from "@/lib/types/warehouse";
 
 type Props = {
   data: Array<any>;
@@ -33,15 +34,13 @@ export function Visualization(props: Props) {
   const sweeps = props.sweeps;
   const setSweeps = props.setSweeps;
 
-  const type: { id: string; class: string } = useAppSelector(
-    (state) => state.server.type!
-  );
-  const cell: { cell: string } = useAppSelector((state) => state.server.cell!);
+  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
+  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
   const chartRef = useRef<RefObject<HTMLElement | null>>(null);
 
   useEffect(() => {
     if (props.data.length) {
-      let subset = props.data.filter((record: any) =>
+      const subset = props.data.filter((record: any) =>
         props.sweeps.includes(record.time.toString())
       );
       setData(subset);
@@ -67,8 +66,7 @@ export function Visualization(props: Props) {
       <div className="prose">
         <h2>Visualization</h2>
         <p>
-          Visualize {type.class.split(" ")[0].toLowerCase()} data for{" "}
-          {cell.cell}
+          Visualize {type.name.split(" ")[0].toLowerCase()} data for {cell.name}
         </p>
         <div className="divider w-3/4"></div>
       </div>

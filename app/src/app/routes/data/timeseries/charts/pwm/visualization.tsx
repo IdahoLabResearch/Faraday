@@ -17,25 +17,25 @@ import {
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+import { warehouseActions } from "@/lib/store/features/warehouse";
 
 // Components
 import { PWMTooltip } from "../../helpers/tooltips";
 
+// Types
+import { TypeT, CellT } from "@/lib/types/warehouse";
 type Props = {
   data: Array<any> | undefined;
 };
 
 export function Visualization(props: Props) {
-  const type: { id: string; class: string } = useAppSelector(
-    (state) => state.server.type!
-  );
-  const cell: { cell: string } = useAppSelector((state) => state.server.cell!);
+  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
+  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
     // TODO
-    storeDispatch(serverActions.data(undefined));
+    storeDispatch(warehouseActions.data(undefined));
   }, [cell, storeDispatch]);
 
   return (
@@ -43,7 +43,7 @@ export function Visualization(props: Props) {
       <div className="prose">
         <h2>Visualization</h2>
         <p>
-          Visualize {type.class.toLowerCase()} data for {cell.cell}
+          Visualize {type.name.toLowerCase()} data for {cell.name}
         </p>
         <div className="divider w-3/4"></div>
       </div>

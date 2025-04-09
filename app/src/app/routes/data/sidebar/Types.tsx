@@ -2,53 +2,54 @@
 import { useEffect } from "react";
 
 // Functions
-import { FetchGraph } from "@/lib/client/deeplynx";
+import { FetchTypes } from "@/lib/client/warehouse";
 
 // Store
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+import { warehouseActions } from "@/lib/store/features/warehouse";
+
+// Types
+import { CategoryT, TypeT, UserT } from "@/lib/types/warehouse";
 
 const Types = () => {
   // Hooks
-  const category: { id: string; metatype_name: string } = useAppSelector(
-    (state) => state.server.category!
+  const category: CategoryT = useAppSelector(
+    (state) => state.warehouse.category!
   );
-  const types: Array<{ id: string; class: string }> | undefined =
-    useAppSelector((state) => state.server.types);
+  const types: Array<TypeT> | undefined = useAppSelector(
+    (state) => state.warehouse.types
+  );
 
   const storeDispatch = useAppDispatch();
-  const token: string | undefined = useAppSelector(
-    (state) => state.user.auth.token
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
   );
 
   useEffect(() => {
     const fetch = async () => {
-      if (token) {
-        await FetchGraph(category.id, token).then(
-          (data: Array<{ id: string; class: string }>) => {
-            storeDispatch(serverActions.types(data));
-          }
-        );
+      if (user) {
+        const data = await FetchTypes(category.id);
+        storeDispatch(warehouseActions.types(data));
       }
     };
     fetch();
-  }, [storeDispatch, category, token]);
+  }, [storeDispatch, category, user]);
 
-  const handleType = (type: { id: string; class: string }) => {
-    storeDispatch(serverActions.batches(undefined));
-    storeDispatch(serverActions.type(type));
+  const handleType = (type: TypeT) => {
+    storeDispatch(warehouseActions.batches(undefined));
+    storeDispatch(warehouseActions.type(type));
   };
 
   return (
     <>
       <div className="p-4">
         <div className="prose flex flex-col justify-center align-center">
-          <h3>{category.metatype_name}s</h3>
-          <p>{category.metatype_name}s cataloged in DeepLynx</p>
+          <h3>{category.name}s</h3>
+          <p>{category.name}s cataloged in DeepLynx</p>
         </div>
         <div className="divider"></div>
         {types ? (
-          types.map((type: { id: string; class: string }) => {
+          types.map((type: TypeT) => {
             return (
               <>
                 <div key={type.id}>
@@ -57,7 +58,7 @@ const Types = () => {
                     className="btn"
                     onClick={() => handleType(type)}
                   >
-                    {type.class}
+                    {type.name}
                   </button>
                   <br />
                 </div>

@@ -3,26 +3,26 @@ import { useNavigate } from "react-router";
 
 // Store
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+import { warehouseActions } from "@/lib/store/features/warehouse";
 
 export const Buttons = () => {
   // Router
   const navigate = useNavigate();
 
   // Store
-  const category = useAppSelector((state) => state.server.category);
-  const type = useAppSelector((state) => state.server.type);
-  const batch = useAppSelector((state) => state.server.batch);
-  const cell = useAppSelector((state) => state.server.cell);
+  const category = useAppSelector((state) => state.warehouse.category);
+  const type = useAppSelector((state) => state.warehouse.type);
+  const batch = useAppSelector((state) => state.warehouse.batch);
+  const cell = useAppSelector((state) => state.warehouse.cell);
 
   const storeDispatch = useAppDispatch();
 
   const handleBack = () => {
     // When the user clicks the back button, clear the state from the previous selection
-    (cell && storeDispatch(serverActions.cell(undefined))) ||
-      (batch && storeDispatch(serverActions.batch(undefined))) ||
-      (type && storeDispatch(serverActions.type(undefined))) ||
-      (category && storeDispatch(serverActions.category(undefined)));
+    (cell && storeDispatch(warehouseActions.cell(undefined))) ||
+      (batch && storeDispatch(warehouseActions.batch(undefined))) ||
+      (type && storeDispatch(warehouseActions.type(undefined))) ||
+      (category && storeDispatch(warehouseActions.category(undefined)));
   };
 
   return (

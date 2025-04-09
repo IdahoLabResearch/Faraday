@@ -2,41 +2,40 @@
 import { useEffect } from "react";
 
 // Functions
-import { FetchBatches } from "@/lib/client/deeplynx";
+import { FetchBatches } from "@/lib/client/warehouse";
 
 // Store
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
-import { serverActions } from "@/lib/store/features/server";
+import { warehouseActions } from "@/lib/store/features/warehouse";
+
+// Types
+import { TypeT, BatchT, UserT } from "@/lib/types/warehouse";
 
 const Batches = () => {
   // Hooks
-  const type: { id: string; class: string } = useAppSelector(
-    (state) => state.server.type!
-  );
-  const batches: Array<{ cell_batch: string }> | undefined = useAppSelector(
-    (state) => state.server.batches
+  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
+  const batches: Array<BatchT> | undefined = useAppSelector(
+    (state) => state.warehouse.batches
   );
 
   const storeDispatch = useAppDispatch();
-  const token: string | undefined = useAppSelector(
-    (state) => state.user.auth.token
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
   );
 
   useEffect(() => {
     const fetch = async () => {
-      if (token)
-        await FetchBatches(type.id, type.class, token).then(
-          (data: { cell_batch: string }) => {
-            storeDispatch(serverActions.batches(data));
-          }
-        );
+      if (user) {
+        const data = await FetchBatches();
+        storeDispatch(warehouseActions.batches(data));
+      }
     };
     fetch();
-  }, [storeDispatch, type, token]);
+  }, [storeDispatch, type, user]);
 
-  const handleBatch = (batch: { cell_batch: string }) => {
-    storeDispatch(serverActions.cells(undefined));
-    storeDispatch(serverActions.batch(batch));
+  const handleBatch = (batch: BatchT) => {
+    storeDispatch(warehouseActions.cells(undefined));
+    storeDispatch(warehouseActions.batch(batch));
   };
 
   return (
@@ -48,16 +47,16 @@ const Batches = () => {
         </div>
         <div className="divider"></div>
         {batches ? (
-          batches.map((batch: { cell_batch: string }) => {
+          batches.map((batch: BatchT) => {
             return (
               <>
                 <button
-                  key={batch.cell_batch}
+                  key={batch.id}
                   style={{ display: "block", width: "100%" }}
                   className="btn"
                   onClick={() => handleBatch(batch)}
                 >
-                  {batch.cell_batch}
+                  {batch.name}
                 </button>
                 <br />
               </>

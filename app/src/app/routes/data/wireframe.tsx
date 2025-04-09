@@ -10,6 +10,9 @@ import { uxActions } from "@/lib/store/features/ux";
 import Explorer from "./sidebar/Explorer";
 import Compare from "./timeseries/report/compare";
 
+// Types
+import { CellT, UserT } from "@/lib/types/warehouse";
+
 export default function Visualizer({
   children,
 }: {
@@ -17,13 +20,17 @@ export default function Visualizer({
 }) {
   // Hooks
   const navigate = useNavigate();
-  const token = useAppSelector((state) => state.user.auth.token);
+  const user: UserT | undefined = useAppSelector(
+    (state) => state.warehouse.user
+  );
 
   // Store
   const storeDispatch = useAppDispatch();
   const snackbar: boolean = useAppSelector((state) => state.ux.snackbar);
   const drawer: boolean = useAppSelector((state) => state.ux.drawer);
-  const cell: any = useAppSelector((state) => state.server.cell);
+  const cell: CellT | undefined = useAppSelector(
+    (state) => state.warehouse.cell
+  );
 
   // Handlers
   const handleFab = () => {
@@ -32,12 +39,12 @@ export default function Visualizer({
 
   // Retrieve a token
   useEffect(() => {
-    if (!token) {
+    if (!user) {
       navigate("/auth");
     }
-  }, [navigate, token]);
+  }, [navigate, user]);
 
-  return token ? (
+  return user ? (
     <div>
       <div className="drawer">
         <input

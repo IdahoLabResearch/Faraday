@@ -1,24 +1,24 @@
 // Redux
 import { createSlice } from "@reduxjs/toolkit";
 
-import { RawNodeDatum } from "react-d3-tree";
+// Types
+import { CategoryT, TypeT, BatchT, CellT, UserT } from "@/lib/types/warehouse";
 
 type State = {
-  token: string | undefined;
-  category: { id: string; metatype_name: string } | undefined;
-  categories: Array<{ id: string; metatype_name: string }> | undefined;
-  type: { id: string; class: string } | undefined;
-  types: Array<{ id: string; class: string }> | undefined;
-  batch: { cell_batch: string } | undefined;
-  batches: Array<{ cell_batch: string }> | undefined;
-  cell: { cell: string } | undefined;
-  cells: Array<{ cell: string }> | undefined;
+  user: UserT | undefined;
+  category: CategoryT | undefined;
+  categories: Array<CategoryT> | undefined;
+  type: TypeT | undefined;
+  types: Array<TypeT> | undefined;
+  batch: BatchT | undefined;
+  batches: Array<BatchT> | undefined;
+  cell: CellT | undefined;
+  cells: Array<CellT> | undefined;
   data: Array<any> | undefined;
-  graph: Array<RawNodeDatum> | undefined;
 };
 
 const initialState: State = {
-  token: undefined,
+  user: undefined,
   category: undefined,
   categories: undefined,
   types: undefined,
@@ -28,15 +28,14 @@ const initialState: State = {
   cell: undefined,
   cells: undefined,
   data: undefined,
-  graph: undefined,
 };
 
-const serverSlice = createSlice({
-  name: "server",
+const warehouseSlice = createSlice({
+  name: "warehouse",
   initialState: initialState,
   reducers: {
-    token: (state, action) => {
-      return { ...state, token: action.payload };
+    user: (state, action) => {
+      return { ...state, user: action.payload };
     },
     category: (state, action) => {
       return { ...state, category: action.payload };
@@ -65,12 +64,9 @@ const serverSlice = createSlice({
     data: (state, action) => {
       return { ...state, data: action.payload };
     },
-    graph: (state, action) => {
-      return { ...state, graph: action.payload };
-    },
   },
 });
 
-export const serverActions = serverSlice.actions;
+export const warehouseActions = warehouseSlice.actions;
 
-export default serverSlice.reducer;
+export default warehouseSlice.reducer;
