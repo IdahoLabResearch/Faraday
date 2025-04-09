@@ -1,0 +1,21 @@
+## General
+figure.figsize: 6, 4
+figure.dpi: 100
+
+## Axes
+axes.facecolor: [0, 0, 0, 0]
+axes.edgecolor: 'white'
+axes.linewidth: 0.5
+axes.spines.top: False
+axes.spines.right: False
+axes.grid: False
+
+## Ticks
+xtick.color: 'white'
+ytick.color: 'white'
+
+## Lines
+lines.linewidth: 1.5
+
+## Figure
+figure.facecolor: [0, 0, 0, 0]

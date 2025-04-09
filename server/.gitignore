@@ -1,0 +1,12 @@
+# Ignore all.env files except those ending in.sample
+!.env.example
+!.env.*.example
+
+# Python virtualenv
+.venv
+Lib
+lib
+Scripts
+scripts
+*.cfg
+__pycache__
