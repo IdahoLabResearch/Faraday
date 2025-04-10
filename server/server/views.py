@@ -10,4 +10,3 @@ from django.http import HttpResponse, JsonResponse
 @require_http_methods(["GET"])
 def healthcheck(request):
     return JsonResponse({'host': request.get_host()}, status=200)
-

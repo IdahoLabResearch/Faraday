@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+# Set the working directory to /docker-entrypoint-initdb.d
+WORKDIR /docker-entrypoint-initdb.d
+
+# Copy the .sql file into the container at the specified path
+COPY ./postgres/init/warehouse.sql /docker-entrypoint-initdb.d/

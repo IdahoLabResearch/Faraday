@@ -1,0 +1,15 @@
+FROM python:3.10
+
+WORKDIR /usr/src/server
+
+COPY . .
+
+# Configure INL certs and environment variables
+RUN pip config set global.trusted-host \
+    "pypi.org files.pythonhosted.org pypi.python.org" \
+    --trusted-host=pypi.python.org \
+    --trusted-host=pypi.org \
+    --trusted-host=files.pythonhosted.org
+
+RUN pip install pip_system_certs --trusted-host files.pythonhosted.org --trusted-host pypi.org
+RUN pip install -r requirements.txt
