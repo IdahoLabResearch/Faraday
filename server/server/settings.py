@@ -37,8 +37,9 @@ APPEND_SLASH = False
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'faraday',
-    'user',
+    'warehouse',
+    'timeseries',
+    'users',
     'corsheaders',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -81,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
-AUTH_USER_MODEL = 'user.User'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Database

@@ -3,11 +3,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 # Utilities
-from django.http import HttpResponse, JsonResponse
-from django.core.serializers import serialize
+from django.http import JsonResponse
 import json
 
-from ..models import Category, Type, Batch, Cell
+from models import Category, Type, Batch, Cell
 
 
 @csrf_exempt  # Django views can be exempt from CSRF vulnerabilities if they are function-based, e.g. don't handle any templates or HTML, see: https://docs.djangoproject.com/en/5.1/ref/csrf/#module-django.views.decorators.csrf
@@ -22,7 +21,6 @@ def categories(request):
 def types(request):
 
     category = json.loads(request.body).get('category')
-
     qs = list(Type.objects.filter(category__id=category).values())
     return JsonResponse({'data': qs})
 
@@ -32,7 +30,6 @@ def types(request):
 def batches(request):
 
     qs = list(Batch.objects.all().values())
-
     return JsonResponse({'data': qs})
 
 

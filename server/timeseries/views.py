@@ -6,18 +6,17 @@ from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, JsonResponse
 import json
 
-# Math
-import numpy as np
+# Utilities
 import pandas as pd
 
 # pyDRT
-from ..modules.drt.classes.EIS import Spectra
+from statistics.drt.classes.EIS import Spectra
 
 # sigmoid
-from ..modules.sre.sigmoid import fit_sre
+from statistics.sre.sigmoid import fit_sre
 
 # noor
-from ..modules.noor.process import process_cell
+from statistics.noor.process import process_cell
 
 
 @csrf_exempt  # Django views can be exempt from CSRF vulnerabilities if they are function-based, e.g. don't handle any templates or HTML, see: https://docs.djangoproject.com/en/5.1/ref/csrf/#module-django.views.decorators.csrf
@@ -50,7 +49,7 @@ def sigmoid_regression(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def statistics(request):
+def linear_regression(request):
 
     body = json.loads(request.body)
     x, y = zip(*[[float(n.get("time")), float(n.get("current_density"))]

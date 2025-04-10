@@ -4,6 +4,7 @@
 
 # Python virtualenv
 .venv
+venv
 Lib
 lib
 Scripts

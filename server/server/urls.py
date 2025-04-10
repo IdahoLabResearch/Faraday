@@ -19,8 +19,9 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('api/', include('faraday.urls')),
     path('admin/', admin.site.urls, name='admin'),
     path('healthcheck', views.healthcheck, name="healthcheck"),
-    path('user/', include('user.urls')),
+    path('user/', include('users.urls')),
+    path('warehouse/', include('warehouse.urls')),
+    path('timeseries/', include('timeseries.urls')),
 ]
