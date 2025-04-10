@@ -1,5 +1,5 @@
 from django.urls import path, include
-import views
+from . import views
 
 urlpatterns = [
     path('categories', views.categories),

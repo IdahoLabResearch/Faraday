@@ -10,13 +10,13 @@ import json
 import pandas as pd
 
 # pyDRT
-from statistics.drt.classes.EIS import Spectra
+from .statistics.drt.classes.EIS import Spectra
 
 # sigmoid
-from statistics.sre.sigmoid import fit_sre
+from .statistics.sre.sigmoid import fit_sre
 
 # noor
-from statistics.noor.process import process_cell
+from .statistics.noor.process import process_cell
 
 
 @csrf_exempt  # Django views can be exempt from CSRF vulnerabilities if they are function-based, e.g. don't handle any templates or HTML, see: https://docs.djangoproject.com/en/5.1/ref/csrf/#module-django.views.decorators.csrf

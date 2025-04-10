@@ -31,7 +31,7 @@ class ImpedanceTestData(TimeseriesData):
         ]
 
 
-class PWMTestdata(TimeseriesData):
+class PWMTestData(TimeseriesData):
     """
     Model for PWM test data.
     """

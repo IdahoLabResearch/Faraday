@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 import json
 
-from models import Category, Type, Batch, Cell
+from .models import Category, Type, Batch, Cell
 
 
 @csrf_exempt  # Django views can be exempt from CSRF vulnerabilities if they are function-based, e.g. don't handle any templates or HTML, see: https://docs.djangoproject.com/en/5.1/ref/csrf/#module-django.views.decorators.csrf
