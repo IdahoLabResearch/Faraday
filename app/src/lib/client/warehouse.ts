@@ -5,7 +5,7 @@ const base = import.meta.env.VITE_DJANGO_PROXY;
 import { CategoryT, TypeT, BatchT, CellT } from "../types/warehouse";
 
 export const FetchCategories = async () => {
-  const url = new URL(`${base}/api/warehouse/categories`);
+  const url = new URL(`${base}/warehouse/categories`);
 
   return await fetch(url, {
     method: "GET",
@@ -16,7 +16,7 @@ export const FetchCategories = async () => {
 };
 
 export const FetchTypes = async (category: number) => {
-  const url = new URL(`${base}/api/warehouse/types`);
+  const url = new URL(`${base}/warehouse/types`);
 
   return await fetch(url, {
     method: "POST",
@@ -30,7 +30,7 @@ export const FetchTypes = async (category: number) => {
 };
 
 export const FetchBatches = async () => {
-  const url = new URL(`${base}/api/warehouse/batches`);
+  const url = new URL(`${base}/warehouse/batches`);
 
   return await fetch(url, {
     method: "GET",
@@ -41,7 +41,7 @@ export const FetchBatches = async () => {
 };
 
 export const FetchCells = async (batch: number) => {
-  const url = new URL(`${base}/api/warehouse/cells`);
+  const url = new URL(`${base}/warehouse/cells`);
 
   return await fetch(url, {
     method: "POST",
