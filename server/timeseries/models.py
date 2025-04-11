@@ -1,8 +1,5 @@
 from django.db import models
-
 from warehouse.models import Type, Batch, Cell
-
-# Create your models here.
 
 
 class TimeseriesData(models.Model):
@@ -12,7 +9,7 @@ class TimeseriesData(models.Model):
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
     cell = models.ForeignKey(Cell, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
+    time = models.DecimalField(max_digits=255, decimal_places=12)
 
     class Meta:
         abstract = True
@@ -22,8 +19,11 @@ class ImpedanceTestData(TimeseriesData):
     """
     Model for impedance test data.
     """
-    real_impedance = models.DecimalField(max_digits=10, decimal_places=5)
-    imaginary_impedance = models.DecimalField(max_digits=10, decimal_places=5)
+    interval = models.IntegerField(max_length=3)
+    sweep = models.IntegerField(max_length=3)
+    frequency = models.DecimalField(max_digits=10, decimal_places=3)
+    real_impedance = models.DecimalField(max_digits=10, decimal_places=8)
+    imaginary_impedance = models.DecimalField(max_digits=10, decimal_places=8)
 
     class Meta:
         indexes = [
@@ -49,8 +49,7 @@ class PotentiostaticTestData(TimeseriesData):
     Model for potentiostatic test data.
     """
     voltage = models.DecimalField(max_digits=10, decimal_places=5)
-    time = models.DecimalField(max_digits=10, decimal_places=5)
-    current_density = models.DecimalField(max_digits=10, decimal_places=5)
+    current_density = models.DecimalField(max_digits=10, decimal_places=6)
 
     class Meta:
         indexes = [
