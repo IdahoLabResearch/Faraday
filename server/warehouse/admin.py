@@ -1,28 +1,29 @@
 from django.contrib import admin
-from .models import Category, Type, Batch, Cell
+from .models import Node, Relationship, Ontology, Class
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(Node)
+class NodeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'cls', 'ontology')
+    search_fields = ('name', 'cls', 'ontology')
+    list_filter = ('cls', 'ontology')
+
+
+@admin.register(Relationship)
+class RelationshipAdmin(admin.ModelAdmin):
+    list_display = ('name', 'source', 'target', 'ontology')
+    search_fields = ('name',)
+    list_filter = ('name', 'ontology')
+
+
+@admin.register(Ontology)
+class OntologyAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
 
 
-@admin.register(Type)
-class TypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category')
-    search_fields = ('name', 'category__name')
-    list_filter = ('category',)
-
-
-@admin.register(Batch)
-class BatchAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-
-
-@admin.register(Cell)
-class CellAdmin(admin.ModelAdmin):
-    list_display = ('name', 'batch')
-    search_fields = ('name', 'batch__name')
-    list_filter = ('batch',)
+@admin.register(Class)
+class ClassAdmin(admin.ModelAdmin):
+    list_display = ('name', 'ontology')
+    search_fields = ('name', ' ontology')
+    list_filter = ('name', 'ontology')

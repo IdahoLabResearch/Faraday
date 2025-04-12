@@ -6,37 +6,29 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 import json
 
-from .models import Category, Type, Batch, Cell
+from .models import Ontology
 
 
 @csrf_exempt  # Django views can be exempt from CSRF vulnerabilities if they are function-based, e.g. don't handle any templates or HTML, see: https://docs.djangoproject.com/en/5.1/ref/csrf/#module-django.views.decorators.csrf
 @require_http_methods(["GET"])
-def categories(request):
-    qs = list(Category.objects.all().values())
+def ontologies(request):
+
+    qs = list(Ontology.objects.all().values())
     return JsonResponse({'data': qs})
 
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def types(request):
+def ontology(request):
 
-    category = json.loads(request.body).get('category')
-    qs = list(Type.objects.filter(category__id=category).values())
-    return JsonResponse({'data': qs})
+    id = json.loads(request.body).get('ontology')
+    ontology = Ontology.objects.filter(id=id).first()
 
+    nodes = ontology.get_nodes()
+    roots = ontology.get_roots()
 
-@csrf_exempt
-@require_http_methods(["GET"])
-def batches(request):
+    for r in roots:
+        rel = r.get_relationships()
+        print(rel)
 
-    qs = list(Batch.objects.all().values())
-    return JsonResponse({'data': qs})
-
-
-@csrf_exempt
-@require_http_methods(["POST"])
-def cells(request):
-
-    batch = json.loads(request.body).get('batch')
-    qs = list(Cell.objects.filter(batch__id=batch).values())
-    return JsonResponse({'data': qs})
+    return JsonResponse({'data': {}})

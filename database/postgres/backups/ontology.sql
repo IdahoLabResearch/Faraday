@@ -299,7 +299,8 @@ ALTER TABLE public.django_session OWNER TO postgres;
 CREATE TABLE public.warehouse_class (
     id bigint NOT NULL,
     name character varying(25) NOT NULL,
-    description character varying(25) NOT NULL
+    description character varying(25) NOT NULL,
+    ontology_id bigint NOT NULL
 );
 
 
@@ -327,7 +328,8 @@ CREATE TABLE public.warehouse_node (
     id bigint NOT NULL,
     name character varying(25) NOT NULL,
     cls_id bigint NOT NULL,
-    ontology_id bigint NOT NULL
+    ontology_id bigint NOT NULL,
+    root boolean NOT NULL
 );
 
 
@@ -423,46 +425,46 @@ COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
 --
 
 COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
-1       Can add log entry       1       add_logentry
-2       Can change log entry    1       change_logentry
-3       Can delete log entry    1       delete_logentry
-4       Can view log entry      1       view_logentry
-5       Can add permission      2       add_permission
-6       Can change permission   2       change_permission
-7       Can delete permission   2       delete_permission
-8       Can view permission     2       view_permission
-9       Can add group   3       add_group
-10      Can change group        3       change_group
-11      Can delete group        3       delete_group
-12      Can view group  3       view_group
-13      Can add user    4       add_user
-14      Can change user 4       change_user
-15      Can delete user 4       delete_user
-16      Can view user   4       view_user
-17      Can add ontology        5       add_ontology
-18      Can change ontology     5       change_ontology
-19      Can delete ontology     5       delete_ontology
-20      Can view ontology       5       view_ontology
-21      Can add node    6       add_node
-22      Can change node 6       change_node
-23      Can delete node 6       delete_node
-24      Can view node   6       view_node
-25      Can add relationship    7       add_relationship
-26      Can change relationship 7       change_relationship
-27      Can delete relationship 7       delete_relationship
-28      Can view relationship   7       view_relationship
-29      Can add content type    8       add_contenttype
-30      Can change content type 8       change_contenttype
-31      Can delete content type 8       delete_contenttype
-32      Can view content type   8       view_contenttype
-33      Can add session 9       add_session
-34      Can change session      9       change_session
-35      Can delete session      9       delete_session
-36      Can view session        9       view_session
-37      Can add class   10      add_class
-38      Can change class        10      change_class
-39      Can delete class        10      delete_class
-40      Can view class  10      view_class
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can view log entry	1	view_logentry
+5	Can add permission	2	add_permission
+6	Can change permission	2	change_permission
+7	Can delete permission	2	delete_permission
+8	Can view permission	2	view_permission
+9	Can add group	3	add_group
+10	Can change group	3	change_group
+11	Can delete group	3	delete_group
+12	Can view group	3	view_group
+13	Can add user	4	add_user
+14	Can change user	4	change_user
+15	Can delete user	4	delete_user
+16	Can view user	4	view_user
+17	Can add ontology	5	add_ontology
+18	Can change ontology	5	change_ontology
+19	Can delete ontology	5	delete_ontology
+20	Can view ontology	5	view_ontology
+21	Can add node	6	add_node
+22	Can change node	6	change_node
+23	Can delete node	6	delete_node
+24	Can view node	6	view_node
+25	Can add relationship	7	add_relationship
+26	Can change relationship	7	change_relationship
+27	Can delete relationship	7	delete_relationship
+28	Can view relationship	7	view_relationship
+29	Can add content type	8	add_contenttype
+30	Can change content type	8	change_contenttype
+31	Can delete content type	8	delete_contenttype
+32	Can view content type	8	view_contenttype
+33	Can add session	9	add_session
+34	Can change session	9	change_session
+35	Can delete session	9	delete_session
+36	Can view session	9	view_session
+37	Can add class	10	add_class
+38	Can change class	10	change_class
+39	Can delete class	10	delete_class
+40	Can view class	10	view_class
 \.
 
 
@@ -471,7 +473,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 --
 
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
-1       pbkdf2_sha256$1000000$e03zHD7dJVeRxwgozXTvYY$hwYm+YY7lLKKzixZpaIWoIINTSv8d5eru8XVTough54=       2025-04-11 22:29:25.461179+00  t       nathan                          t       t       2025-04-11 22:29:16.418144+00
+1	pbkdf2_sha256$1000000$e03zHD7dJVeRxwgozXTvYY$hwYm+YY7lLKKzixZpaIWoIINTSv8d5eru8XVTough54=	2025-04-11 22:29:25.461179+00	t	nathan				t	t	2025-04-11 22:29:16.418144+00
 \.
 
 
@@ -496,38 +498,44 @@ COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
 --
 
 COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
-1       2025-04-11 22:29:32.885509+00   1       H2NEW   1       [{"added": {}}] 5       1
-2       2025-04-11 22:33:23.745395+00   1       Class object (1)        1       [{"added": {}}] 10      1
-3       2025-04-11 22:33:29.279935+00   2       Class object (2)        1       [{"added": {}}] 10      1
-4       2025-04-11 22:33:37.363545+00   3       Class object (3)        1       [{"added": {}}] 10      1
-5       2025-04-11 22:33:42.442461+00   4       Class object (4)        1       [{"added": {}}] 10      1
-6       2025-04-11 22:33:52.816168+00   5       Class object (5)        1       [{"added": {}}] 10      1
-7       2025-04-11 22:36:39.972334+00   1       Characterization        1       [{"added": {}}] 6       1
-8       2025-04-11 22:36:47.530908+00   2       Durability      1       [{"added": {}}] 6       1
-9       2025-04-11 22:37:21.194186+00   3       Performance     1       [{"added": {}}] 6       1
-10      2025-04-11 23:48:06.5572+00     4       Impedance       1       [{"added": {}}] 6       1
-11      2025-04-11 23:48:18.312019+00   5       Potentiostatic  1       [{"added": {}}] 6       1
-12      2025-04-11 23:48:31.027461+00   6       Pulse Width Modulation  1       [{"added": {}}] 6       1
-13      2025-04-11 23:49:10.077543+00   7       5-11-22-5A      1       [{"added": {}}] 6       1
-14      2025-04-11 23:49:26.020806+00   8       BC-7    1       [{"added": {}}] 6       1
-15      2025-04-11 23:49:32.961453+00   9       BC-8    1       [{"added": {}}] 6       1
-16      2025-04-11 23:49:39.719296+00   10      BC-9    1       [{"added": {}}] 6       1
-17      2025-04-11 23:49:51.455773+00   11      BC-12   1       [{"added": {}}] 6       1
-18      2025-04-11 23:50:04.419645+00   12      BC-15   1       [{"added": {}}] 6       1
-19      2025-04-11 23:50:10.563086+00   13      BC-16   1       [{"added": {}}] 6       1
-20      2025-04-11 23:51:45.27818+00    14      2-4-22-2A       1       [{"added": {}}] 6       1
-21      2025-04-11 23:52:05.099414+00   15      BC-18   1       [{"added": {}}] 6       1
-22      2025-04-11 23:52:10.927215+00   16      BC-33   1       [{"added": {}}] 6       1
-23      2025-04-11 23:52:40.970529+00   17      1-14-22-3A      1       [{"added": {}}] 6       1
-24      2025-04-11 23:52:54.099528+00   18      4-12-22-2A      1       [{"added": {}}] 6       1
-25      2025-04-11 23:53:04.199452+00   19      5-11-22-2A      1       [{"added": {}}] 6       1
-26      2025-04-11 23:53:41.488783+00   20      BC-10   1       [{"added": {}}] 6       1
-27      2025-04-11 23:54:06.281778+00   21      BC-3    1       [{"added": {}}] 6       1
-28      2025-04-11 23:54:36.46627+00    22      BC-2    1       [{"added": {}}] 6       1
-29      2025-04-11 23:54:43.094034+00   23      BC-6    1       [{"added": {}}] 6       1
-30      2025-04-11 23:54:53.770211+00   24      BC-20   1       [{"added": {}}] 6       1
-31      2025-04-11 23:54:59.466501+00   25      BC-34   1       [{"added": {}}] 6       1
-32      2025-04-11 23:55:07.17664+00    26      BC-36   1       [{"added": {}}] 6       1
+1	2025-04-11 22:29:32.885509+00	1	H2NEW	1	[{"added": {}}]	5	1
+2	2025-04-11 22:33:23.745395+00	1	Class object (1)	1	[{"added": {}}]	10	1
+3	2025-04-11 22:33:29.279935+00	2	Class object (2)	1	[{"added": {}}]	10	1
+4	2025-04-11 22:33:37.363545+00	3	Class object (3)	1	[{"added": {}}]	10	1
+5	2025-04-11 22:33:42.442461+00	4	Class object (4)	1	[{"added": {}}]	10	1
+6	2025-04-11 22:33:52.816168+00	5	Class object (5)	1	[{"added": {}}]	10	1
+7	2025-04-11 22:36:39.972334+00	1	Characterization	1	[{"added": {}}]	6	1
+8	2025-04-11 22:36:47.530908+00	2	Durability	1	[{"added": {}}]	6	1
+9	2025-04-11 22:37:21.194186+00	3	Performance	1	[{"added": {}}]	6	1
+10	2025-04-11 23:48:06.5572+00	4	Impedance	1	[{"added": {}}]	6	1
+11	2025-04-11 23:48:18.312019+00	5	Potentiostatic	1	[{"added": {}}]	6	1
+12	2025-04-11 23:48:31.027461+00	6	Pulse Width Modulation	1	[{"added": {}}]	6	1
+13	2025-04-11 23:49:10.077543+00	7	5-11-22-5A	1	[{"added": {}}]	6	1
+14	2025-04-11 23:49:26.020806+00	8	BC-7	1	[{"added": {}}]	6	1
+15	2025-04-11 23:49:32.961453+00	9	BC-8	1	[{"added": {}}]	6	1
+16	2025-04-11 23:49:39.719296+00	10	BC-9	1	[{"added": {}}]	6	1
+17	2025-04-11 23:49:51.455773+00	11	BC-12	1	[{"added": {}}]	6	1
+18	2025-04-11 23:50:04.419645+00	12	BC-15	1	[{"added": {}}]	6	1
+19	2025-04-11 23:50:10.563086+00	13	BC-16	1	[{"added": {}}]	6	1
+20	2025-04-11 23:51:45.27818+00	14	2-4-22-2A	1	[{"added": {}}]	6	1
+21	2025-04-11 23:52:05.099414+00	15	BC-18	1	[{"added": {}}]	6	1
+22	2025-04-11 23:52:10.927215+00	16	BC-33	1	[{"added": {}}]	6	1
+23	2025-04-11 23:52:40.970529+00	17	1-14-22-3A	1	[{"added": {}}]	6	1
+24	2025-04-11 23:52:54.099528+00	18	4-12-22-2A	1	[{"added": {}}]	6	1
+25	2025-04-11 23:53:04.199452+00	19	5-11-22-2A	1	[{"added": {}}]	6	1
+26	2025-04-11 23:53:41.488783+00	20	BC-10	1	[{"added": {}}]	6	1
+27	2025-04-11 23:54:06.281778+00	21	BC-3	1	[{"added": {}}]	6	1
+28	2025-04-11 23:54:36.46627+00	22	BC-2	1	[{"added": {}}]	6	1
+29	2025-04-11 23:54:43.094034+00	23	BC-6	1	[{"added": {}}]	6	1
+30	2025-04-11 23:54:53.770211+00	24	BC-20	1	[{"added": {}}]	6	1
+31	2025-04-11 23:54:59.466501+00	25	BC-34	1	[{"added": {}}]	6	1
+32	2025-04-11 23:55:07.17664+00	26	BC-36	1	[{"added": {}}]	6	1
+33	2025-04-12 00:18:55.571897+00	1	Category Characterization -> characterization tests -> Type Impedance	1	[{"added": {}}]	7	1
+34	2025-04-12 00:19:07.098834+00	2	Category Durability -> durability tests -> Type Pulse Width Modulation	1	[{"added": {}}]	7	1
+35	2025-04-12 00:19:20.361833+00	3	Category Performance -> performance tests -> Type Potentiostatic	1	[{"added": {}}]	7	1
+36	2025-04-12 00:59:35.661259+00	3	Category Performance	2	[{"changed": {"fields": ["Root"]}}]	6	1
+37	2025-04-12 00:59:38.939921+00	2	Category Durability	2	[{"changed": {"fields": ["Root"]}}]	6	1
+38	2025-04-12 00:59:41.547101+00	1	Category Characterization	2	[{"changed": {"fields": ["Root"]}}]	6	1
 \.
 
 
@@ -536,16 +544,16 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 --
 
 COPY public.django_content_type (id, app_label, model) FROM stdin;
-1       admin   logentry
-2       auth    permission
-3       auth    group
-4       auth    user
-5       warehouse       ontology
-6       warehouse       node
-7       warehouse       relationship
-8       contenttypes    contenttype
-9       sessions        session
-10      warehouse       class
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	warehouse	ontology
+6	warehouse	node
+7	warehouse	relationship
+8	contenttypes	contenttype
+9	sessions	session
+10	warehouse	class
 \.
 
 
@@ -554,26 +562,28 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 --
 
 COPY public.django_migrations (id, app, name, applied) FROM stdin;
-1       contenttypes    0001_initial    2025-04-11 22:28:43.70929+00
-2       auth    0001_initial    2025-04-11 22:28:43.746545+00
-3       admin   0001_initial    2025-04-11 22:28:43.76064+00
-4       admin   0002_logentry_remove_auto_add   2025-04-11 22:28:43.765987+00
-5       admin   0003_logentry_add_action_flag_choices   2025-04-11 22:28:43.772877+00
-6       contenttypes    0002_remove_content_type_name   2025-04-11 22:28:43.786025+00
-7       auth    0002_alter_permission_name_max_length   2025-04-11 22:28:43.793166+00
-8       auth    0003_alter_user_email_max_length        2025-04-11 22:28:43.801127+00
-9       auth    0004_alter_user_username_opts   2025-04-11 22:28:43.80694+00
-10      auth    0005_alter_user_last_login_null 2025-04-11 22:28:43.815295+00
-11      auth    0006_require_contenttypes_0002  2025-04-11 22:28:43.817912+00
-12      auth    0007_alter_validators_add_error_messages        2025-04-11 22:28:43.823709+00
-13      auth    0008_alter_user_username_max_length     2025-04-11 22:28:43.831892+00
-14      auth    0009_alter_user_last_name_max_length    2025-04-11 22:28:43.838727+00
-15      auth    0010_alter_group_name_max_length        2025-04-11 22:28:43.847737+00
-16      auth    0011_update_proxy_permissions   2025-04-11 22:28:43.852946+00
-17      auth    0012_alter_user_first_name_max_length   2025-04-11 22:28:43.86118+00
-18      sessions        0001_initial    2025-04-11 22:28:43.869383+00
-19      warehouse       0001_initial    2025-04-11 22:28:43.891622+00
-20      warehouse       0002_class_alter_node_cls       2025-04-11 22:31:34.211442+00
+1	contenttypes	0001_initial	2025-04-11 22:28:43.70929+00
+2	auth	0001_initial	2025-04-11 22:28:43.746545+00
+3	admin	0001_initial	2025-04-11 22:28:43.76064+00
+4	admin	0002_logentry_remove_auto_add	2025-04-11 22:28:43.765987+00
+5	admin	0003_logentry_add_action_flag_choices	2025-04-11 22:28:43.772877+00
+6	contenttypes	0002_remove_content_type_name	2025-04-11 22:28:43.786025+00
+7	auth	0002_alter_permission_name_max_length	2025-04-11 22:28:43.793166+00
+8	auth	0003_alter_user_email_max_length	2025-04-11 22:28:43.801127+00
+9	auth	0004_alter_user_username_opts	2025-04-11 22:28:43.80694+00
+10	auth	0005_alter_user_last_login_null	2025-04-11 22:28:43.815295+00
+11	auth	0006_require_contenttypes_0002	2025-04-11 22:28:43.817912+00
+12	auth	0007_alter_validators_add_error_messages	2025-04-11 22:28:43.823709+00
+13	auth	0008_alter_user_username_max_length	2025-04-11 22:28:43.831892+00
+14	auth	0009_alter_user_last_name_max_length	2025-04-11 22:28:43.838727+00
+15	auth	0010_alter_group_name_max_length	2025-04-11 22:28:43.847737+00
+16	auth	0011_update_proxy_permissions	2025-04-11 22:28:43.852946+00
+17	auth	0012_alter_user_first_name_max_length	2025-04-11 22:28:43.86118+00
+18	sessions	0001_initial	2025-04-11 22:28:43.869383+00
+19	warehouse	0001_initial	2025-04-11 22:28:43.891622+00
+20	warehouse	0002_class_alter_node_cls	2025-04-11 22:31:34.211442+00
+21	warehouse	0003_alter_class_options_alter_ontology_options_and_more	2025-04-12 00:13:08.318354+00
+22	warehouse	0004_node_root	2025-04-12 00:59:10.708433+00
 \.
 
 
@@ -582,7 +592,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 --
 
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
-xxc8a9hu4k86t18b8p28o3tb5upjz371        .eJxVjEEOwiAQRe_C2hBmhhJw6d4zkGEAqZo2Ke3KeHdt0oVu_3vvv1TkbW1x62WJY1ZnBer0uyWWR5l2kO883WYt87QuY9K7og_a9XXO5Xk53L-Dxr1964peCKznFCyBiGFKpkJCwmLJ54AAQ_YyQAAsBCgJC2fnnbGVnKj3B9AMN1E:1u3MsH:zkubcqEo0K-GgYHgmaKacicpqh7n_fW7-YlX0LtMDnE   2025-04-25 22:29:25.463305+00
+xxc8a9hu4k86t18b8p28o3tb5upjz371	.eJxVjEEOwiAQRe_C2hBmhhJw6d4zkGEAqZo2Ke3KeHdt0oVu_3vvv1TkbW1x62WJY1ZnBer0uyWWR5l2kO883WYt87QuY9K7og_a9XXO5Xk53L-Dxr1964peCKznFCyBiGFKpkJCwmLJ54AAQ_YyQAAsBCgJC2fnnbGVnKj3B9AMN1E:1u3MsH:zkubcqEo0K-GgYHgmaKacicpqh7n_fW7-YlX0LtMDnE	2025-04-25 22:29:25.463305+00
 \.
 
 
@@ -590,12 +600,12 @@ xxc8a9hu4k86t18b8p28o3tb5upjz371        .eJxVjEEOwiAQRe_C2hBmhhJw6d4zkGEAqZo2Ke3
 -- Data for Name: warehouse_class; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.warehouse_class (id, name, description) FROM stdin;
-1       Category        test category
-2       Type    test type
-3       Batch   electrolysis cell batch
-4       Cell    electrolysis cell
-5       Stack   electrolysis cell stack
+COPY public.warehouse_class (id, name, description, ontology_id) FROM stdin;
+1	Category	test category	1
+2	Type	test type	1
+3	Batch	electrolysis cell batch	1
+4	Cell	electrolysis cell	1
+5	Stack	electrolysis cell stack	1
 \.
 
 
@@ -603,33 +613,33 @@ COPY public.warehouse_class (id, name, description) FROM stdin;
 -- Data for Name: warehouse_node; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.warehouse_node (id, name, cls_id, ontology_id) FROM stdin;
-1       Characterization        1       1
-2       Durability      1       1
-3       Performance     1       1
-4       Impedance       2       1
-5       Potentiostatic  2       1
-6       Pulse Width Modulation  2       1
-7       5-11-22-5A      3       1
-8       BC-7    4       1
-9       BC-8    4       1
-10      BC-9    4       1
-11      BC-12   4       1
-12      BC-15   4       1
-13      BC-16   4       1
-14      2-4-22-2A       3       1
-15      BC-18   4       1
-16      BC-33   4       1
-17      1-14-22-3A      3       1
-18      4-12-22-2A      3       1
-19      5-11-22-2A      3       1
-20      BC-10   4       1
-21      BC-3    4       1
-22      BC-2    4       1
-23      BC-6    4       1
-24      BC-20   4       1
-25      BC-34   4       1
-26      BC-36   4       1
+COPY public.warehouse_node (id, name, cls_id, ontology_id, root) FROM stdin;
+4	Impedance	2	1	f
+5	Potentiostatic	2	1	f
+6	Pulse Width Modulation	2	1	f
+7	5-11-22-5A	3	1	f
+8	BC-7	4	1	f
+9	BC-8	4	1	f
+10	BC-9	4	1	f
+11	BC-12	4	1	f
+12	BC-15	4	1	f
+13	BC-16	4	1	f
+14	2-4-22-2A	3	1	f
+15	BC-18	4	1	f
+16	BC-33	4	1	f
+17	1-14-22-3A	3	1	f
+18	4-12-22-2A	3	1	f
+19	5-11-22-2A	3	1	f
+20	BC-10	4	1	f
+21	BC-3	4	1	f
+22	BC-2	4	1	f
+23	BC-6	4	1	f
+24	BC-20	4	1	f
+25	BC-34	4	1	f
+26	BC-36	4	1	f
+3	Performance	1	1	t
+2	Durability	1	1	t
+1	Characterization	1	1	t
 \.
 
 
@@ -638,7 +648,7 @@ COPY public.warehouse_node (id, name, cls_id, ontology_id) FROM stdin;
 --
 
 COPY public.warehouse_ontology (id, name) FROM stdin;
-1       H2NEW
+1	H2NEW
 \.
 
 
@@ -647,6 +657,9 @@ COPY public.warehouse_ontology (id, name) FROM stdin;
 --
 
 COPY public.warehouse_relationship (id, name, ontology_id, source_id, target_id) FROM stdin;
+1	characterization tests	1	1	4
+2	durability tests	1	2	6
+3	performance tests	1	3	5
 \.
 
 
@@ -696,7 +709,7 @@ SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 32, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 38, true);
 
 
 --
@@ -710,7 +723,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 10, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 20, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 22, true);
 
 
 --
@@ -738,7 +751,7 @@ SELECT pg_catalog.setval('public.warehouse_ontology_id_seq', 1, true);
 -- Name: warehouse_relationship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.warehouse_relationship_id_seq', 1, false);
+SELECT pg_catalog.setval('public.warehouse_relationship_id_seq', 3, true);
 
 
 --
@@ -1040,6 +1053,13 @@ CREATE INDEX warehouse_class_name_c7b146ea_like ON public.warehouse_class USING 
 
 
 --
+-- Name: warehouse_class_ontology_id_1ab834e7; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX warehouse_class_ontology_id_1ab834e7 ON public.warehouse_class USING btree (ontology_id);
+
+
+--
 -- Name: warehouse_node_cls_id_d0d0c0fc; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1154,6 +1174,14 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
+-- Name: warehouse_class warehouse_class_ontology_id_1ab834e7_fk_warehouse_ontology_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.warehouse_class
+    ADD CONSTRAINT warehouse_class_ontology_id_1ab834e7_fk_warehouse_ontology_id FOREIGN KEY (ontology_id) REFERENCES public.warehouse_ontology(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: warehouse_node warehouse_node_cls_id_d0d0c0fc_fk_warehouse_class_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1196,3 +1224,4 @@ ALTER TABLE ONLY public.warehouse_relationship
 --
 -- PostgreSQL database dump complete
 --
+

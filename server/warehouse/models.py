@@ -1,63 +1,72 @@
 from django.db import models
 
-##############################
-# Warehouse
-##############################
 
-
-class Category(models.Model):
-    """
-    Model representing a test category.
-    """
-    class Meta:
-        verbose_name = "category"
-        verbose_name_plural = "categories"
-
+class Ontology(models.Model):
     name = models.CharField(max_length=25, unique=True)
+
+    class Meta:
+        verbose_name = "ontology"
+        verbose_name_plural = "ontologies"
+
+    def __str__(self):
+        return self.name
+
+    def get_roots(self):
+        return self.nodes.filter(root=True)
+
+    def get_nodes(self):
+        return self.nodes.all()
+
+    def get_node_relationships(self, node):
+        if node in self.nodes.all():
+            return node.get_relationships()
+        else:
+            return None
+
+
+class Class(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+    description = models.CharField(max_length=25)
+    ontology = models.ForeignKey(
+        Ontology, related_name='classes', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "class"
+        verbose_name_plural = "classes"
 
     def __str__(self):
         return self.name
 
 
-class Type(models.Model):
-    """
-    Model representing a test type.
-    """
-    class Meta:
-        unique_together = ('category', 'name')
-
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name='types')
-    name = models.CharField(max_length=25, unique=True)
-
-    def __str__(self):
-        return f"{self.category.name}: {self.name}"
-
-
-class Batch(models.Model):
-    """
-    Model representing a batch of electrolysis cells.
-    """
-    class Meta:
-        verbose_name = "batch"
-        verbose_name_plural = "batches"
-
-    name = models.CharField(max_length=25, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Cell(models.Model):
-    """
-    Model representing an electrolysis cell.
-    """
-    class Meta:
-        unique_together = ('batch', 'name')
-
-    batch = models.ForeignKey(
-        Batch, on_delete=models.CASCADE, related_name='cells')
+class Node(models.Model):
     name = models.CharField(max_length=25)
+    cls = models.ForeignKey(
+        Class, related_name='nodes', on_delete=models.CASCADE)
+    ontology = models.ForeignKey(
+        Ontology, related_name='nodes', on_delete=models.CASCADE)
+    root = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('name', 'cls', 'ontology')
 
     def __str__(self):
-        return f"{self.batch.name}: {self.name}"
+        return f"{self.cls.name} {self.name}"
+
+    def get_relationships(self):
+        return self.relationships.all()
+
+
+class Relationship(models.Model):
+    name = models.CharField(max_length=25)
+    source = models.ForeignKey(
+        Node, related_name='relationships', on_delete=models.CASCADE)
+    target = models.ForeignKey(
+        Node, related_name='related_to', on_delete=models.CASCADE)
+    ontology = models.ForeignKey(
+        Ontology, related_name='relationships', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('name', 'source', 'target', 'ontology')
+
+    def __str__(self):
+        return f"{self.source} -> {self.name} -> {self.target}"

@@ -2,8 +2,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('categories', views.categories),
-    path('types', views.types),
-    path('batches', views.batches),
-    path('cells', views.cells),
+    path('ontologies', views.ontologies),
+    path('ontology', views.ontology)
 ]
