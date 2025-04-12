@@ -59,9 +59,9 @@ class Node(models.Model):
 class Relationship(models.Model):
     name = models.CharField(max_length=25)
     source = models.ForeignKey(
-        Node, related_name='relationships', on_delete=models.CASCADE)
+        Node, related_name='source', on_delete=models.CASCADE)
     target = models.ForeignKey(
-        Node, related_name='related_to', on_delete=models.CASCADE)
+        Node, related_name='target', on_delete=models.CASCADE)
     ontology = models.ForeignKey(
         Ontology, related_name='relationships', on_delete=models.CASCADE)
 
