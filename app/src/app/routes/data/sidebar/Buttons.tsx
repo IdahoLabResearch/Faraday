@@ -11,30 +11,15 @@ export const Buttons = () => {
   const navigate = useNavigate();
 
   // Store
-  const category = useAppSelector((state) => state.warehouse.category);
-  const type = useAppSelector((state) => state.warehouse.type);
-  const batch = useAppSelector((state) => state.warehouse.batch);
-  const cell = useAppSelector((state) => state.warehouse.cell);
+  const graph = useAppSelector((state) => state.warehouse.graph);
 
   const storeDispatch = useAppDispatch();
 
   const handleBack = () => {
     // When the user clicks the back button, clear the state from the previous selection
-    if (cell) {
-      storeDispatch(warehouseActions.cell(undefined));
-      storeDispatch(warehouseActions.batch(undefined));
+    if (graph) {
+      storeDispatch(warehouseActions.graph(undefined));
       return;
-    }
-    if (batch) {
-      storeDispatch(warehouseActions.batch(undefined));
-      return;
-    }
-    if (type) {
-      storeDispatch(warehouseActions.type(undefined));
-      return;
-    }
-    if (category) {
-      storeDispatch(warehouseActions.category(undefined));
     }
   };
 
@@ -53,7 +38,7 @@ export const Buttons = () => {
           Home
         </button>
         <div className="grow"></div>
-        {category ? (
+        {graph ? (
           <button className="btn btn-sm" onClick={handleBack}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

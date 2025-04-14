@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 // Reducers
-import deeplynx from "./features/deeplynx";
 import warehouse from "./features/warehouse";
 import report from "./features/report";
 import ux from "./features/ux";
@@ -9,7 +8,6 @@ import ux from "./features/ux";
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      deeplynx,
       warehouse,
       report,
       ux,

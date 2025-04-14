@@ -1,64 +1,59 @@
 // Hooks
 import { useEffect } from "react";
 
-// Functions
-import { FetchTypes } from "@/lib/client/warehouse";
-
 // Store
-import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { warehouseActions } from "@/lib/store/features/warehouse";
 
 // Types
-import { CategoryT, TypeT, UserT } from "@/lib/types/warehouse";
+import { NodeT, UserT } from "@/lib/types/warehouse";
 
-const Types = () => {
-  // Hooks
-  const category: CategoryT = useAppSelector(
-    (state) => state.warehouse.category!
-  );
-  const types: Array<TypeT> | undefined = useAppSelector(
-    (state) => state.warehouse.types
-  );
+// Functions
+import { FetchRoots } from "@/lib/client/warehouse";
 
-  const storeDispatch = useAppDispatch();
+const Roots = () => {
   const user: UserT | undefined = useAppSelector(
     (state) => state.warehouse.user
   );
 
+  // Store
+  const ontology = useAppSelector((state) => state.warehouse.ontology!);
+  const roots = useAppSelector((state) => state.warehouse.roots);
+  const storeDispatch = useAppDispatch();
+
   useEffect(() => {
     const fetch = async () => {
       if (user) {
-        const data = await FetchTypes(category.id);
-        storeDispatch(warehouseActions.types(data));
+        const data: Array<NodeT> = await FetchRoots(ontology.id);
+        storeDispatch(warehouseActions.roots(data));
       }
     };
     fetch();
-  }, [storeDispatch, category, user]);
+  }, [storeDispatch, user, ontology]);
 
-  const handleType = (type: TypeT) => {
-    storeDispatch(warehouseActions.batches(undefined));
-    storeDispatch(warehouseActions.type(type));
+  const handleRoot = (root: NodeT) => {
+    storeDispatch(warehouseActions.root(root));
   };
 
   return (
     <>
       <div className="p-4">
         <div className="prose flex flex-col justify-center align-center">
-          <h3>{category.name}s</h3>
-          <p>{category.name}s cataloged in DeepLynx</p>
+          <h3>Root Entities</h3>
+          <p>Select a root entity to explore the related graph and data</p>
         </div>
         <div className="divider"></div>
-        {types ? (
-          types.map((type: TypeT) => {
+        {roots ? (
+          roots.map((root: NodeT) => {
             return (
               <>
-                <div key={type.id}>
+                <div key={root.id}>
                   <button
                     style={{ display: "block", width: "100%" }}
                     className="btn"
-                    onClick={() => handleType(type)}
+                    onClick={() => handleRoot(root)}
                   >
-                    {type.name}
+                    {root.name}
                   </button>
                   <br />
                 </div>
@@ -79,4 +74,4 @@ const Types = () => {
   );
 };
 
-export default Types;
+export default Roots;

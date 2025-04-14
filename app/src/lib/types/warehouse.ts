@@ -1,3 +1,23 @@
+export type OntologyT = {
+  id: number;
+  name: string;
+};
+
+export type NodeT = {
+  id: number;
+  name: string;
+  cls_id: number;
+  ontology_id: number;
+  root: boolean;
+};
+
+export type GraphT = {
+  name: string;
+  cls: string;
+  ontology: string;
+  children: Array<GraphT>;
+};
+
 export type CategoryT = {
   id: number;
   name: string;

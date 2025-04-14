@@ -2,32 +2,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Types
-import { CategoryT, TypeT, BatchT, CellT, UserT } from "@/lib/types/warehouse";
+import { UserT, OntologyT, NodeT, GraphT } from "@/lib/types/warehouse";
 
 type State = {
   user: UserT | undefined;
-  category: CategoryT | undefined;
-  categories: Array<CategoryT> | undefined;
-  type: TypeT | undefined;
-  types: Array<TypeT> | undefined;
-  batch: BatchT | undefined;
-  batches: Array<BatchT> | undefined;
-  cell: CellT | undefined;
-  cells: Array<CellT> | undefined;
-  data: Array<any> | undefined;
+  ontologies: Array<OntologyT> | undefined;
+  ontology: OntologyT | undefined;
+  roots: Array<NodeT> | undefined;
+  root: NodeT | undefined;
+  graph: GraphT | undefined;
 };
 
 const initialState: State = {
   user: undefined,
-  category: undefined,
-  categories: undefined,
-  types: undefined,
-  type: undefined,
-  batch: undefined,
-  batches: undefined,
-  cell: undefined,
-  cells: undefined,
-  data: undefined,
+  ontologies: undefined,
+  ontology: undefined,
+  roots: undefined,
+  root: undefined,
+  graph: undefined,
 };
 
 const warehouseSlice = createSlice({
@@ -37,32 +29,20 @@ const warehouseSlice = createSlice({
     user: (state, action) => {
       return { ...state, user: action.payload };
     },
-    category: (state, action) => {
-      return { ...state, category: action.payload };
+    ontologies: (state, action) => {
+      return { ...state, ontologies: action.payload };
     },
-    categories: (state, action) => {
-      return { ...state, categories: action.payload };
+    ontology: (state, action) => {
+      return { ...state, ontology: action.payload };
     },
-    type: (state, action) => {
-      return { ...state, type: action.payload };
+    roots: (state, action) => {
+      return { ...state, roots: action.payload };
     },
-    types: (state, action) => {
-      return { ...state, types: action.payload };
+    root: (state, action) => {
+      return { ...state, root: action.payload };
     },
-    batch: (state, action) => {
-      return { ...state, batch: action.payload };
-    },
-    batches: (state, action) => {
-      return { ...state, batches: action.payload };
-    },
-    cell: (state, action) => {
-      return { ...state, cell: action.payload };
-    },
-    cells: (state, action) => {
-      return { ...state, cells: action.payload };
-    },
-    data: (state, action) => {
-      return { ...state, data: action.payload };
+    graph: (state, action) => {
+      return { ...state, graph: action.payload };
     },
   },
 });
