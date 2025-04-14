@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('ontologies', views.ontologies),
-    path('ontology', views.ontology)
+    path('roots/<int:id>', views.roots),
+    path('tree/<int:id>', views.tree),
 ]

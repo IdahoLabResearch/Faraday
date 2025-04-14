@@ -11,9 +11,9 @@ class NodeAdmin(admin.ModelAdmin):
 
 @admin.register(Relationship)
 class RelationshipAdmin(admin.ModelAdmin):
-    list_display = ['name', 'source', 'target', 'ontology']
-    search_fields = ['name']
-    list_filter = ['name', 'ontology']
+    list_display = ['source', 'target', 'ontology']
+    search_fields = ['ontology']
+    list_filter = ['ontology']
 
 
 @admin.register(Ontology)

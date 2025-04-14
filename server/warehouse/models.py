@@ -52,12 +52,8 @@ class Node(models.Model):
     def __str__(self):
         return f"{self.cls.name} {self.name}"
 
-    def get_relationships(self):
-        return self.relationships.all()
-
 
 class Relationship(models.Model):
-    name = models.CharField(max_length=25)
     source = models.ForeignKey(
         Node, related_name='source', on_delete=models.CASCADE)
     target = models.ForeignKey(
@@ -66,7 +62,7 @@ class Relationship(models.Model):
         Ontology, related_name='relationships', on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('name', 'source', 'target', 'ontology')
+        unique_together = ('source', 'target', 'ontology')
 
     def __str__(self):
-        return f"{self.source} -> {self.name} -> {self.target}"
+        return f"{self.source} -> {self.target}"
