@@ -1,0 +1,396 @@
+- model: warehouse.ontology
+  pk: 1
+  fields:
+    name: H2NEW
+- model: warehouse.class
+  pk: 1
+  fields:
+    name: Category
+    description: test category
+    ontology: 1
+- model: warehouse.class
+  pk: 2
+  fields:
+    name: Type
+    description: test type
+    ontology: 1
+- model: warehouse.class
+  pk: 3
+  fields:
+    name: Batch
+    description: electrolysis cell batch
+    ontology: 1
+- model: warehouse.class
+  pk: 4
+  fields:
+    name: Cell
+    description: electrolysis cell
+    ontology: 1
+- model: warehouse.class
+  pk: 5
+  fields:
+    name: Stack
+    description: electrolysis cell stack
+    ontology: 1
+- model: warehouse.node
+  pk: 1
+  fields:
+    name: Characterization
+    cls: 1
+    ontology: 1
+    root: true
+- model: warehouse.node
+  pk: 2
+  fields:
+    name: Durability
+    cls: 1
+    ontology: 1
+    root: true
+- model: warehouse.node
+  pk: 3
+  fields:
+    name: Performance
+    cls: 1
+    ontology: 1
+    root: true
+- model: warehouse.node
+  pk: 4
+  fields:
+    name: Impedance
+    cls: 2
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 5
+  fields:
+    name: Potentiostatic
+    cls: 2
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 6
+  fields:
+    name: Pulse Width Modulation
+    cls: 2
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 7
+  fields:
+    name: 5-11-22-5A
+    cls: 3
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 8
+  fields:
+    name: BC-7
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 9
+  fields:
+    name: BC-8
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 10
+  fields:
+    name: BC-9
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 11
+  fields:
+    name: BC-12
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 12
+  fields:
+    name: BC-15
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 13
+  fields:
+    name: BC-16
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 14
+  fields:
+    name: 2-4-22-2A
+    cls: 3
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 15
+  fields:
+    name: BC-18
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 16
+  fields:
+    name: BC-33
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 17
+  fields:
+    name: 1-14-22-3A
+    cls: 3
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 18
+  fields:
+    name: 4-12-22-2A
+    cls: 3
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 19
+  fields:
+    name: 5-11-22-2A
+    cls: 3
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 20
+  fields:
+    name: BC-10
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 21
+  fields:
+    name: BC-3
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 22
+  fields:
+    name: BC-2
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 23
+  fields:
+    name: BC-6
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 24
+  fields:
+    name: BC-20
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 25
+  fields:
+    name: BC-34
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.node
+  pk: 26
+  fields:
+    name: BC-36
+    cls: 4
+    ontology: 1
+    root: false
+- model: warehouse.relationship
+  pk: 1
+  fields:
+    source: 1
+    target: 4
+    ontology: 1
+- model: warehouse.relationship
+  pk: 2
+  fields:
+    source: 2
+    target: 6
+    ontology: 1
+- model: warehouse.relationship
+  pk: 3
+  fields:
+    source: 3
+    target: 5
+    ontology: 1
+- model: warehouse.relationship
+  pk: 4
+  fields:
+    source: 4
+    target: 19
+    ontology: 1
+- model: warehouse.relationship
+  pk: 5
+  fields:
+    source: 19
+    target: 8
+    ontology: 1
+- model: warehouse.relationship
+  pk: 6
+  fields:
+    source: 7
+    target: 9
+    ontology: 1
+- model: warehouse.relationship
+  pk: 7
+  fields:
+    source: 7
+    target: 10
+    ontology: 1
+- model: warehouse.relationship
+  pk: 8
+  fields:
+    source: 19
+    target: 11
+    ontology: 1
+- model: warehouse.relationship
+  pk: 9
+  fields:
+    source: 7
+    target: 11
+    ontology: 1
+- model: warehouse.relationship
+  pk: 10
+  fields:
+    source: 7
+    target: 12
+    ontology: 1
+- model: warehouse.relationship
+  pk: 11
+  fields:
+    source: 7
+    target: 13
+    ontology: 1
+- model: warehouse.relationship
+  pk: 12
+  fields:
+    source: 6
+    target: 14
+    ontology: 1
+- model: warehouse.relationship
+  pk: 13
+  fields:
+    source: 14
+    target: 15
+    ontology: 1
+- model: warehouse.relationship
+  pk: 14
+  fields:
+    source: 14
+    target: 16
+    ontology: 1
+- model: warehouse.relationship
+  pk: 15
+  fields:
+    source: 5
+    target: 17
+    ontology: 1
+- model: warehouse.relationship
+  pk: 16
+  fields:
+    source: 5
+    target: 18
+    ontology: 1
+- model: warehouse.relationship
+  pk: 17
+  fields:
+    source: 5
+    target: 7
+    ontology: 1
+- model: warehouse.relationship
+  pk: 18
+  fields:
+    source: 5
+    target: 14
+    ontology: 1
+- model: warehouse.relationship
+  pk: 19
+  fields:
+    source: 17
+    target: 8
+    ontology: 1
+- model: warehouse.relationship
+  pk: 20
+  fields:
+    source: 17
+    target: 20
+    ontology: 1
+- model: warehouse.relationship
+  pk: 21
+  fields:
+    source: 18
+    target: 10
+    ontology: 1
+- model: warehouse.relationship
+  pk: 22
+  fields:
+    source: 18
+    target: 11
+    ontology: 1
+- model: warehouse.relationship
+  pk: 23
+  fields:
+    source: 7
+    target: 21
+    ontology: 1
+- model: warehouse.relationship
+  pk: 24
+  fields:
+    source: 7
+    target: 8
+    ontology: 1
+- model: warehouse.relationship
+  pk: 25
+  fields:
+    source: 14
+    target: 22
+    ontology: 1
+- model: warehouse.relationship
+  pk: 26
+  fields:
+    source: 14
+    target: 23
+    ontology: 1
+- model: warehouse.relationship
+  pk: 27
+  fields:
+    source: 14
+    target: 10
+    ontology: 1
+- model: warehouse.relationship
+  pk: 28
+  fields:
+    source: 14
+    target: 24
+    ontology: 1
+- model: warehouse.relationship
+  pk: 29
+  fields:
+    source: 14
+    target: 25
+    ontology: 1
+- model: warehouse.relationship
+  pk: 30
+  fields:
+    source: 14
+    target: 26
+    ontology: 1
