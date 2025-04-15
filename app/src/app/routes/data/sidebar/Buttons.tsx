@@ -21,6 +21,7 @@ export const Buttons = () => {
     // When the user clicks the back button, clear the state from the previous selection
     if (graph) {
       storeDispatch(warehouseActions.graph(undefined));
+      storeDispatch(warehouseActions.root(undefined));
       return;
     }
     if (root) {

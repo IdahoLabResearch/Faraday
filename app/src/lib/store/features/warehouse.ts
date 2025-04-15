@@ -10,7 +10,7 @@ type State = {
   ontology: OntologyT | undefined;
   roots: Array<NodeT> | undefined;
   root: NodeT | undefined;
-  graph: GraphT | undefined;
+  graph: Array<GraphT> | undefined;
 };
 
 const initialState: State = {

@@ -34,7 +34,8 @@ export const FetchGraph = async (root_id: number) => {
     method: "GET",
   }).then(async (response) => {
     const graph: { data: GraphT } = await response.json();
-    return graph.data;
+    // Return the children of the selected root
+    return graph.data.children;
   });
 };
 

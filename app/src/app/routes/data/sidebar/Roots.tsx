@@ -43,8 +43,8 @@ const Roots = () => {
     <>
       <div className="p-4">
         <div className="prose flex flex-col justify-center align-center">
-          <h3>Root Entities</h3>
-          <p>Select a root entity to explore the related graph and data</p>
+          <h3>Button Cell Tests</h3>
+          <p>Select a test category to explore the related graph and data.</p>
         </div>
         <div className="divider"></div>
         {roots && roots.length ? (

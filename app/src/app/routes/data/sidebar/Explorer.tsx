@@ -14,7 +14,7 @@ import Graph from "./Graph";
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
 
 // Types
-import { UserT, OntologyT, NodeT, GraphT } from "@/lib/types/warehouse";
+import { UserT, OntologyT, NodeT } from "@/lib/types/warehouse";
 
 export const Explorer = () => {
   const user: UserT | undefined = useAppSelector(
@@ -26,9 +26,6 @@ export const Explorer = () => {
   );
   const root: NodeT | undefined = useAppSelector(
     (state) => state.warehouse.root
-  );
-  const graph: GraphT | undefined = useAppSelector(
-    (state) => state.warehouse.graph
   );
 
   const storeDispatch = useAppDispatch();
@@ -45,11 +42,12 @@ export const Explorer = () => {
 
   return (
     <>
-      <div className="bg-base-100 min-w-96 px-2 py-6 h-full">
+      <div className="bg-base-100 w-96 px-2 py-6 h-screen flex flex-col">
         <Buttons />
         <div className="prose flex justify-center">
           <h2>Explore Faraday</h2>
         </div>
+        <br />
         {/* Render these components based on where the user is in the Faraday graph */}
         {/* Categories -> Types -> Batches -> Cells */}
         {!ontology ? <Ontologies /> : null}

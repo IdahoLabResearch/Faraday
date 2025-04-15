@@ -8,7 +8,11 @@ interface Props {
 const TreeNode: React.FC<Props> = ({ node, depth }) => {
   return (
     <li>
-      <a>{node.name}</a>
+      <div className="prose">
+        <small className="text-xs">{node.cls}</small>
+        <h5>{node.name}</h5>
+      </div>
+
       {node.children.length > 0 && (
         <ul>
           {node.children.map((child: GraphT, index: number) => (
@@ -22,7 +26,7 @@ const TreeNode: React.FC<Props> = ({ node, depth }) => {
 
 export const RenderTree: React.FC<{ graph: GraphT }> = ({ graph }) => {
   return (
-    <ul className="menu bg-base-200 rounded-box w-56">
+    <ul className="menu bg-inherit rounded-box w-full">
       <TreeNode node={graph} depth={0} />
     </ul>
   );
