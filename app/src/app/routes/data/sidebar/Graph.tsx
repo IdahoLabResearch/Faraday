@@ -11,6 +11,9 @@ import { GraphT, UserT } from "@/lib/types/warehouse";
 // Functions
 import { FetchGraph } from "@/lib/client/warehouse";
 
+// Components
+import { RenderTree } from "./Tree";
+
 const Graph = () => {
   const user: UserT | undefined = useAppSelector(
     (state) => state.warehouse.user
@@ -25,7 +28,7 @@ const Graph = () => {
     const fetch = async () => {
       if (user) {
         const data: GraphT = await FetchGraph(root.id);
-        storeDispatch(warehouseActions.roots(data));
+        storeDispatch(warehouseActions.graph(data));
       }
     };
     fetch();
@@ -40,7 +43,9 @@ const Graph = () => {
         </div>
         <div className="divider"></div>
         {graph ? (
-          <></>
+          <>
+            <RenderTree graph={graph} />
+          </>
         ) : (
           <>
             <div className="skeleton w-full h-[3rem]" />

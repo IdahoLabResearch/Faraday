@@ -54,7 +54,7 @@ export const Explorer = () => {
         {/* Categories -> Types -> Batches -> Cells */}
         {!ontology ? <Ontologies /> : null}
         {ontology && !root ? <Roots /> : null}
-        {ontology && root && !graph ? <Graph /> : null}
+        {ontology && root ? <Graph /> : null}
       </div>
     </>
   );
