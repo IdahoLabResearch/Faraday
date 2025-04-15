@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { warehouseActions } from "@/lib/store/features/warehouse";
 
 // Types
-import { GraphT, UserT, NodeT } from "@/lib/types/warehouse";
+import { GraphT, UserT, NodeT, OntologyT } from "@/lib/types/warehouse";
 
 // Functions
 import { FetchGraph } from "@/lib/client/warehouse";
@@ -20,6 +20,9 @@ const Graph = () => {
   );
 
   // Store
+  const ontology: OntologyT = useAppSelector(
+    (state) => state.warehouse.ontology!
+  );
   const root: NodeT = useAppSelector((state) => state.warehouse.root!);
   const graph: Array<GraphT> | undefined = useAppSelector(
     (state) => state.warehouse.graph
@@ -41,7 +44,10 @@ const Graph = () => {
       <div className="p-4 h-full flex flex-col overflow-y-auto h-full">
         <div className="prose flex flex-col justify-center align-center">
           <h3>Graph</h3>
-          <p>Here are entities related to {root.name} tests</p>
+          <p>
+            Here are entities organized under {root.name} tests in the{" "}
+            {ontology.name} ontology.
+          </p>
         </div>
         <div className="divider"></div>
         <div>
