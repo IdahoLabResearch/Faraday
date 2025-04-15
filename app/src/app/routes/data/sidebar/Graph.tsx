@@ -17,8 +17,8 @@ const Graph = () => {
   );
 
   // Store
-  const graph = useAppSelector((state) => state.warehouse.graph);
   const root = useAppSelector((state) => state.warehouse.root!);
+  const graph = useAppSelector((state) => state.warehouse.graph);
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { warehouseActions } from "@/lib/store/features/warehouse";
 
 // Types
-import { NodeT, UserT } from "@/lib/types/warehouse";
+import { NodeT, UserT, OntologyT } from "@/lib/types/warehouse";
 
 // Functions
 import { FetchRoots } from "@/lib/client/warehouse";
@@ -17,8 +17,12 @@ const Roots = () => {
   );
 
   // Store
-  const ontology = useAppSelector((state) => state.warehouse.ontology!);
-  const roots = useAppSelector((state) => state.warehouse.roots);
+  const ontology: OntologyT = useAppSelector(
+    (state) => state.warehouse.ontology!
+  );
+  const roots: Array<NodeT> | undefined = useAppSelector(
+    (state) => state.warehouse.roots
+  );
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const Roots = () => {
           <p>Select a root entity to explore the related graph and data</p>
         </div>
         <div className="divider"></div>
-        {roots ? (
+        {roots && roots.length ? (
           roots.map((root: NodeT) => {
             return (
               <>

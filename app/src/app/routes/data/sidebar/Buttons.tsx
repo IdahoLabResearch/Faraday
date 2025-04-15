@@ -11,6 +11,8 @@ export const Buttons = () => {
   const navigate = useNavigate();
 
   // Store
+  const ontology = useAppSelector((state) => state.warehouse.ontology);
+  const root = useAppSelector((state) => state.warehouse.root);
   const graph = useAppSelector((state) => state.warehouse.graph);
 
   const storeDispatch = useAppDispatch();
@@ -19,6 +21,14 @@ export const Buttons = () => {
     // When the user clicks the back button, clear the state from the previous selection
     if (graph) {
       storeDispatch(warehouseActions.graph(undefined));
+      return;
+    }
+    if (root) {
+      storeDispatch(warehouseActions.root(undefined));
+      return;
+    }
+    if (ontology) {
+      storeDispatch(warehouseActions.ontology(undefined));
       return;
     }
   };
@@ -38,7 +48,7 @@ export const Buttons = () => {
           Home
         </button>
         <div className="grow"></div>
-        {graph ? (
+        {ontology ? (
           <button className="btn btn-sm" onClick={handleBack}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
