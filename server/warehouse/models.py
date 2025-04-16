@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Ontology(models.Model):
+    """
+    Model for data provider
+    """
     name = models.CharField(max_length=25, unique=True)
 
     class Meta:
@@ -25,6 +28,9 @@ class Ontology(models.Model):
 
 
 class Class(models.Model):
+    """
+    Model for node class
+    """
     name = models.CharField(max_length=25, unique=True)
     description = models.CharField(max_length=25)
     ontology = models.ForeignKey(
@@ -39,6 +45,9 @@ class Class(models.Model):
 
 
 class Node(models.Model):
+    """
+    Model for graph node
+    """
     name = models.CharField(max_length=25)
     cls = models.ForeignKey(
         Class, related_name='nodes', on_delete=models.CASCADE)
@@ -54,6 +63,9 @@ class Node(models.Model):
 
 
 class Relationship(models.Model):
+    """
+    Model for graph relationship
+    """
     source = models.ForeignKey(
         Node, related_name='source', on_delete=models.CASCADE)
     target = models.ForeignKey(

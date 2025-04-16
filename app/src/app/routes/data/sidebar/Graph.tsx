@@ -39,6 +39,11 @@ const Graph = () => {
     fetch();
   }, [storeDispatch, user, root]);
 
+  const handleLeaf = (tree: GraphT, leaf: GraphT) => {
+    console.log(tree);
+    console.log(leaf);
+  };
+
   return (
     <>
       <div className="p-4 h-full flex flex-col overflow-y-auto h-full">
@@ -54,7 +59,7 @@ const Graph = () => {
           {graph ? (
             <>
               {graph.map((node: GraphT) => {
-                return <RenderTree graph={node} />;
+                return <RenderTree graph={node} handleLeaf={handleLeaf} />;
               })}
             </>
           ) : (
