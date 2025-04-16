@@ -21,23 +21,25 @@ class ElectrolysisCell(TimeseriesData):
     """
     provider = models.ForeignKey(
         Ontology, related_name='cell', on_delete=models.CASCADE)
+    batch = models.ForeignKey(
+        Node, related_name="cell_batch", on_delete=models.CASCADE
+    )
     test = models.ForeignKey(
         Node, related_name='cell_test', on_delete=models.CASCADE)
-    leaf = models.ForeignKey(
+    cell = models.ForeignKey(
         Node, related_name='cell_leaf', on_delete=models.CASCADE)
-    name = models.CharField(max_length=25)
 
 
-class ElectrolysisStack(TimeseriesData):
-    """
-    Model for electrolysis stacks
+# class ElectrolysisStack(TimeseriesData):
+#     """
+#     Model for electrolysis stacks
 
-    Add technical fields like compression here
-    """
-    provider = models.ForeignKey(
-        Ontology, related_name='stack', on_delete=models.CASCADE)
-    test = models.ForeignKey(
-        Node, related_name='stack_test', on_delete=models.CASCADE)
-    leaf = models.ForeignKey(
-        Node, related_name='stack_leaf', on_delete=models.CASCADE)
-    name = models.CharField(max_length=25)
+#     Add technical fields like compression here
+#     """
+#     provider = models.ForeignKey(
+#         Ontology, related_name='stack', on_delete=models.CASCADE)
+#     root = models.ForeignKey(
+#         Node, related_name='stack_test', on_delete=models.CASCADE)
+#     leaf = models.ForeignKey(
+#         Node, related_name='stack_leaf', on_delete=models.CASCADE)
+#     name = models.CharField(max_length=25)

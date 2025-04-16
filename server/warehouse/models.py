@@ -1,4 +1,8 @@
+# Models
 from django.db import models
+
+# Validation
+from django.core.exceptions import ValidationError
 
 
 class Ontology(models.Model):
@@ -50,16 +54,31 @@ class Node(models.Model):
     """
     name = models.CharField(max_length=25)
     cls = models.ForeignKey(
-        Class, related_name='nodes', on_delete=models.CASCADE)
+        Class, related_name='nodes', on_delete=models.CASCADE
+    )
     ontology = models.ForeignKey(
-        Ontology, related_name='nodes', on_delete=models.CASCADE)
+        Ontology, related_name='nodes', on_delete=models.CASCADE
+    )
+    parent = models.ForeignKey(
+        "Node", related_name='child', on_delete=models.CASCADE
+    )
     root = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('name', 'cls', 'ontology')
+        unique_together = ('name', 'cls', 'parent', 'ontology')
 
     def __str__(self):
         return f"{self.cls.name} {self.name}"
+
+    def clean(self):
+        if self.parent and self.parent.cls != Class.objects.get(name="Batch"):
+            raise ValidationError(
+                "Parent node must be a node with class 'Batch'")
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
 
 class Relationship(models.Model):
@@ -67,11 +86,14 @@ class Relationship(models.Model):
     Model for graph relationship
     """
     source = models.ForeignKey(
-        Node, related_name='source', on_delete=models.CASCADE)
+        Node, related_name='source', on_delete=models.CASCADE
+    )
     target = models.ForeignKey(
-        Node, related_name='target', on_delete=models.CASCADE)
+        Node, related_name='target', on_delete=models.CASCADE
+    )
     ontology = models.ForeignKey(
-        Ontology, related_name='relationships', on_delete=models.CASCADE)
+        Ontology, related_name='relationships', on_delete=models.CASCADE
+    )
 
     class Meta:
         unique_together = ('source', 'target', 'ontology')

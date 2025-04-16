@@ -13,6 +13,7 @@ def graph(root_node):
     tree['name'] = root_node.name
     tree['cls'] = root_node.cls.name
     tree['ontology'] = root_node.ontology.name
+    tree['parent'] = root_node.parent.name
     tree['children'] = []
 
     # Add children to the tree
