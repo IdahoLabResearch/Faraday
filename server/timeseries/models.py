@@ -28,6 +28,8 @@ class ElectrolysisCell(TimeseriesData):
         Node, related_name='cell_test', on_delete=models.CASCADE)
     cell = models.ForeignKey(
         Node, related_name='cell_leaf', on_delete=models.CASCADE)
+    data = models.JSONField()
+    metadata = models.JSONField()
 
 
 # class ElectrolysisStack(TimeseriesData):

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'timeseries',
     'users',
     'corsheaders',
+    'django_extensions',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
