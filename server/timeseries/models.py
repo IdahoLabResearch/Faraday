@@ -8,7 +8,6 @@ class TimeseriesData(models.Model):
     """
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-    time = models.DecimalField(max_digits=255, decimal_places=12)
     date = models.BigIntegerField()  # Unix time
 
     class Meta:
