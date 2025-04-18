@@ -10,6 +10,7 @@ type State = {
   ontology: OntologyT | undefined;
   roots: Array<NodeT> | undefined;
   root: NodeT | undefined;
+  leaf: NodeT | undefined;
   graph: Array<GraphT> | undefined;
 };
 
@@ -19,6 +20,7 @@ const initialState: State = {
   ontology: undefined,
   roots: undefined,
   root: undefined,
+  leaf: undefined,
   graph: undefined,
 };
 
@@ -40,6 +42,9 @@ const warehouseSlice = createSlice({
     },
     root: (state, action) => {
       return { ...state, root: action.payload };
+    },
+    leaf: (state, action) => {
+      return { ...state, leaf: action.payload };
     },
     graph: (state, action) => {
       return { ...state, graph: action.payload };

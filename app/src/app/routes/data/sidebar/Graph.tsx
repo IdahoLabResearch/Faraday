@@ -42,6 +42,8 @@ const Graph = () => {
 
   const handleLeaf = async (tree: GraphT, leaf: GraphT) => {
     if (leaf.cls === "Cell") {
+      storeDispatch(warehouseActions.leaf(leaf));
+
       const data = await FetchCellData({
         test: tree.name,
         provider: leaf.ontology,
