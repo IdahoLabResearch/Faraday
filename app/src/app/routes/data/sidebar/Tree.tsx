@@ -8,6 +8,7 @@ interface Props {
 }
 
 const TreeNode: React.FC<Props> = ({ tree, node, depth, handleLeaf }) => {
+  console.log(node);
   return (
     <li>
       <div className="prose" onClick={() => handleLeaf(tree, node)}>

@@ -3,23 +3,41 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 # Utilities
+from django.db.models import Q
+import pandas as pd
+import numpy as np
 from django.http import HttpResponse, JsonResponse
 import json
 
-# Utilities
-import pandas as pd
+# Models
+from .models import ElectrolysisCell
 
-# pyDRT
+# Statistics
 from .statistics.drt.classes.EIS import Spectra
-
-# sigmoid
 from .statistics.sre.sigmoid import fit_sre
-
-# noor
 from .statistics.noor.process import process_cell
 
 
-@csrf_exempt  # Django views can be exempt from CSRF vulnerabilities if they are function-based, e.g. don't handle any templates or HTML, see: https://docs.djangoproject.com/en/5.1/ref/csrf/#module-django.views.decorators.csrf
+@csrf_exempt
+@require_http_methods(['POST'])
+def electrolysis_cell_data(request):
+
+    body = json.loads(request.body)
+    print(body)
+
+    cell = Q(cell=body.get('cell'))
+    batch = Q(batch=body.get('batch'))
+    test = Q(test=body.get('test'))
+    provider = Q(provider=body.get('provider'))
+
+    query = cell & batch & test & provider
+
+    data = list(ElectrolysisCell.objects.filter(query).values())
+
+    return JsonResponse({'data': data})
+
+
+@csrf_exempt
 @require_http_methods(["POST"])
 def sigmoid_regression(request):
 

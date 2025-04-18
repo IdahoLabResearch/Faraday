@@ -15,7 +15,7 @@ export type GraphT = {
   name: string;
   cls: string;
   ontology: string;
-  parent: NodeT;
+  parent: string;
   children: Array<GraphT>;
 };
 

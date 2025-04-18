@@ -59,21 +59,24 @@ class Node(models.Model):
     ontology = models.ForeignKey(
         Ontology, related_name='nodes', on_delete=models.CASCADE
     )
-    parent = models.ForeignKey(
-        "Node", related_name='child', on_delete=models.CASCADE
-    )
     root = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('name', 'cls', 'parent', 'ontology')
+        unique_together = ('name', 'cls', 'ontology')
 
     def __str__(self):
         return f"{self.cls.name} {self.name}"
 
     def clean(self):
-        if self.parent and self.parent.cls != Class.objects.get(name="Batch"):
+        if self.parent and self.cls == Class.objects.get(name="Cell") and self.parent.cls != Class.objects.get(name="Batch"):
             raise ValidationError(
-                "Parent node must be a node with class 'Batch'")
+                "Parent of 'Cell' nodes must be a node of class 'Batch'")
+        if self.parent and self.cls == Class.objects.get(name="Batch") and self.parent.cls != Class.objects.get(name="Test"):
+            raise ValidationError(
+                "Parent of 'Batch' nodes must be a node of class 'Test'")
+        if self.parent and self.cls == Class.objects.get(name="Type") and self.parent.cls != Class.objects.get(name="Category"):
+            raise ValidationError(
+                "Parent of 'Type' nodes must be a node of class 'Category'")
         super().clean()
 
     def save(self, *args, **kwargs):

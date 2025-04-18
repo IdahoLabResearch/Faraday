@@ -10,6 +10,7 @@ import { GraphT, UserT, NodeT, OntologyT } from "@/lib/types/warehouse";
 
 // Functions
 import { FetchGraph } from "@/lib/client/warehouse";
+import { FetchCellData } from "@/lib/client/timeseries";
 
 // Components
 import { RenderTree } from "./Tree";
@@ -39,9 +40,16 @@ const Graph = () => {
     fetch();
   }, [storeDispatch, user, root]);
 
-  const handleLeaf = (tree: GraphT, leaf: GraphT) => {
-    console.log(tree);
-    console.log(leaf);
+  const handleLeaf = async (tree: GraphT, leaf: GraphT) => {
+    if (leaf.cls === "Cell") {
+      const data = await FetchCellData({
+        test: tree.name,
+        provider: leaf.ontology,
+        cell: leaf.name,
+        batch: leaf.parent,
+      });
+      console.log(data);
+    }
   };
 
   return (
