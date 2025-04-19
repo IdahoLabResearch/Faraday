@@ -42,6 +42,8 @@ You should continue setup by loading data into the database. A minimal and open-
 
 After running migrations, the Postgres database has a schema ready to accept data. For more information about the built-in utility for loading data, read about the [loaddata command](https://docs.djangoproject.com/en/5.2/ref/django-admin/#django-admin-loaddata).
 
+For information about creating new fixtures to upload new data, visit the `README.md` in `./timeseries/fixtures`
+
 ##### Timeseries
 
 To load timeseries data, run the following commands:
