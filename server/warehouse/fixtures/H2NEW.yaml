@@ -38,7 +38,6 @@
     name: Characterization
     cls: 1
     ontology: 1
-    parent: 1
     root: true
 - model: warehouse.node
   pk: 2
@@ -46,7 +45,6 @@
     name: Durability
     cls: 1
     ontology: 1
-    parent: 1
     root: true
 - model: warehouse.node
   pk: 3
@@ -54,7 +52,6 @@
     name: Performance
     cls: 1
     ontology: 1
-    parent: 1
     root: true
 - model: warehouse.node
   pk: 4
@@ -62,7 +59,6 @@
     name: Impedance
     cls: 2
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 5
@@ -70,7 +66,6 @@
     name: Potentiostatic
     cls: 2
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 6
@@ -78,7 +73,6 @@
     name: Pulse Width Modulation
     cls: 2
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 7
@@ -86,7 +80,6 @@
     name: 5-11-22-5A
     cls: 3
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 8
@@ -94,7 +87,6 @@
     name: BC-7
     cls: 4
     ontology: 1
-    parent: 17
     root: false
 - model: warehouse.node
   pk: 9
@@ -102,7 +94,6 @@
     name: BC-8
     cls: 4
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 10
@@ -110,7 +101,6 @@
     name: BC-9
     cls: 4
     ontology: 1
-    parent: 18
     root: false
 - model: warehouse.node
   pk: 11
@@ -118,7 +108,6 @@
     name: BC-12
     cls: 4
     ontology: 1
-    parent: 18
     root: false
 - model: warehouse.node
   pk: 12
@@ -126,7 +115,6 @@
     name: BC-15
     cls: 4
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 13
@@ -134,7 +122,6 @@
     name: BC-16
     cls: 4
     ontology: 1
-    parent: 7
     root: false
 - model: warehouse.node
   pk: 14
@@ -142,7 +129,6 @@
     name: 2-4-22-2A
     cls: 3
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 15
@@ -150,7 +136,6 @@
     name: BC-18
     cls: 4
     ontology: 1
-    parent: 14
     root: false
 - model: warehouse.node
   pk: 16
@@ -158,7 +143,6 @@
     name: BC-33
     cls: 4
     ontology: 1
-    parent: 14
     root: false
 - model: warehouse.node
   pk: 17
@@ -166,7 +150,6 @@
     name: 1-14-22-3A
     cls: 3
     ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 18
@@ -174,15 +157,6 @@
     name: 4-12-22-2A
     cls: 3
     ontology: 1
-    parent: 1
-    root: false
-- model: warehouse.node
-  pk: 19
-  fields:
-    name: 5-11-22-2A
-    cls: 3
-    ontology: 1
-    parent: 1
     root: false
 - model: warehouse.node
   pk: 20
@@ -190,7 +164,6 @@
     name: BC-10
     cls: 4
     ontology: 1
-    parent: 17
     root: false
 - model: warehouse.node
   pk: 21
@@ -198,7 +171,6 @@
     name: BC-3
     cls: 4
     ontology: 1
-    parent: 7
     root: false
 - model: warehouse.node
   pk: 22
@@ -206,7 +178,6 @@
     name: BC-2
     cls: 4
     ontology: 1
-    parent: 14
     root: false
 - model: warehouse.node
   pk: 23
@@ -214,7 +185,6 @@
     name: BC-6
     cls: 4
     ontology: 1
-    parent: 14
     root: false
 - model: warehouse.node
   pk: 24
@@ -222,7 +192,6 @@
     name: BC-20
     cls: 4
     ontology: 1
-    parent: 14
     root: false
 - model: warehouse.node
   pk: 25
@@ -230,7 +199,6 @@
     name: BC-34
     cls: 4
     ontology: 1
-    parent: 14
     root: false
 - model: warehouse.node
   pk: 26
@@ -238,23 +206,6 @@
     name: BC-36
     cls: 4
     ontology: 1
-    parent: 14
-    root: false
-- model: warehouse.node
-  pk: 29
-  fields:
-    name: BC-7
-    cls: 4
-    ontology: 1
-    parent: 7
-    root: false
-- model: warehouse.node
-  pk: 30
-  fields:
-    name: BC-9
-    cls: 4
-    ontology: 1
-    parent: 14
     root: false
 - model: warehouse.relationship
   pk: 1
@@ -275,18 +226,6 @@
     target: 5
     ontology: 1
 - model: warehouse.relationship
-  pk: 4
-  fields:
-    source: 4
-    target: 19
-    ontology: 1
-- model: warehouse.relationship
-  pk: 5
-  fields:
-    source: 19
-    target: 8
-    ontology: 1
-- model: warehouse.relationship
   pk: 6
   fields:
     source: 7
@@ -297,12 +236,6 @@
   fields:
     source: 7
     target: 10
-    ontology: 1
-- model: warehouse.relationship
-  pk: 8
-  fields:
-    source: 19
-    target: 11
     ontology: 1
 - model: warehouse.relationship
   pk: 9
@@ -435,4 +368,10 @@
   fields:
     source: 14
     target: 26
+    ontology: 1
+- model: warehouse.relationship
+  pk: 31
+  fields:
+    source: 4
+    target: 7
     ontology: 1
