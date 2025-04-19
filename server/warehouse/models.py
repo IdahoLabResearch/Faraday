@@ -59,7 +59,8 @@ class Node(models.Model):
     ontology = models.ForeignKey(
         Ontology, related_name='nodes', on_delete=models.CASCADE
     )
-    root = models.BooleanField(default=False)
+    root = models.BooleanField(
+        default=False, help_text="Imporant: Faraday nodes are roots only if their cls is a Category")
 
     class Meta:
         unique_together = ('name', 'cls', 'ontology')
