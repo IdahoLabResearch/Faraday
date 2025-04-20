@@ -4,14 +4,20 @@ interface Props {
   tree: GraphT;
   node: GraphT;
   depth: number;
-  handleLeaf: (data: GraphT, leaf: GraphT) => void;
+  ancestor: string;
+  handleLeaf: (data: GraphT, leaf: GraphT, ancestor: string) => void;
 }
 
-const TreeNode: React.FC<Props> = ({ tree, node, depth, handleLeaf }) => {
-  console.log(node);
+const TreeNode: React.FC<Props> = ({
+  tree,
+  node,
+  depth,
+  ancestor,
+  handleLeaf,
+}) => {
   return (
     <li>
-      <div className="prose" onClick={() => handleLeaf(tree, node)}>
+      <div className="prose" onClick={() => handleLeaf(tree, node, ancestor)}>
         <small className="text-xs">{node.cls}</small>
         <h5>{node.name}</h5>
       </div>
@@ -23,6 +29,7 @@ const TreeNode: React.FC<Props> = ({ tree, node, depth, handleLeaf }) => {
               key={index}
               tree={tree}
               node={child}
+              ancestor={ancestor}
               depth={depth + 1}
               handleLeaf={handleLeaf}
             />
@@ -35,13 +42,20 @@ const TreeNode: React.FC<Props> = ({ tree, node, depth, handleLeaf }) => {
 
 export const RenderTree: React.FC<{
   graph: GraphT;
-  handleLeaf: (data: GraphT, leaf: GraphT) => void;
+  handleLeaf: (data: GraphT, leaf: GraphT, ancestor: string) => void;
 }> = ({ graph, handleLeaf }) => {
   const tree = graph;
+  const ancestor = tree.name;
 
   return (
     <ul className="menu bg-inherit rounded-box w-full">
-      <TreeNode tree={tree} node={graph} depth={0} handleLeaf={handleLeaf} />
+      <TreeNode
+        tree={tree}
+        node={graph}
+        depth={0}
+        ancestor={ancestor}
+        handleLeaf={handleLeaf}
+      />
     </ul>
   );
 };

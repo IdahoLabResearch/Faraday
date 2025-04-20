@@ -40,7 +40,7 @@ const Graph = () => {
     fetch();
   }, [storeDispatch, user, root]);
 
-  const handleLeaf = async (tree: GraphT, leaf: GraphT) => {
+  const handleLeaf = async (tree: GraphT, leaf: GraphT, ancestor: string) => {
     if (leaf.cls === "Cell") {
       storeDispatch(warehouseActions.leaf(leaf));
 
@@ -50,7 +50,12 @@ const Graph = () => {
         cell: leaf.name,
         batch: leaf.parent,
       });
-      console.log(data);
+      storeDispatch(
+        warehouseActions.data({
+          type: ancestor,
+          timeseries: data,
+        })
+      );
     }
   };
 

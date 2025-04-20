@@ -27,7 +27,6 @@ const Auth = () => {
     const user: UserT = await Login(username, password);
 
     if (user) {
-      console.log(user);
       storeDispatch(warehouseActions.user(user));
       navigate("/data");
     }

@@ -11,7 +11,7 @@ import Explorer from "./sidebar/Explorer";
 import Compare from "./timeseries/report/compare";
 
 // Types
-import { CellT, UserT } from "@/lib/types/warehouse";
+import { NodeT, UserT } from "@/lib/types/warehouse";
 
 export default function Visualizer({
   children,
@@ -28,8 +28,8 @@ export default function Visualizer({
   const storeDispatch = useAppDispatch();
   const snackbar: boolean = useAppSelector((state) => state.ux.snackbar);
   const drawer: boolean = useAppSelector((state) => state.ux.drawer);
-  const cell: CellT | undefined = useAppSelector(
-    (state) => state.warehouse.cell
+  const leaf: NodeT | undefined = useAppSelector(
+    (state) => state.warehouse.leaf
   );
 
   // Handlers
@@ -86,7 +86,7 @@ export default function Visualizer({
       </div>
       {!snackbar ? (
         <>
-          {cell ? (
+          {leaf ? (
             <div className="absolute -z-10 left-0 bottom-0 p-5">
               <button className="btn btn-accent" onClick={handleFab}>
                 Compare

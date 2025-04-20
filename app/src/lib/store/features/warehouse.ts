@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Types
 import { UserT, OntologyT, NodeT, GraphT } from "@/lib/types/warehouse";
+import { QueryResultT } from "@/lib/types/timeseries";
 
 type State = {
   user: UserT | undefined;
@@ -12,6 +13,7 @@ type State = {
   root: NodeT | undefined;
   leaf: NodeT | undefined;
   graph: Array<GraphT> | undefined;
+  data: QueryResultT | undefined;
 };
 
 const initialState: State = {
@@ -22,6 +24,7 @@ const initialState: State = {
   root: undefined,
   leaf: undefined,
   graph: undefined,
+  data: undefined,
 };
 
 const warehouseSlice = createSlice({
@@ -48,6 +51,9 @@ const warehouseSlice = createSlice({
     },
     graph: (state, action) => {
       return { ...state, graph: action.payload };
+    },
+    data: (state, action) => {
+      return { ...state, data: action.payload };
     },
   },
 });

@@ -5,7 +5,7 @@ export type ElectrolysisCellQuery = {
   batch: string;
 };
 
-export type ImpedanceData = {
+export type ImpedanceDataT = {
   uuid: string;
   cell: string;
   date: number;
@@ -23,7 +23,7 @@ export type ImpedanceData = {
   };
 };
 
-export type PotentiostaticData = {
+export type PotentiostaticDataT = {
   uuid: string;
   cell: string;
   date: number;
@@ -39,7 +39,7 @@ export type PotentiostaticData = {
   };
 };
 
-export type PWMData = {
+export type PWMDataT = {
   uuid: string;
   cell: string;
   date: number;
@@ -53,4 +53,9 @@ export type PWMData = {
   metadata: {
     voltage: string | number;
   };
+};
+
+export type QueryResultT = {
+  type: string;
+  timeseries: Array<ImpedanceDataT | PWMDataT | PotentiostaticDataT>;
 };
