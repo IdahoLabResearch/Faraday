@@ -12,14 +12,6 @@ export function PWM() {
   return (
     <div className="grid grid-cols-12 px-12 py-6">
       <div className="col-span-6">
-        <button
-          id="test"
-          onClick={() => {
-            console.log(data);
-          }}
-        >
-          Click
-        </button>
         <Visualization data={data} />
       </div>
       <div className="col-span-6"></div>
