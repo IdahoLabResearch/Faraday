@@ -13,13 +13,13 @@ export type ImpedanceDataT = {
   test: string;
   batch: string;
   data: {
-    real_impedance: string | number;
-    imaginary_impedance: string | number;
+    real_impedance: number;
+    imaginary_impedance: number;
   };
   metadata: {
-    time: string | number;
-    sweep: string | number;
-    frequency: string | number;
+    time: number;
+    sweep: number;
+    frequency: number;
   };
 };
 
@@ -31,11 +31,11 @@ export type PotentiostaticDataT = {
   test: string;
   batch: string;
   data: {
-    time: string | number;
-    current_density: string | number;
+    time: number;
+    current_density: number;
   };
   metadata: {
-    voltage: string | number;
+    voltage: number;
   };
 };
 
@@ -47,15 +47,17 @@ export type PWMDataT = {
   test: string;
   batch: string;
   data: {
-    time: string | number;
-    current_density: string | number;
+    time: number;
+    current_density: number;
   };
   metadata: {
-    voltage: string | number;
+    voltage: number;
   };
 };
 
 export type QueryResultT = {
   type: string;
-  timeseries: Array<ImpedanceDataT | PWMDataT | PotentiostaticDataT>;
+  timeseries: {
+    data: Array<ImpedanceDataT | PWMDataT | PotentiostaticDataT>;
+  };
 };

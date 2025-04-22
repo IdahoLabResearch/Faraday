@@ -8,19 +8,21 @@ import { Impedance } from "./timeseries/charts/impedance/impedance";
 import { Potentiostatic } from "./timeseries/charts/potentiostatic/potentiostatic";
 
 // Types
-import { QueryResultT } from "@/lib/types/timeseries";
+import { ImpedanceDataT, QueryResultT } from "@/lib/types/timeseries";
 
 export default function Faraday() {
-  const data: QueryResultT | undefined = useAppSelector(
+  const query: QueryResultT | undefined = useAppSelector(
     (state) => state.warehouse.data
   );
 
   return (
     <Visualizer>
       <div className="bg-base-100">
-        {data ? (
-          data.type === "Impedance" ? (
-            <Impedance timeseries={data.timeseries} />
+        {query ? (
+          query.type === "Impedance" ? (
+            <Impedance
+              timeseries={query.timeseries.data as Array<ImpedanceDataT>}
+            />
           ) : null
         ) : null}
       </div>

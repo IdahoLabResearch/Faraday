@@ -16,7 +16,7 @@ import { ImpedanceTooltip } from "../../helpers/tooltips";
 // Types
 type Props = {
   data: Array<any>;
-  sweeps: Array<string>;
+  sweeps: Array<number>;
 };
 
 export function DRT(props: Props) {
@@ -26,7 +26,7 @@ export function DRT(props: Props) {
     return;
   }
 
-  const sweeps: Array<string> = props.sweeps;
+  const sweeps = props.sweeps;
   const ticks = Array.from(
     new Set(
       data.map((point) => {
@@ -37,7 +37,7 @@ export function DRT(props: Props) {
 
   return (
     <>
-      {sweeps.map((sweep: string, index: number) => {
+      {sweeps.map((sweep: number) => {
         const subset = data.filter((point) => point.sweep === sweep);
 
         if (!subset.length) return;
@@ -77,7 +77,7 @@ export function DRT(props: Props) {
               </YAxis>
               <Tooltip content={(props) => <ImpedanceTooltip {...props} />} />
               <Legend verticalAlign="top" align="right" />
-              {sweep === "0" ? (
+              {sweep === 1 ? (
                 <Line
                   dataKey={"gamma"}
                   stroke={"#FFFF00"}
@@ -87,7 +87,7 @@ export function DRT(props: Props) {
                   dot={false}
                 />
               ) : null}
-              {sweep === "50" ? (
+              {sweep === 2 ? (
                 <Line
                   dataKey={"gamma"}
                   stroke={"#FFD700"}
@@ -96,7 +96,7 @@ export function DRT(props: Props) {
                   dot={false}
                 />
               ) : null}
-              {sweep === "100" ? (
+              {sweep === 3 ? (
                 <Line
                   dataKey={"gamma"}
                   stroke={"#FFA500"}

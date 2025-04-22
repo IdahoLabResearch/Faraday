@@ -1,20 +1,34 @@
-export const ImpedanceTooltip = (props: any) => {
-  if (props.active && props.payload && props.payload.length) {
-    const time = props.payload[0].payload.time;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+// Types
+import { TooltipProps } from "recharts";
+import {
+  Payload,
+  ValueType,
+  NameType,
+} from "recharts/types/component/DefaultTooltipContent";
+
+export const ImpedanceTooltip = (props: TooltipProps<ValueType, NameType>) => {
+  if (props.active && props.payload) {
+    const time = props.payload[0].payload.metadata.time;
     return (
       <>
-        <div className="bg-black prose text-white px-2">
-          Time: {parseFloat(time)} hours
-        </div>
-        {props.payload.map((payload: any) => {
-          return (
-            <>
-              <div className="bg-black prose text-white px-2">
-                {payload.name}: {parseFloat(payload.value).toFixed(3)}
-              </div>
-            </>
-          );
-        })}
+        <div className="bg-black prose text-white px-2">Time: {time} hours</div>
+        {props.payload.map(
+          (
+            payload: Payload<ValueType, NameType>,
+            _index: number,
+            _array: Payload<ValueType, NameType>[]
+          ) => {
+            return (
+              <>
+                <div className="bg-black prose text-white px-2">
+                  {payload.name}: {payload.value!}
+                </div>
+              </>
+            );
+          }
+        )}
       </>
     );
   }

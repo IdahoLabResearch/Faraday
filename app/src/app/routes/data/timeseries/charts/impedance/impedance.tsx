@@ -12,48 +12,40 @@ import { FetchDRT } from "@/lib/client/faraday";
 import { useAppSelector } from "@/lib/store/hooks";
 
 // Types
-import { CellT } from "@/lib/types/warehouse";
+import { NodeT } from "@/lib/types/warehouse";
+import { ImpedanceDataT } from "@/lib/types/timeseries";
 
-type Props = {
-  data: Array<any>;
-};
+export const Impedance = (props: { timeseries: Array<ImpedanceDataT> }) => {
+  // Store
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
-export function Impedance(props: Props) {
-  const [data, setData] = useState<Array<any>>([]);
+  // Hooks
   const [analytics, setAnalytics] = useState<Array<any> | undefined>();
-  const [sweeps, setSweeps] = useState<Array<string>>(["0"]);
-
-  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
-
-  useEffect(() => {
-    if (props.data.length) {
-      // Filter impedance data for just the selected cell
-      const subset = props.data.filter((record: any) =>
-        sweeps.includes(record.time.toString())
-      );
-      setData(subset);
-    }
-  }, [props.data, sweeps, cell]);
+  const [sweeps, setSweeps] = useState<Array<number>>([1]);
 
   const handlePyDRT = () => {
-    FetchDRT(data, sweeps).then((data) => {
+    FetchDRT(props.timeseries, sweeps).then((data) => {
       setAnalytics(data);
     });
   };
 
   useEffect(() => {
     setAnalytics(undefined);
-  }, [cell]);
+  }, [leaf]);
 
   return (
     <div className="grid grid-cols-12 px-12 py-6">
       <div className="col-span-6">
-        <Visualization data={data} sweeps={sweeps} setSweeps={setSweeps} />
+        <Visualization
+          timeseries={props.timeseries}
+          sweeps={sweeps}
+          setSweeps={setSweeps}
+        />
       </div>
       <div className="col-span-6">
         <div className="prose">
           <h2>Analytics</h2>
-          <p>Compute distribution relaxation times for {cell.name}</p>
+          <p>Compute distribution relaxation times for {leaf.name}</p>
         </div>
         <div className="divider w-3/4"></div>
         <button onClick={handlePyDRT} className="btn btn-accent">
@@ -65,4 +57,4 @@ export function Impedance(props: Props) {
       </div>
     </div>
   );
-}
+};

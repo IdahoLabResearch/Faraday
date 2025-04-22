@@ -21,43 +21,49 @@ import { ImpedanceTooltip } from "../../helpers/tooltips";
 
 // Types
 import { RefObject } from "react";
-import { TypeT, CellT } from "@/lib/types/warehouse";
+import { NodeT } from "@/lib/types/warehouse";
+import { ImpedanceDataT } from "@/lib/types/timeseries";
 
 type Props = {
-  data: Array<any>;
-  sweeps: Array<string>;
-  setSweeps: Function;
+  sweeps: Array<number>;
+  setSweeps: (sweeps: Array<number>) => void;
+  timeseries: Array<ImpedanceDataT>;
 };
 
 export function Visualization(props: Props) {
-  const [data, setData] = useState<Array<any>>([]);
+  // Props
   const sweeps = props.sweeps;
   const setSweeps = props.setSweeps;
 
-  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
-  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
-  const chartRef = useRef<RefObject<HTMLElement | null>>(null);
+  // Subset to control the sweeps
+  const [subset, setSubset] = useState<Array<ImpedanceDataT>>([]);
+
+  // Store
+  const type: string = useAppSelector((state) => state.warehouse.data!.type);
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
+
+  // Chart ref for report generation
+  const chartRef = useRef<RefObject<HTMLDivElement>>(null);
 
   useEffect(() => {
-    if (props.data.length) {
-      const subset = props.data.filter((record: any) =>
-        props.sweeps.includes(record.time.toString())
+    if (props.timeseries.length) {
+      const subset = props.timeseries.filter((record: ImpedanceDataT) =>
+        props.sweeps.includes(record.metadata.sweep)
       );
-      setData(subset);
+      setSubset(subset);
     }
-  }, [props.data, props.sweeps, cell]);
+  }, [props.timeseries, props.sweeps, leaf]);
 
   // Handlers
-  const handleOptionSelect = (time: string) => {
-    const existing = sweeps.filter((sweep) => sweep === time);
+  const handleOptionSelect = (interval: number) => {
+    const existing = sweeps.filter((sweep) => sweep === interval);
 
+    console.log(existing);
     if (existing.length === 0) {
-      setSweeps((sweeps: Array<string>) => [...sweeps, time]);
+      setSweeps([...sweeps, interval]);
     } else {
       if (sweeps.length === 1) return;
-      setSweeps((sweeps: Array<string>) =>
-        sweeps.filter((sweep) => sweep !== time)
-      );
+      setSweeps(sweeps.filter((sweep) => sweep !== interval));
     }
   };
 
@@ -66,16 +72,17 @@ export function Visualization(props: Props) {
       <div className="prose">
         <h2>Visualization</h2>
         <p>
-          Visualize {type.name.split(" ")[0].toLowerCase()} data for {cell.name}
+          Visualize {type.toLowerCase()} data for {leaf.name}
         </p>
         <div className="divider w-3/4"></div>
       </div>
       <br />
       <>
-        {data.length ? (
-          <div ref={chartRef as RefObject<any>}>
+        {subset.length ? (
+          <div ref={chartRef as RefObject<HTMLDivElement | null>}>
             <ScatterChart
               id={"impedance-chart"}
+              data={subset}
               width={730}
               height={250}
               margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
@@ -83,7 +90,7 @@ export function Visualization(props: Props) {
               <CartesianGrid strokeDasharray="3 3" />
               <Legend verticalAlign="bottom" iconSize={10} />
               <XAxis
-                dataKey="real_impedance"
+                dataKey={"data.real_impedance"}
                 name="Z'"
                 type="number"
                 tick={{ fontSize: ".75rem", dy: 10 }}
@@ -96,7 +103,7 @@ export function Visualization(props: Props) {
                 />
               </XAxis>
               <YAxis
-                dataKey="imaginary_impedance"
+                dataKey={"data.imaginary_impedance"}
                 name="Z''"
                 type="number"
                 tick={{ fontSize: ".75rem" }}
@@ -110,24 +117,24 @@ export function Visualization(props: Props) {
               </YAxis>
               <Tooltip content={(props) => <ImpedanceTooltip {...props} />} />
               <Legend />
-              {data.filter((record) => record.time === 0).length ? (
+              {subset.filter((record) => record.metadata.sweep === 1).length ? (
                 <Scatter
                   name="0 Hours"
-                  data={data.filter((record) => record.time === 0)}
+                  data={subset.filter((record) => record.metadata.sweep === 1)}
                   fill="#FFFF00"
                 />
               ) : null}
-              {data.filter((record) => record.time === 50).length ? (
+              {subset.filter((record) => record.metadata.sweep === 2).length ? (
                 <Scatter
                   name="50 Hours"
-                  data={data.filter((record) => record.time === 50)}
+                  data={subset.filter((record) => record.metadata.sweep === 2)}
                   fill="#FFD700"
                 />
               ) : null}
-              {data.filter((record) => record.time === 100).length ? (
+              {subset.filter((record) => record.metadata.sweep === 3).length ? (
                 <Scatter
                   name="100 Hours"
-                  data={data.filter((record) => record.time === 100)}
+                  data={subset.filter((record) => record.metadata.sweep === 3)}
                   fill="#FFA500"
                 />
               ) : null}
@@ -145,28 +152,28 @@ export function Visualization(props: Props) {
         <summary className="btn m-1">Click to Visualize Sweeps</summary>
         <ul className="menu dropdown-content bg-base-200 rounded-box z-[1] w-52 shadow">
           <li
-            onClick={() => handleOptionSelect("0")}
+            onClick={() => handleOptionSelect(1)}
             className={`p-2 ${
-              sweeps.includes("0") ? "bg-base-100" : "bg-base-200"
+              sweeps.includes(1) ? "bg-base-100" : "bg-base-200"
             } bg-selected-unset`}
           >
-            0 hours <input type="checkbox" className="hidden" value="0" />
+            0 hours <input type="checkbox" className="hidden" value={1} />
           </li>
           <li
-            onClick={() => handleOptionSelect("50")}
+            onClick={() => handleOptionSelect(2)}
             className={`p-2 ${
-              sweeps.includes("50") ? "bg-base-100" : "bg-base-200"
+              sweeps.includes(2) ? "bg-base-100" : "bg-base-200"
             }`}
           >
-            50 hours <input type="checkbox" className="hidden" value="50" />
+            50 hours <input type="checkbox" className="hidden" value={2} />
           </li>
           <li
-            onClick={() => handleOptionSelect("100")}
+            onClick={() => handleOptionSelect(3)}
             className={`p-2 ${
-              sweeps.includes("100") ? "bg-base-100" : "bg-base-200"
+              sweeps.includes(3) ? "bg-base-100" : "bg-base-200"
             }`}
           >
-            100 hours <input type="checkbox" className="hidden" value="100" />
+            100 hours <input type="checkbox" className="hidden" value={3} />
           </li>
         </ul>
       </details>
