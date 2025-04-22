@@ -12,48 +12,38 @@ import { SigmoidalRateExpressionModule } from "./modules/sigmoidalRateExpression
 import { useAppSelector } from "@/lib/store/hooks";
 
 // Types
-import { CellT } from "@/lib/types/warehouse";
+import { NodeT } from "@/lib/types/warehouse";
+import { PotentiostaticDataT } from "@/lib/types/timeseries";
 
 type Props = {
-  data: Array<any>;
+  timeseries: Array<PotentiostaticDataT>;
 };
 
 const analytics = ["Linear Regression", "Sigmoidal Rate Expression"];
 
 export function Potentiostatic(props: Props) {
-  const [data, setData] = useState<Array<any>>([]);
   const [module, setModule] = useState<string | undefined>(undefined);
-  const [voltage, setVoltage] = useState<string>("1.3");
+  const [voltage, setVoltage] = useState<number>(1.3);
   const [regression, setRegression] = useState<
     | {
-        regression: Array<{ time: number; regression: number }>;
+        fit: Array<{ time: number; regression: number }>;
         coefficients: Array<number>;
       }
     | undefined
   >();
 
-  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
-
-  useEffect(() => {
-    if (props.data.length) {
-      // Filter potentiostatic data for just the selected cell
-      const subset = props.data.filter(
-        (record: any) => record.voltage == voltage
-      );
-      setData(subset);
-    }
-  }, [props.data, voltage, cell]);
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
   useEffect(() => {
     setModule(undefined);
     setRegression(undefined);
-  }, [cell]);
+  }, [leaf]);
 
   return (
     <div className="grid grid-cols-12 px-12 py-6">
       <div className="col-span-6">
         <Visualization
-          data={data}
+          timeseries={props.timeseries}
           voltage={voltage}
           setVoltage={setVoltage}
           regression={regression}
@@ -63,7 +53,7 @@ export function Potentiostatic(props: Props) {
         <div className="prose">
           <h2>Analytics</h2>
           <p>
-            Compute statistical regressions for {cell.name} at {voltage} volts
+            Compute statistical regressions for {leaf.name} at {voltage} volts
           </p>
         </div>
         <div className="divider w-3/4"></div>
@@ -89,13 +79,13 @@ export function Potentiostatic(props: Props) {
                 <LinearRegressionModule
                   setRegression={setRegression}
                   regression={regression}
-                  data={data}
+                  timeseries={props.timeseries}
                 />
               ) : null}
             </div>
             <div>
               {module === "Sigmoidal Rate Expression" ? (
-                <SigmoidalRateExpressionModule data={data} />
+                <SigmoidalRateExpressionModule timeseries={props.timeseries} />
               ) : null}
             </div>
           </div>

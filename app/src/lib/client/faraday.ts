@@ -2,6 +2,7 @@ const server = import.meta.env.VITE_DJANGO_PROXY!;
 
 // Types
 import { ImpedanceDataT } from "../types/timeseries";
+import { PotentiostaticDataT } from "../types/timeseries";
 
 export const FetchDRT = async (
   data: Array<ImpedanceDataT>,
@@ -53,9 +54,9 @@ export const SigmoidRegression = async (cell: string, data: Array<any>) => {
   }
 };
 
-export const LinearRegression = async (data: Array<any>) => {
+export const LinearRegression = async (data: Array<PotentiostaticDataT>) => {
   try {
-    const response = await fetch(`${server}/api/statistics`, {
+    const response = await fetch(`${server}/timeseries/linear`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

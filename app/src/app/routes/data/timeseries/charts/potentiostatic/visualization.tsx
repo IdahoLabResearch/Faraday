@@ -19,61 +19,56 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { PotentiostaticTooltip } from "../../helpers/tooltips";
 
 // Types
-import { TypeT, CellT } from "@/lib/types/warehouse";
+import { NodeT } from "@/lib/types/warehouse";
+import { PotentiostaticDataT } from "@/lib/types/timeseries";
 
 type Props = {
-  data: Array<any>;
+  timeseries: Array<PotentiostaticDataT>;
   regression:
     | {
-        regression: { time: number; regression: number }[];
+        fit: { time: number; regression: number }[];
         coefficients: number[];
       }
     | undefined;
-  voltage: string;
-  setVoltage: Function;
+  voltage: number;
+  setVoltage: (voltage: number) => void;
 };
 
 export function Visualization(props: Props) {
-  const [data, setData] = useState<Array<any>>([]);
+  const [data, setData] = useState<Array<PotentiostaticDataT>>([]);
   const regression = props.regression;
   const voltage = props.voltage;
-  const [ticks, setTicks] = useState<any>();
+  const [ticks, setTicks] = useState<Array<number>>();
 
-  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
-  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
+  const type: string = useAppSelector((state) => state.warehouse.data!.type);
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
   useEffect(() => {
-    if (props.data.length) {
-      const subset = props.data.filter(
-        (record: any) => record.voltage === parseFloat(voltage)
+    if (props.timeseries.length) {
+      const subset = props.timeseries.filter(
+        (record: PotentiostaticDataT) => record.metadata.voltage === voltage
       );
       setData(subset);
 
       const ticks = Array.from(
         new Set(
-          subset.map(
-            (point: {
-              time: string;
-              current_density: string;
-              voltage: number;
-            }) => {
-              const tick = Math.round(parseFloat(point.time));
-              return tick % 25 === 0 ? tick : 0;
-            }
-          )
+          subset.map((point: PotentiostaticDataT) => {
+            const tick = Math.round(point.data.time);
+            return tick % 25 === 0 ? tick : 0;
+          })
         )
       );
 
       setTicks(ticks);
     }
-  }, [props.data, voltage, cell]);
+  }, [props.timeseries, voltage]);
 
   return (
     <div>
       <div className="prose">
         <h2>Visualization</h2>
         <p>
-          Visualize {type.name.split(" ")[0].toLowerCase()} data for {cell.name}
+          Visualize {type} data for {leaf.name}
         </p>
         <div className="divider w-3/4"></div>
       </div>
@@ -84,7 +79,7 @@ export function Visualization(props: Props) {
       <select
         defaultValue={props.voltage}
         onChange={(event) => {
-          props.setVoltage(event.target.value);
+          props.setVoltage(parseFloat(event.target.value));
         }}
         className="select select-bordered w-full max-w-xs"
       >
@@ -103,7 +98,7 @@ export function Visualization(props: Props) {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="time"
+              dataKey="data.time"
               domain={["dataMin", "dataMax"]}
               tick={{ fontSize: ".75rem" }}
               ticks={ticks}
@@ -114,7 +109,7 @@ export function Visualization(props: Props) {
               type={"number"}
               domain={["auto", "auto"]}
               tick={{ fontSize: ".75rem" }}
-              tickFormatter={(value, index) => {
+              tickFormatter={(value) => {
                 return value.toFixed(2).toString();
               }}
             />
@@ -127,24 +122,24 @@ export function Visualization(props: Props) {
               type="monotone"
               name="Current Density"
               dot={false}
-              dataKey="current_density"
+              dataKey="data.current_density"
               stroke="palegoldenrod"
             />
             {regression ? (
               <Line
-                data={regression.regression}
+                data={regression.fit}
                 type="monotone"
                 name="Regression"
                 dot={false}
-                dataKey="regression"
-                stroke="aliceblue"
+                dataKey="data.regression"
+                stroke="white"
               />
             ) : null}
           </LineChart>
         ) : (
           <div className="prose">
             <small>
-              There is no {voltage}V data for {cell.name}
+              There is no {voltage}V data for {leaf.name}
             </small>
           </div>
         )}

@@ -8,13 +8,17 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { SigmoidRegression } from "@/lib/client/faraday";
 import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
 
+// Types
+import { PotentiostaticDataT } from "@/lib/types/timeseries";
+import { NodeT } from "@/lib/types/warehouse";
+
 type PropsT = {
-  data: Array<any>;
+  timeseries: Array<PotentiostaticDataT>;
 };
 
 export const SigmoidalRateExpressionModule = (props: PropsT) => {
-  const data = props.data;
-  const [ticks, setTicks] = useState<any>();
+  const timeseries = props.timeseries;
+  const [ticks, setTicks] = useState<Array<number>>();
   const [sigmoid, setSigmoid] = useState<
     | {
         sre: Array<{ time: number; sigmoid_current_density: number }>;
@@ -23,7 +27,7 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
       }
     | undefined
   >();
-  const cell = useAppSelector((state) => state.warehouse.cell!);
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
   useEffect(() => {
     if (sigmoid) {
@@ -43,8 +47,8 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
   }, [sigmoid]);
 
   const handleSigmoid = async () => {
-    const response = await SigmoidRegression(cell.cell, data);
-    console.log(response);
+    // const response = await SigmoidRegression(cell.cell, data);
+    // console.log(response);
     // setSigmoid(response);
   };
 
@@ -79,7 +83,7 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
               type={"number"}
               domain={["auto", "auto"]}
               tick={{ fontSize: ".75rem" }}
-              tickFormatter={(value, index) => {
+              tickFormatter={(value) => {
                 return value.toFixed(2).toString();
               }}
             />

@@ -57,8 +57,6 @@ export function Visualization(props: Props) {
   // Handlers
   const handleOptionSelect = (interval: number) => {
     const existing = sweeps.filter((sweep) => sweep === interval);
-
-    console.log(existing);
     if (existing.length === 0) {
       setSweeps([...sweeps, interval]);
     } else {

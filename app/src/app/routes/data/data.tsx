@@ -3,12 +3,16 @@ import { useAppSelector } from "@/lib/store/hooks";
 
 // Components
 import Visualizer from "./wireframe";
-import { PWM } from "./timeseries/charts/pwm/pwm";
+// import { PWM } from "./timeseries/charts/pwm/pwm";
 import { Impedance } from "./timeseries/charts/impedance/impedance";
 import { Potentiostatic } from "./timeseries/charts/potentiostatic/potentiostatic";
 
 // Types
-import { ImpedanceDataT, QueryResultT } from "@/lib/types/timeseries";
+import {
+  ImpedanceDataT,
+  PotentiostaticDataT,
+  QueryResultT,
+} from "@/lib/types/timeseries";
 
 export default function Faraday() {
   const query: QueryResultT | undefined = useAppSelector(
@@ -22,6 +26,10 @@ export default function Faraday() {
           query.type === "Impedance" ? (
             <Impedance
               timeseries={query.timeseries.data as Array<ImpedanceDataT>}
+            />
+          ) : query.type === "Potentiostatic" ? (
+            <Potentiostatic
+              timeseries={query.timeseries.data as Array<PotentiostaticDataT>}
             />
           ) : null
         ) : null}

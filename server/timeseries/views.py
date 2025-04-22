@@ -70,12 +70,12 @@ def sigmoid_regression(request):
 def linear_regression(request):
 
     body = json.loads(request.body)
-    x, y = zip(*[[float(n.get("time")), float(n.get("current_density"))]
+    x, y = zip(*[[n['data']["time"], n['data']['current_density']]
                for n in body])
     m, b = np.polyfit(x, y, 1)
 
-    regression = [{"time": x, "regression": m*x + b} for x in x]
-    return JsonResponse({"data": {"regression": regression, "coefficients": [m, b]}})
+    regression = [{'data': {"time": x, "regression": m*x + b}} for x in x]
+    return JsonResponse({"data": {"fit": regression, "coefficients": [m, b]}})
 
 
 @csrf_exempt

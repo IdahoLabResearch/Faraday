@@ -3,33 +3,37 @@ import { Dispatch, SetStateAction } from "react";
 // Functions
 import { LinearRegression } from "@/lib/client/faraday";
 
+// Types
+import { PotentiostaticDataT } from "@/lib/types/timeseries";
+
 type PropsT = {
   setRegression: Dispatch<
     SetStateAction<
       | {
-          regression: { time: number; regression: number }[];
-          coefficients: number[];
+          fit: Array<{ time: number; regression: number }>;
+          coefficients: Array<number>;
         }
       | undefined
     >
   >;
-  data: Array<any>;
+  timeseries: Array<PotentiostaticDataT>;
   regression:
     | {
-        regression: Array<{ time: number; regression: number }>;
+        fit: Array<{ time: number; regression: number }>;
         coefficients: Array<number>;
       }
     | undefined;
 };
 
 export const LinearRegressionModule = (props: PropsT) => {
-  const data = props.data;
+  const timeseries = props.timeseries;
   const linear = props.regression;
   const setRegression = props.setRegression;
 
   // Handlers
   const handleRegression = async () => {
-    const response = await LinearRegression(data);
+    const response = await LinearRegression(timeseries);
+    console.log(response);
     setRegression(response);
   };
 
