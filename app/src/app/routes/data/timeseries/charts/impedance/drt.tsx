@@ -14,13 +14,14 @@ import {
 import { ImpedanceTooltip } from "../../helpers/tooltips";
 
 // Types
+import { DistributionRelaxationT } from "@/lib/types/statistics";
 type Props = {
-  data: Array<any>;
+  data: Array<DistributionRelaxationT>;
   sweeps: Array<number>;
 };
 
 export function DRT(props: Props) {
-  const data: Array<any> = props.data;
+  const data: Array<DistributionRelaxationT> = props.data;
 
   if (!data.length) {
     return;

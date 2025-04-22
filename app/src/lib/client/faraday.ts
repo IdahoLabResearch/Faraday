@@ -1,8 +1,14 @@
 const server = import.meta.env.VITE_DJANGO_PROXY!;
 
-export const FetchDRT = async (data: Array<any>, sweeps: Array<any>) => {
+// Types
+import { ImpedanceDataT } from "../types/timeseries";
+
+export const FetchDRT = async (
+  data: Array<ImpedanceDataT>,
+  sweeps: Array<number>
+) => {
   try {
-    const response = await fetch(`${server}/api/pydrt`, {
+    const response = await fetch(`${server}/timeseries/pydrt`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

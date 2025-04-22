@@ -14,19 +14,24 @@ import { useAppSelector } from "@/lib/store/hooks";
 // Types
 import { NodeT } from "@/lib/types/warehouse";
 import { ImpedanceDataT } from "@/lib/types/timeseries";
+import { DistributionRelaxationT } from "@/lib/types/statistics";
 
 export const Impedance = (props: { timeseries: Array<ImpedanceDataT> }) => {
   // Store
   const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
   // Hooks
-  const [analytics, setAnalytics] = useState<Array<any> | undefined>();
+  const [analytics, setAnalytics] = useState<
+    Array<DistributionRelaxationT> | undefined
+  >();
   const [sweeps, setSweeps] = useState<Array<number>>([1]);
 
   const handlePyDRT = () => {
-    FetchDRT(props.timeseries, sweeps).then((data) => {
-      setAnalytics(data);
-    });
+    FetchDRT(props.timeseries, sweeps).then(
+      (data: Array<DistributionRelaxationT>) => {
+        setAnalytics(data);
+      }
+    );
   };
 
   useEffect(() => {

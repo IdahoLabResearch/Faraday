@@ -83,20 +83,23 @@ def linear_regression(request):
 def pydrt(request):
 
     body: dict[str] = json.loads(request.body)
-    data: list[dict] = body.get("data")
+    timeseries: list[dict] = body.get("data")
     sweeps: list[str] = body.get("sweeps")
 
     drt = []
 
     for interval in sweeps:
 
-        sweep = [s for s in data if s.get('time') == int(interval)]
+        sweep = [s for s in timeseries if s.get(
+            'metadata').get('sweep') == interval]
 
         # Parse the data into their respective numpy arrays
-        frequency = np.array([float(d['frequency']) for d in sweep])
-        real_impedance = np.array([float(d['real_impedance']) for d in sweep])
+        frequency = np.array([d['metadata']['frequency'] for d in sweep])
+        print(frequency)
+        real_impedance = np.array(
+            [d['data']['real_impedance'] for d in sweep])
         imaginary_impedance = np.array(
-            [float(d['imaginary_impedance']) for d in sweep])
+            [d['data']['imaginary_impedance'] for d in sweep])
 
         # Instantiate a pyDRT Spectra object using our data
         spectra = Spectra(frequency, real_impedance, imaginary_impedance)
