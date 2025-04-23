@@ -73,20 +73,20 @@ export function Visualization(props: Props) {
         <div className="divider w-3/4"></div>
       </div>
       <br />
-      <div className="label">
-        <span className="label-text">Voltage</span>
-      </div>
-      <select
-        defaultValue={props.voltage}
-        onChange={(event) => {
-          props.setVoltage(parseFloat(event.target.value));
-        }}
-        className="select select-bordered w-full max-w-xs"
-      >
-        <option disabled>Voltage</option>
-        <option>1.3</option>
-        <option>1.7</option>
-      </select>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Select a Voltage</legend>
+        <select
+          defaultValue={props.voltage}
+          className="select"
+          onChange={(event) => {
+            props.setVoltage(parseFloat(event.target.value));
+          }}
+        >
+          <option disabled>Voltage</option>
+          <option value={1.3}>1.3</option>
+          <option value={1.7}>1.7</option>
+        </select>
+      </fieldset>
       <br />
       <br />
       <div>

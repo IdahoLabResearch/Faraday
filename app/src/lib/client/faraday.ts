@@ -29,16 +29,19 @@ export const FetchDRT = async (
   }
 };
 
-export const SigmoidRegression = async (cell: string, data: Array<any>) => {
+export const SigmoidRegression = async (
+  name: string,
+  timeseries: Array<PotentiostaticDataT>
+) => {
   try {
-    const response = await fetch(`${server}/api/sigmoid`, {
+    const response = await fetch(`${server}/timeseries/sigmoid`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        cell: cell,
-        data: data,
+        name: name,
+        timeseries: timeseries,
       }),
     });
 

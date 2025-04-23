@@ -613,7 +613,6 @@ def multiple_runs(
         avg_val_RMSE = np.mean(val_RMSEs)
         avg_val_R2 = np.mean(val_R2s)
 
-        print()
         # print(f"Average SSE: {avg_val_SSE}")
         # print(f"Average MSE: {avg_val_MSE}")
         # print(f"Average RMSE: {avg_val_RMSE}")

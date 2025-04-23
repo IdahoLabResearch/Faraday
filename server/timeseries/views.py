@@ -42,23 +42,24 @@ def electrolysis_cell_data(request):
 def sigmoid_regression(request):
 
     body = json.loads(request.body)
-    cell = body.get('cell')
-    data = body.get('data')
+    name = body.get('name')
+    timeseries = body.get('timeseries')
 
-    if not (cell and data):
+    if not (name and timeseries):
         return HttpResponse("Request missing cell name or timeseries data", status=400)
 
     try:
-        df = pd.DataFrame(data)
+        df = pd.DataFrame(timeseries)
 
         # Reconstruction of Life Metric Data
-        time = df['time'].values.astype(float)
-        current_density = df['current_density'].values.astype(float)
+        time = np.array(df['data'].map(lambda x: x.get('time')))
+        current_density = np.array(df['data'].map(
+            lambda x: x.get('current_density')))
 
         ratio = current_density / current_density[0]
         life_metric_data = 1 - ratio
 
-        response = process_cell(cell, time, life_metric_data)
+        response = process_cell(name, time, life_metric_data)
     except Exception as e:
         return HttpResponse('Error processing cell data: {}'.format(e), status=500)
 
