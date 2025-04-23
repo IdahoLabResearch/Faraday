@@ -37,19 +37,19 @@ def SRE(t, M0, *params):
     mechanisms = []
     M0 = 0
     for i in range(n_mechanisms):
-        print('params: {}'.format(params), flush=True)
+        # print('params: {}'.format(params), flush=True)
 
         a, b, M = params[3 * i: 3 * i + 3]
 
-        print('scalar a: {}'.format(a), flush=True)
+        # print('scalar a: {}'.format(a), flush=True)
 
         exp_term = np.exp(np.clip((a * t) ** b, -700, 700))
 
-        print('exp_term: {}'.format(exp_term), flush=True)
+        # print('exp_term: {}'.format(exp_term), flush=True)
 
         mechanism = M0 + 2 * (M - M0) * (0.5 - 1 / (1 + exp_term))
 
-        print('mechanism: {}'.format(mechanism), flush=True)
+        # print('mechanism: {}'.format(mechanism), flush=True)
 
         mechanisms.append(mechanism)
         total += mechanism
