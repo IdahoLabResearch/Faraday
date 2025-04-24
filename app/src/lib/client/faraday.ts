@@ -9,7 +9,7 @@ export const FetchDRT = async (
   sweeps: Array<number>
 ) => {
   try {
-    const response = await fetch(`${server}/timeseries/pydrt`, {
+    const response = await fetch(`${server}/timeseries/statistics/pydrt`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const SigmoidRegression = async (
   timeseries: Array<PotentiostaticDataT>
 ) => {
   try {
-    const response = await fetch(`${server}/timeseries/sigmoid`, {
+    const response = await fetch(`${server}/timeseries/statistics/sigmoid`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const SigmoidRegression = async (
 
 export const LinearRegression = async (data: Array<PotentiostaticDataT>) => {
   try {
-    const response = await fetch(`${server}/timeseries/linear`, {
+    const response = await fetch(`${server}/timeseries/statistics/linear`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

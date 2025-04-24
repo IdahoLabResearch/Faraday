@@ -3,7 +3,5 @@ from . import views
 
 urlpatterns = [
     path('cells', views.electrolysis_cell_data, name='cells'),
-    path('sigmoid', views.sigmoid_regression, name='sigmoid'),
-    path('linear', views.linear_regression, name='linear'),
-    path('pydrt', views.pydrt, name='drt'),
+    path('statistics/', include('timeseries.statistics.urls')),
 ]

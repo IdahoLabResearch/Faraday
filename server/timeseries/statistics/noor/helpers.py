@@ -640,10 +640,10 @@ def multiple_runs(
         final_params, t_data, life_metric_data
     )
 
-    print("Final (Median) Parameters:", formatted_final_params)
-    print(f"Final (Median) R2: {r2:.4f}")
-    print(f"Average R2: {avg_val_R2:.4f}")
-    print()
+    # print("Final (Median) Parameters:", formatted_final_params)
+    # print(f"Final (Median) R2: {r2:.4f}")
+    # print(f"Average R2: {avg_val_R2:.4f}")
+    # print()
 
     return final_params, all_params, all_log, best_individuals_per_gen_all_runs
 
@@ -684,8 +684,6 @@ def choose_optimal_mechanisms(
     results_per_mechanism = []
 
     for n_mechanisms in range(3, max_mechanisms + 1):
-
-        print(f"Trying with {n_mechanisms} mechanisms...")
 
         final_params, params, logs, best_individuals_per_gen_all_runs = (
             multiple_runs(
@@ -750,14 +748,14 @@ def choose_optimal_mechanisms(
             best_mechanisms = n_mechanisms
             best_params = final_params
 
-        print(
-            f'AICc: {aicc:.4g}, BIC: {bic:.4g}, cAIC: {aiccc:.4g}, DIC: {dic:.4g}')
-        print(f'Standard Deviation:{param_std_dev.mean():.4g}')
-        print(f'Coefficient of Variation:{mean_param_cv:.4g}')
-        print()
+    #     print(
+    #         f'AICc: {aicc:.4g}, BIC: {bic:.4g}, cAIC: {aiccc:.4g}, DIC: {dic:.4g}')
+    #     print(f'Standard Deviation:{param_std_dev.mean():.4g}')
+    #     print(f'Coefficient of Variation:{mean_param_cv:.4g}')
+    #     print()
 
-    print('Analysis complete:')
-    print(f"Optimal number of mechanisms: {best_mechanisms}")
+    # print('Analysis complete:')
+    # print(f"Optimal number of mechanisms: {best_mechanisms}")
 
     return best_mechanisms, best_params, results_per_mechanism
 
@@ -797,6 +795,7 @@ def downsample_data(t_data, life_metric_data, factor=None, sample_rate=None):
                 f"Desired sample rate is larger than the original data length of {n}.")
         indices = np.arange(0, n, step)
     else:
+
         raise ValueError("Either 'factor' or 'sample_rate' must be specified.")
 
     return t_data[indices], life_metric_data[indices]

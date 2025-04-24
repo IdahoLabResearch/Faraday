@@ -48,8 +48,7 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
 
   const handleSigmoid = async () => {
     const response = await SigmoidRegression(leaf.name, timeseries);
-    console.log(response);
-    // setSigmoid(response);
+    setSigmoid(response);
   };
 
   return (

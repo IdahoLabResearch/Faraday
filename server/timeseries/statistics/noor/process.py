@@ -4,7 +4,7 @@ from .data import bounds_low, bounds_high, sample_rate, max_mechanisms, genetic_
 from .helpers import downsample_data, choose_optimal_mechanisms, get_results_data
 
 
-def process_cell(cell_name, t_data, life_metric_data):
+def Noor_Sigmoid_Regression(cell_name, t_data, life_metric_data):
 
     # Downsample the data
     t_data_downsampled, life_metric_data_downsampled = downsample_data(
@@ -17,6 +17,7 @@ def process_cell(cell_name, t_data, life_metric_data):
     bounds_high["M"] = life_metric_data.max()
 
     start_time = time.time()
+    print("Start time:" + str(start_time))
 
     # Fit the model and choose optimal mechanisms
     best_mechanisms, best_params, results_per_mechanism = (
@@ -33,6 +34,7 @@ def process_cell(cell_name, t_data, life_metric_data):
         )
     )
     fit_time = time.time() - start_time
+    print("Fit time:" + str(fit_time))
 
     result_dict = {
         "cell_name": cell_name,
@@ -43,6 +45,7 @@ def process_cell(cell_name, t_data, life_metric_data):
         "date_time": time.time(),
     }
 
+    print("Get Results")
     # Organize the data structure for plotting
     data = get_results_data(
         t_data,
