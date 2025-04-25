@@ -1,6 +1,7 @@
 // Recharts
 import {
   CartesianGrid,
+  Label,
   Legend,
   Line,
   LineChart,
@@ -11,6 +12,9 @@ import {
 
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
+
+// Styles
+import { charts } from "../styles";
 
 // Components
 import { PWMTooltip } from "../../helpers/tooltips";
@@ -42,12 +46,13 @@ export function Visualization(props: Props) {
           width={730}
           height={250}
           data={props.timeseries}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 5, right: 30, left: 45, bottom: 25 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke={charts.grid} />
           <XAxis
             dataKey="data.time"
             domain={["auto", "auto"]}
+            stroke={charts.axis}
             scale={"time"}
             tick={{ fontSize: ".75rem" }}
             type="number"
@@ -55,14 +60,31 @@ export function Visualization(props: Props) {
               return Math.ceil(value).toString();
             }}
             allowDataOverflow={true}
-          />
+          >
+            <Label
+              value={"Current Density"}
+              stroke={charts.label}
+              position={"centerBottom"}
+              dy={30}
+            />
+          </XAxis>
           <YAxis
             domain={["auto", "auto"]}
+            stroke={charts.axis}
             unit={"mA/m2"}
             tick={{ fontSize: ".75rem" }}
-          />
+          >
+            <Label
+              value={"Current Density"}
+              stroke={charts.label}
+              angle={-90}
+              position={"left"}
+              dy={-50}
+              dx={-25}
+            />
+          </YAxis>
           <Tooltip content={(props) => <PWMTooltip {...props} />} />
-          <Legend />
+          <Legend verticalAlign="top" align="right" />
           <Line
             type="monotone"
             name="current density"

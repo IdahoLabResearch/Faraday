@@ -16,6 +16,9 @@ import {
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
 
+// Styles
+import { charts } from "../styles";
+
 // Components
 import { ImpedanceTooltip } from "../../helpers/tooltips";
 
@@ -85,36 +88,40 @@ export function Visualization(props: Props) {
               height={250}
               margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <Legend verticalAlign="bottom" iconSize={10} />
+              <CartesianGrid strokeDasharray="3 3" stroke={charts.grid} />
               <XAxis
                 dataKey={"data.real_impedance"}
+                stroke={charts.axis}
+                domain={["dataMin", "dataMax"]}
                 name="Real Impedance"
                 type="number"
                 tick={{ fontSize: ".75rem", dy: 10 }}
                 ticks={[0, 0.2, 0.4, 0.6, 0.8, 1]}
               >
                 <Label
-                  position={"centerBottom"}
-                  dy={55}
                   value={"Real Impedance"}
+                  stroke={charts.label}
+                  position={"centerBottom"}
+                  dy={30}
                 />
               </XAxis>
               <YAxis
                 dataKey={"data.imaginary_impedance"}
                 name="Imaginary Impedance"
+                stroke={charts.axis}
                 type="number"
                 tick={{ fontSize: ".75rem" }}
               >
                 <Label
                   value="Imaginary Impedance"
+                  stroke={charts.label}
                   angle={-90}
                   position="left"
                   dy={-65}
                 />
               </YAxis>
               <Tooltip content={(props) => <ImpedanceTooltip {...props} />} />
-              <Legend />
+              <Legend verticalAlign="top" align="right" iconSize={8} />
               {subset.filter((record) => record.metadata.sweep === 1).length ? (
                 <Scatter
                   name="0 Hours"

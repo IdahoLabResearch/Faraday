@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 // Recharts
 import {
   CartesianGrid,
+  Label,
   Legend,
   Line,
   LineChart,
@@ -14,6 +15,9 @@ import {
 
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
+
+// Styles
+import { charts } from "../styles";
 
 // Components
 import { PotentiostaticTooltip } from "../../helpers/tooltips";
@@ -94,29 +98,46 @@ export function Visualization(props: Props) {
           <LineChart
             width={730}
             height={250}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid strokeDasharray="3 3" stroke={charts.grid} />
             <XAxis
               dataKey="data.time"
+              stroke={charts.axis}
               domain={["dataMin", "dataMax"]}
               tick={{ fontSize: ".75rem" }}
               ticks={ticks}
               type="number"
-            />
+            >
+              <Label
+                value={"Time"}
+                stroke={charts.label}
+                position={"centerBottom"}
+                dy={25}
+              />
+            </XAxis>
             <YAxis
               unit={"mA"}
+              stroke={charts.axis}
               type={"number"}
               domain={["auto", "auto"]}
               tick={{ fontSize: ".75rem" }}
               tickFormatter={(value) => {
                 return value.toFixed(2).toString();
               }}
-            />
+            >
+              <Label
+                value={"Current Density"}
+                stroke={charts.label}
+                angle={-90}
+                position={"left"}
+                dy={-65}
+              />
+            </YAxis>
             <Tooltip
               content={(props) => <PotentiostaticTooltip {...props} />}
             />
-            <Legend />
+            <Legend verticalAlign="top" align="right" />
             <Line
               data={data}
               type="monotone"
