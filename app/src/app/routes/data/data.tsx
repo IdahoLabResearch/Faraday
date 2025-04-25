@@ -3,7 +3,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 
 // Components
 import Visualizer from "./wireframe";
-// import { PWM } from "./timeseries/charts/pwm/pwm";
+import { PWM } from "./timeseries/charts/pwm/pwm";
 import { Impedance } from "./timeseries/charts/impedance/impedance";
 import { Potentiostatic } from "./timeseries/charts/potentiostatic/potentiostatic";
 
@@ -11,6 +11,7 @@ import { Potentiostatic } from "./timeseries/charts/potentiostatic/potentiostati
 import {
   ImpedanceDataT,
   PotentiostaticDataT,
+  PWMDataT,
   QueryResultT,
 } from "@/lib/types/timeseries";
 
@@ -31,6 +32,8 @@ export default function Faraday() {
             <Potentiostatic
               timeseries={query.timeseries.data as Array<PotentiostaticDataT>}
             />
+          ) : query.type === "PWM" ? (
+            <PWM timeseries={query.timeseries.data as Array<PWMDataT>} />
           ) : null
         ) : null}
       </div>

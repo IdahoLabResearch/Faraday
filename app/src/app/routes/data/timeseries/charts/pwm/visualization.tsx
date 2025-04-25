@@ -23,37 +23,39 @@ import { warehouseActions } from "@/lib/store/features/warehouse";
 import { PWMTooltip } from "../../helpers/tooltips";
 
 // Types
-import { TypeT, CellT } from "@/lib/types/warehouse";
+import { NodeT } from "@/lib/types/warehouse";
+import { PWMDataT } from "@/lib/types/timeseries";
+
 type Props = {
-  data: Array<any> | undefined;
+  timeseries: Array<PWMDataT> | undefined;
 };
 
 export function Visualization(props: Props) {
-  const type: TypeT = useAppSelector((state) => state.warehouse.type!);
-  const cell: CellT = useAppSelector((state) => state.warehouse.cell!);
+  const type: string = useAppSelector((state) => state.warehouse.data!.type);
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
     // TODO
     storeDispatch(warehouseActions.data(undefined));
-  }, [cell, storeDispatch]);
+  }, [leaf, storeDispatch]);
 
   return (
     <>
       <div className="prose">
         <h2>Visualization</h2>
         <p>
-          Visualize {type.name.toLowerCase()} data for {cell.name}
+          Visualize {type} data for {leaf.name}
         </p>
         <div className="divider w-3/4"></div>
       </div>
       <br />
       <>
-        {props.data ? (
+        {props.timeseries ? (
           <LineChart
             width={730}
             height={250}
-            data={props.data}
+            data={props.timeseries}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -63,7 +65,7 @@ export function Visualization(props: Props) {
               scale={"time"}
               tick={{ fontSize: ".75rem" }}
               type="number"
-              tickFormatter={(value, index) => {
+              tickFormatter={(value) => {
                 return Math.ceil(value).toString();
               }}
               allowDataOverflow={true}
