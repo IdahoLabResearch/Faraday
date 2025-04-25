@@ -64,7 +64,7 @@ export function Visualization(props: Props) {
   }, [props.timeseries, voltage]);
 
   return (
-    <div>
+    <>
       <div className="prose">
         <h2>Visualization</h2>
         <p>
@@ -144,6 +144,6 @@ export function Visualization(props: Props) {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

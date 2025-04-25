@@ -32,7 +32,7 @@ export default function Faraday() {
             <Potentiostatic
               timeseries={query.timeseries.data as Array<PotentiostaticDataT>}
             />
-          ) : query.type === "PWM" ? (
+          ) : query.type === "Pulse Width Modulation" ? (
             <PWM timeseries={query.timeseries.data as Array<PWMDataT>} />
           ) : null
         ) : null}

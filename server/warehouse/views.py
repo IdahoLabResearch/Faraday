@@ -4,13 +4,10 @@ from django.views.decorators.http import require_http_methods
 
 # Utilities
 from django.http import JsonResponse
-
-from .models import Ontology, Node, Relationship
-
 from .ontology.graph import graph
 
-from timeseries.models import ElectrolysisCell
-from django.db.models import Count
+# Models
+from .models import Ontology, Node, Relationship
 
 
 @csrf_exempt
