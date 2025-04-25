@@ -36,12 +36,16 @@ def roots(request, id):
 @require_http_methods(["GET"])
 def tree(request, id):
 
+    trees = []
+
     source = Node.objects.filter(id=id).first()
 
     targets = list(Relationship.objects.filter(source__id=source.id).values())
 
-    print(targets)
-
     tree = graph(source, targets)
+    # for test in targets:
+    #     test = Node.objects.get(id=test.get('target_id'))
+    #     print(test.name)
+    #     trees.append(graph(source, test.name))
 
     return JsonResponse({'data': tree})

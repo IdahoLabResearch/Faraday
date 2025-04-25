@@ -17,17 +17,16 @@ def graph(root_node: Node, tests: list[Relationship]):
     tree['parent'] = None
     tree['children'] = []
 
-    print(f"Tests: {tests}")
-
     for relationship in Relationship.objects.filter(source_id=root_node.id):
         child_node = relationship.target
 
         if (child_node.cls.name == "Cell"):
 
             qs = ElectrolysisCell.objects.filter(
-                test='Pulse Width Modulation').values_list('cell', flat=True).distinct()
+                test="Pulse Width Modulation").values_list('cell', flat=True).distinct()
 
             if child_node.name in list(qs):
+                print(f"{child_node.name} has {tests} data")
                 child_node_data = graph(child_node, tests)
                 child_node_data['parent'] = root_node.name
                 tree['children'].append(child_node_data)
