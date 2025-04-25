@@ -36,24 +36,27 @@ export const ImpedanceTooltip = (props: TooltipProps<ValueType, NameType>) => {
   return null;
 };
 
-export const PWMTooltip = (props: any) => {
+export const PWMTooltip = (props: TooltipProps<ValueType, NameType>) => {
   if (props.active && props.payload && props.payload.length) {
-    const time = props.payload[0].payload.time;
-
+    const time = props.payload[0].payload.data.time;
     return (
       <>
-        <div className="bg-black prose text-white px-2">
-          Time: {parseFloat(time).toFixed(3)} hours
-        </div>
-        {props.payload.map((payload: any) => {
-          return (
-            <>
-              <div className="bg-black prose text-white px-2">
-                Current Density: {parseFloat(payload.value).toFixed(3)}
-              </div>
-            </>
-          );
-        })}
+        <div className="bg-black prose text-white px-2">Time: {time} hours</div>
+        {props.payload.map(
+          (
+            payload: Payload<ValueType, NameType>,
+            _index: number,
+            _array: Payload<ValueType, NameType>[]
+          ) => {
+            return (
+              <>
+                <div className="bg-black prose text-white px-2">
+                  Current Density: {payload.value}
+                </div>
+              </>
+            );
+          }
+        )}
       </>
     );
   }
@@ -61,23 +64,32 @@ export const PWMTooltip = (props: any) => {
   return null;
 };
 
-export const PotentiostaticTooltip = (props: any) => {
+export const PotentiostaticTooltip = (
+  props: TooltipProps<ValueType, NameType>
+) => {
   if (props.active && props.payload && props.payload.length) {
-    const time = props.payload[0].payload.time;
+    console.log(props.payload);
+    const time = props.payload[0].payload.data.time;
     return (
       <>
         <div className="bg-black prose text-white px-2">
           Time: {parseFloat(time).toFixed(3)} hours
         </div>
-        {props.payload.map((payload: any) => {
-          return (
-            <>
-              <div className="bg-black prose text-white px-2">
-                {payload.name}: {parseFloat(payload.value).toFixed(3)}
-              </div>
-            </>
-          );
-        })}
+        {props.payload.map(
+          (
+            payload: Payload<ValueType, NameType>,
+            _index: number,
+            _array: Payload<ValueType, NameType>[]
+          ) => {
+            return (
+              <>
+                <div className="bg-black prose text-white px-2">
+                  {payload.name}: {payload.value}
+                </div>
+              </>
+            );
+          }
+        )}
       </>
     );
   }

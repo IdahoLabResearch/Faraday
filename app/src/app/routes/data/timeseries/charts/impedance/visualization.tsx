@@ -89,7 +89,7 @@ export function Visualization(props: Props) {
               <Legend verticalAlign="bottom" iconSize={10} />
               <XAxis
                 dataKey={"data.real_impedance"}
-                name="Z'"
+                name="Real Impedance"
                 type="number"
                 tick={{ fontSize: ".75rem", dy: 10 }}
                 ticks={[0, 0.2, 0.4, 0.6, 0.8, 1]}
@@ -102,7 +102,7 @@ export function Visualization(props: Props) {
               </XAxis>
               <YAxis
                 dataKey={"data.imaginary_impedance"}
-                name="Z''"
+                name="Imaginary Impedance"
                 type="number"
                 tick={{ fontSize: ".75rem" }}
               >
