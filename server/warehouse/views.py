@@ -38,14 +38,12 @@ def tree(request, id):
 
     trees = []
 
-    source = Node.objects.filter(id=id).first()
+    root = Node.objects.filter(id=id).first()
 
-    targets = list(Relationship.objects.filter(source__id=source.id).values())
+    branches = list(Relationship.objects.filter(source__id=root.id))
 
-    tree = graph(source, targets)
-    # for test in targets:
-    #     test = Node.objects.get(id=test.get('target_id'))
-    #     print(test.name)
-    #     trees.append(graph(source, test.name))
+    for branch in branches:
+        branch = Node.objects.get(id=branch.target.id)
+        trees.append(graph(branch, branch.name))
 
-    return JsonResponse({'data': tree})
+    return JsonResponse({'data': trees})
