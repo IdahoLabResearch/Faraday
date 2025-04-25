@@ -68,22 +68,6 @@ class Node(models.Model):
     def __str__(self):
         return f"{self.cls.name} {self.name}"
 
-    def clean(self):
-        if self.parent and self.cls == Class.objects.get(name="Cell") and self.parent.cls != Class.objects.get(name="Batch"):
-            raise ValidationError(
-                "Parent of 'Cell' nodes must be a node of class 'Batch'")
-        if self.parent and self.cls == Class.objects.get(name="Batch") and self.parent.cls != Class.objects.get(name="Test"):
-            raise ValidationError(
-                "Parent of 'Batch' nodes must be a node of class 'Test'")
-        if self.parent and self.cls == Class.objects.get(name="Type") and self.parent.cls != Class.objects.get(name="Category"):
-            raise ValidationError(
-                "Parent of 'Type' nodes must be a node of class 'Category'")
-        super().clean()
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        return super().save(*args, **kwargs)
-
 
 class Relationship(models.Model):
     """

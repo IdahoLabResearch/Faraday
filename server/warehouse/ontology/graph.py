@@ -1,7 +1,8 @@
-from ..models import Relationship
+from ..models import Relationship, Node
+from timeseries.models import ElectrolysisCell
 
 
-def graph(root_node):
+def graph(root_node: Node, tests: list[Relationship]):
     """
     Returns a JSON data structure that emulates the tree, with the root node at the top and its children underneath it.
 
@@ -16,11 +17,29 @@ def graph(root_node):
     tree['parent'] = None
     tree['children'] = []
 
-    # Add children to the tree
+    print(f"Tests: {tests}")
+
     for relationship in Relationship.objects.filter(source_id=root_node.id):
         child_node = relationship.target
-        child_node_data = graph(child_node)
-        child_node_data['parent'] = root_node.name
-        tree['children'].append(child_node_data)
+
+        if (child_node.cls.name == "Cell"):
+
+            qs = ElectrolysisCell.objects.filter(
+                test='Pulse Width Modulation').values_list('cell', flat=True).distinct()
+
+            if child_node.name in list(qs):
+                child_node_data = graph(child_node, tests)
+                child_node_data['parent'] = root_node.name
+                tree['children'].append(child_node_data)
+            else:
+                continue
+        else:
+            child_node_data = graph(child_node, tests)
+
+            if child_node_data == None:
+                continue
+
+            child_node_data['parent'] = root_node.name
+            tree['children'].append(child_node_data)
 
     return tree

@@ -5,9 +5,12 @@ from django.views.decorators.http import require_http_methods
 # Utilities
 from django.http import JsonResponse
 
-from .models import Ontology, Node
+from .models import Ontology, Node, Relationship
 
 from .ontology.graph import graph
+
+from timeseries.models import ElectrolysisCell
+from django.db.models import Count
 
 
 @csrf_exempt
@@ -35,6 +38,10 @@ def tree(request, id):
 
     source = Node.objects.filter(id=id).first()
 
-    tree = graph(source)
+    targets = list(Relationship.objects.filter(source__id=source.id).values())
+
+    print(targets)
+
+    tree = graph(source, targets)
 
     return JsonResponse({'data': tree})
