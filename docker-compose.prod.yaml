@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfiles/Dockerfile.prod.local
     env_file:
       - ./server/server/.env.local
-    entrypoint: ["bash", "./entrypoint.local.sh"]
+    entrypoint: ["bash", "./entrypoint.prod.sh"]
     ports:
       - "8000:8000"
     depends_on:
