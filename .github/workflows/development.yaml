@@ -1,0 +1,93 @@
+name: Build Development
+on:
+  workflow_dispatch:
+  push:
+    branches: ["development"]
+jobs:
+  build:
+    runs-on: [self-hosted]
+    environment: development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: development
+      - shell: bash
+        name: Environment Setup
+        # NextJS needs environment variables at build time
+
+        # Builds the Next app
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DEEPLYNX_KEY: ${{ secrets.DEEPLYNX_KEY }}
+          DEEPLYNX_SECRET: ${{ secrets.DEEPLYNX_SECRET }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          NEXT_PUBLIC_HOST: http://localhost:3000
+          DEEPLYNX_BASE: https://deeplynx.dev.inl.gov
+          DEEPLYNX_CONTAINER: "257"
+          DJANGO_PROXY: /server
+        run: |
+          cd $GITHUB_WORKSPACE/app
+          touch .env.production
+          echo DATA_BASE_URL=$DATABASE_URL >> .env.production
+          echo DEEPLYNX_KEY=$DEEPLYNX_KEY >> .env.production
+          echo DEEPLYNX_SECRET=$DEEPLYNX_SECRET >> .env.production
+          echo ENCRYPTION_KEY=$ENCRYPTION_KEY >> .env.production
+          echo NEXT_PUBLIC_HOST=$NEXT_PUBLIC_HOST >> .env.production
+          echo DEEPLYNX_BASE=$DEEPLYNX_BASE >> .env.production
+          echo DEEPLYNX_CONTAINER=$DEEPLYNX_CONTAINER >> .env.production
+          echo DJANGO_PROXY=$DJANGO_PROXY >> .env.production
+      - shell: bash
+        name: Container Build
+        env:
+          ACR_SP_USER: ${{ secrets.CI_SP_USER }}
+          ACR_SP_PASSWORD: ${{ secrets.CI_SP_PASSWORD }}
+          ACR_REGISTRY: ${{ secrets.CI_REGISTRY }}
+          ACR_PATH: ${{ secrets.CI_REGISTRY_PATH }}
+          ACR_SP_TENANT: ${{ secrets.CI_SP_TENANT }}
+          ACR_SUBSCRIPTION: ${{ secrets.CI_ACR_SUBSCRIPTION }}
+          GH_RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          az cloud set --name AzureUSGovernment
+          az login --service-principal -u $ACR_SP_USER -p $ACR_SP_PASSWORD --tenant $ACR_SP_TENANT
+          az account set --subscription $ACR_SUBSCRIPTION
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:faraday-dev-$GH_RUN_NUMBER --file app/Dockerfiles/Dockerfile.prod app
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:django-dev-$GITHUB_RUN_NUMBER --file server/Dockerfiles/Dockerfile.prod server
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:db-dev-$GITHUB_RUN_NUMBER --file postgres/Dockerfiles/Dockerfile.prod postgres
+  kubernetes:
+    needs: build
+    runs-on: [self-hosted]
+    environment: development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: development
+      - uses: azure/setup-kubectl@v3
+      - shell: bash
+        name: Manifest env substitute
+        env:
+          CI_REGISTRY: ${{ secrets.CI_REGISTRY }}
+          CI_REGISTRY_PATH: ${{ secrets.CI_REGISTRY_PATH }}
+          GH_RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          cd $GITHUB_WORKSPACE/kubernetes
+          envsubst < development.yaml > manifest.yaml
+      - uses: azure/k8s-set-context@v3
+        name: Configure K8s
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG_DE_DEV }}
+          context: deploy-service-account
+      - uses: Azure/k8s-deploy@v4
+        name: Deploy K8s Workload
+        with:
+          resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
+          name: ${{ secrets.AKS_CLUSTER_NAME }}
+          namespace: faraday-dev
+          action: deploy
+          force: true
+          strategy: basic
+          manifests: |-
+            kubernetes/manifest.yaml
