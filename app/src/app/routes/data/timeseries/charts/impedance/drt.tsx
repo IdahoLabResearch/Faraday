@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 // Components
-import { ImpedanceTooltip } from "../../helpers/tooltips";
+import { DRTTooltip } from "../../helpers/tooltips";
 
 // Types
 import { DistributionRelaxationT } from "@/lib/types/statistics";
@@ -76,7 +76,7 @@ export function DRT(props: Props) {
               >
                 <Label value="gamma" angle={-90} position="left" dy={-45} />
               </YAxis>
-              <Tooltip content={(props) => <ImpedanceTooltip {...props} />} />
+              <Tooltip content={(props) => <DRTTooltip {...props} />} />
               <Legend verticalAlign="top" align="right" />
               {sweep === 1 ? (
                 <Line

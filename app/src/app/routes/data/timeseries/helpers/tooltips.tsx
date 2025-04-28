@@ -8,27 +8,21 @@ import {
   NameType,
 } from "recharts/types/component/DefaultTooltipContent";
 
+// IMPEDANCE
 export const ImpedanceTooltip = (props: TooltipProps<ValueType, NameType>) => {
   if (props.active && props.payload) {
-    const time = props.payload[0].payload.metadata.time;
+    const data = props.payload[0].payload.data;
     return (
       <>
-        <div className="bg-black prose text-white px-2">Time: {time} hours</div>
-        {props.payload.map(
-          (
-            payload: Payload<ValueType, NameType>,
-            _index: number,
-            _array: Payload<ValueType, NameType>[]
-          ) => {
-            return (
-              <>
-                <div className="bg-black prose text-white px-2">
-                  {payload.name}: {payload.value!}
-                </div>
-              </>
-            );
-          }
-        )}
+        {Object.entries(data).map(([key, value]: [string, unknown]) => {
+          return (
+            <>
+              <div className="bg-black prose text-white px-2">
+                {key}: {value as number} <br />
+              </div>
+            </>
+          );
+        })}
       </>
     );
   }
@@ -36,27 +30,42 @@ export const ImpedanceTooltip = (props: TooltipProps<ValueType, NameType>) => {
   return null;
 };
 
+export const DRTTooltip = (props: TooltipProps<ValueType, NameType>) => {
+  if (props.active && props.payload) {
+    const payload = props.payload[0].payload;
+    return (
+      <>
+        {Object.entries(payload).map(([key, value]: [string, unknown]) => {
+          return (
+            <>
+              <div className="bg-black prose text-white px-2">
+                {key}: {value as number}
+              </div>
+            </>
+          );
+        })}
+      </>
+    );
+  }
+
+  return null;
+};
+
+// PULSE WIDTH MODULATION
 export const PWMTooltip = (props: TooltipProps<ValueType, NameType>) => {
   if (props.active && props.payload && props.payload.length) {
-    const time = props.payload[0].payload.data.time;
+    const data = props.payload[0].payload.data;
     return (
       <>
-        <div className="bg-black prose text-white px-2">Time: {time} hours</div>
-        {props.payload.map(
-          (
-            payload: Payload<ValueType, NameType>,
-            _index: number,
-            _array: Payload<ValueType, NameType>[]
-          ) => {
-            return (
-              <>
-                <div className="bg-black prose text-white px-2">
-                  Current Density: {payload.value}
-                </div>
-              </>
-            );
-          }
-        )}
+        {Object.entries(data).map(([key, value]: [string, unknown]) => {
+          return (
+            <>
+              <div className="bg-black prose text-white px-2">
+                {key}: {value as number} <br />
+              </div>
+            </>
+          );
+        })}
       </>
     );
   }
@@ -64,32 +73,23 @@ export const PWMTooltip = (props: TooltipProps<ValueType, NameType>) => {
   return null;
 };
 
+// POTENTIOSTATIC
 export const PotentiostaticTooltip = (
   props: TooltipProps<ValueType, NameType>
 ) => {
   if (props.active && props.payload && props.payload.length) {
-    console.log(props.payload);
-    const time = props.payload[0].payload.data.time;
+    const data = props.payload[0].payload.data;
     return (
       <>
-        <div className="bg-black prose text-white px-2">
-          Time: {parseFloat(time).toFixed(3)} hours
-        </div>
-        {props.payload.map(
-          (
-            payload: Payload<ValueType, NameType>,
-            _index: number,
-            _array: Payload<ValueType, NameType>[]
-          ) => {
-            return (
-              <>
-                <div className="bg-black prose text-white px-2">
-                  {payload.name}: {payload.value}
-                </div>
-              </>
-            );
-          }
-        )}
+        {Object.entries(data).map(([key, value]: [string, unknown]) => {
+          return (
+            <>
+              <div className="bg-black prose text-white px-2">
+                {key}: {value as number} <br />
+              </div>
+            </>
+          );
+        })}
       </>
     );
   }
