@@ -1,0 +1,27 @@
+FROM node:lts-alpine AS build
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN apk update && apk upgrade
+RUN yarn 
+
+ENV VITE_DJANGO_SERVER=http://faraday-django-service
+
+RUN npm run build
+
+# production stage
+FROM nginx:stable-alpine AS production
+
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+RUN apk update && apk upgrade
+
+RUN chmod -R 755 /usr/share/nginx/html
+
+WORKDIR /etc/nginx/conf.d
+RUN rm default.conf
+COPY nginx.conf .
+
+CMD ["nginx", "-g", "daemon off;"]

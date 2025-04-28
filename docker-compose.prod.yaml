@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfiles/Dockerfile.prod.local
+    ports:
+      - "5173:5173"
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfiles/Dockerfile.prod.local
+    env_file:
+      - ./server/server/.env.local
+    entrypoint: ["bash", "./entrypoint.local.sh"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+  postgres:
+    build:
+      context: ./database
+      dockerfile: Dockerfiles/Dockerfile.prod.local
+    env_file:
+      - ./database/.env.local
+    ports:
+      - "5432:5432"
+  pgAdmin:
+    image: dpage/pgadmin4
+    env_file:
+      - ./database/.env.local
+    ports:
+      - "5050:80"

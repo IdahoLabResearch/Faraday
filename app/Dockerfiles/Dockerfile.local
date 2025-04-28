@@ -1,5 +1,8 @@
-FROM node:latest
- 	
+FROM node:lts-alpine
+	
+# Add missing packages
+RUN apk --no-check-certificate add wget ca-certificates
+
 # Configure INL certs and environment variables
 RUN wget -q -P /usr/local/share/ca-certificates/ https://certstore.inl.gov/pki/CAINLROOT_B64.crt
 RUN /usr/sbin/update-ca-certificates

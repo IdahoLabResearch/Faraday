@@ -1,0 +1,52 @@
+# Build stage
+FROM node:lts-alpine AS build
+
+# Add missing packages
+RUN apk --no-check-certificate add wget ca-certificates
+
+# Configure INL certs and environment variables
+RUN wget -q -P /usr/local/share/ca-certificates/ https://certstore.inl.gov/pki/CAINLROOT_B64.crt
+RUN /usr/sbin/update-ca-certificates
+ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs/
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN apk update && apk upgrade
+RUN yarn
+
+ENV VITE_DJANGO_SERVER=http://faraday-django-service
+
+RUN npm run build
+
+# pProduction stage
+FROM nginx:stable-alpine AS production
+	
+# Add missing packages
+RUN apk --no-check-certificate add wget ca-certificates
+
+# Configure INL certs and environment variables
+RUN wget -q -P /usr/local/share/ca-certificates/ https://certstore.inl.gov/pki/CAINLROOT_B64.crt
+RUN /usr/sbin/update-ca-certificates
+ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs/
+
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+RUN apk update && apk upgrade
+
+RUN chmod -R 755 /usr/share/nginx/html
+
+WORKDIR /etc/nginx/conf.d
+RUN rm default.conf
+COPY nginx.conf .
+
+CMD ["nginx", "-g", "daemon off;"]

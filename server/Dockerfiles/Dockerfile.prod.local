@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:latest
 
 WORKDIR  /usr/src/server
 
@@ -15,4 +15,4 @@ RUN pip install pip_system_certs --trusted-host files.pythonhosted.org --trusted
 RUN pip3 install -r requirements.txt
 RUN pip3 install gunicorn
 
-ENTRYPOINT /bin/bash ./entrypoint.prod.sh
+ENTRYPOINT ["/bin/bash", "./entrypoint.prod.sh"]
