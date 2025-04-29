@@ -1,5 +1,3 @@
-"use client";
-
 // Store
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { reportActions } from "@/lib/store/features/report";
@@ -11,105 +9,107 @@ import { Download } from "./download";
 import * as htmlToImage from "html-to-image";
 import { uxActions } from "@/lib/store/features/ux";
 
+// Types
+import { NodeT } from "@/lib/types/warehouse";
+
 export default function Compare() {
   // Store
   const storeDispatch = useAppDispatch();
-  const comparedCells: Array<any> = useAppSelector(
-    (state) => state.report.cells
+  const comparison: Array<NodeT> = useAppSelector(
+    (state) => state.report.comparison
   );
-  const cell: { cell: string } = useAppSelector(
-    (state) => state.warehouse.cell!
-  );
+  const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
   const snackbar: boolean = useAppSelector((state) => state.ux.snackbar);
 
   const handleFab = () => {
     storeDispatch(uxActions.snackbar(!snackbar));
   };
 
-  const addCell = () => {
-    storeDispatch(reportActions.addCell(cell.cell));
+  const addNode = () => {
+    storeDispatch(reportActions.addComparison(leaf));
 
     const chart = document.getElementById("impedance-chart")! as HTMLElement;
 
     chart.style.stroke = "black";
 
     htmlToImage.toPng(chart).then((base64: string) => {
-      storeDispatch(reportActions.addChart({ cell: cell.cell, data: base64 }));
+      storeDispatch(reportActions.addChart({ node: leaf, data: base64 }));
     });
 
     chart.style.stroke = "";
   };
-  const removeCell = () => {
-    storeDispatch(reportActions.removeCell(cell.cell));
-    storeDispatch(reportActions.removeChart(cell.cell));
+
+  const removeNode = () => {
+    storeDispatch(reportActions.removeComparison(leaf));
+    storeDispatch(reportActions.removeChart(leaf));
   };
 
   return (
     <>
-      <div className="card bg-base-200 w-1/2 absolute bottom-0 left-0">
+      <div className="card bg-base-200 w-1/2 absolute bottom-0 left-0 -z-10">
         <div className="card-body">
           <h2 className="card-title">
-            <small>{cell.cell}</small>
+            <small>{leaf.name}</small>
           </h2>
           <div>
             <div className="grid grid-cols-12 justify-start">
               <div className="col-span-5">
                 <div className="prose">
-                  {comparedCells.includes(cell.cell) ? (
-                    <p>Remove {cell.cell} from comparison</p>
+                  {comparison.length > 0 && comparison.includes(leaf) ? (
+                    <p>Remove {leaf.name} from comparison</p>
                   ) : (
-                    <p>Add {cell.cell} to comparison</p>
+                    <p>Add {leaf.name} to comparison</p>
                   )}
                 </div>
               </div>
               <div className="col-span-5">
                 <div className="prose">
-                  {comparedCells.length ? (
+                  {comparison.length ? (
                     <p>Faraday is comparing these cells:</p>
                   ) : null}
                 </div>
               </div>
               <div className="col-span-2">
                 <div className="prose">
-                  {comparedCells.length ? <p>Generate a report</p> : null}
+                  {comparison.length ? <p>Generate a report</p> : null}
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-12">
               <div className="col-span-5">
                 <div className="prose">
-                  {!comparedCells.includes(cell.cell) ? (
+                  {!comparison.includes(leaf) ? (
                     <button
                       className="btn btn-sm btn-success"
-                      onClick={addCell}
+                      onClick={addNode}
                     >
-                      Add {cell.cell}
+                      Add {leaf.name}
                     </button>
                   ) : (
                     <button
                       className="btn btn-sm btn-error"
-                      onClick={removeCell}
+                      onClick={removeNode}
                     >
-                      Remove {cell.cell}
+                      Remove {leaf.name}
                     </button>
                   )}
                 </div>
               </div>
               <div className="col-span-5">
                 <div className="prose">
-                  {comparedCells.map((cell, index) => {
+                  {comparison.map((node: NodeT, index: number) => {
                     return (
                       // Iterate through the array of selected cells strings, stripping out their quotation marks and give them a comma delimiter
-                      <p key={cell.cell}>
+                      <p key={index}>
                         {index > 0 ? ", " : null}
-                        {JSON.stringify(cell).replace(/['"]+/g, "")}
+                        {node.name}
                       </p>
                     );
                   })}
                 </div>
               </div>
               <div className="col-span-2 justify-start">
-                {comparedCells.length ? <Download /> : null}
+                {comparison.length ? <Download /> : null}
               </div>
             </div>
           </div>

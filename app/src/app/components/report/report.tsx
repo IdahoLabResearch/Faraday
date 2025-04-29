@@ -4,8 +4,11 @@ import { Document, Page, Text, View, Image } from "@react-pdf/renderer";
 // Styles
 import { styles } from "./styles";
 
+// Types
+import { NodeT } from "@/lib/types/warehouse";
+
 type PropsT = {
-  imgsrc: Array<{ cell: string; data: string }>;
+  imgsrc: Array<{ node: NodeT; data: string }>;
 };
 
 function Report(props: PropsT) {
@@ -16,11 +19,11 @@ function Report(props: PropsT) {
       <Page style={styles.page}>
         <View>
           <Text style={styles.header}>Faraday Report</Text>
-          {imgsrc
+          {imgsrc.length
             ? imgsrc.map((img) => {
                 return (
-                  <View key={img.cell}>
-                    <Text>{img.cell}</Text>
+                  <View key={img.node.name}>
+                    <Text>{img.node.name}</Text>
                     <Image src={img.data} />
                   </View>
                 );

@@ -3,37 +3,39 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Types
 import { PayloadAction } from "@reduxjs/toolkit";
+import { NodeT } from "@/lib/types/warehouse";
 
 type State = {
-  charts: Array<{ cell: string; data: string }>;
-  cells: Array<string>;
+  charts: Array<{ node: NodeT; data: string }>;
+  comparison: Array<NodeT>;
 };
 
 const initialState: State = {
   charts: [],
-  cells: [],
+  comparison: [],
 };
 
 const reportSlice = createSlice({
   name: "report",
   initialState: initialState,
   reducers: {
-    addChart: (
-      state,
-      action: PayloadAction<{ cell: string; data: string }>
-    ) => {
+    addChart: (state, action: PayloadAction<{ node: NodeT; data: string }>) => {
       state.charts = [...state.charts, action.payload];
     },
-    addCell: (state, action: PayloadAction<string>) => {
-      state.cells = [...state.cells, action.payload];
+    addComparison: (state, action: PayloadAction<NodeT>) => {
+      state.comparison = [...state.comparison, action.payload];
     },
-    removeCell: (state, action: PayloadAction<string>) => {
+    removeComparison: (state, action: PayloadAction<NodeT>) => {
       const remove = action.payload;
-      state.cells = state.cells.filter((cell) => cell !== remove);
+      state.comparison = state.comparison.filter(
+        (node) => node.id !== remove.id
+      );
     },
-    removeChart: (state, action: PayloadAction<string>) => {
+    removeChart: (state, action: PayloadAction<NodeT>) => {
       const remove = action.payload;
-      state.charts = state.charts.filter((chart) => chart.cell !== remove);
+      state.charts = state.charts.filter(
+        (chart) => chart.node.id !== remove.id
+      );
     },
   },
 });

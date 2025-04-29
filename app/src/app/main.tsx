@@ -4,6 +4,10 @@ import { StrictMode } from "react";
 // Styles
 import "./index.css";
 
+import { Buffer } from "buffer";
+
+globalThis.Buffer = Buffer;
+
 // React Router
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
