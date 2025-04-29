@@ -155,7 +155,7 @@ export function Visualization(props: Props) {
       </div>
       <details className="dropdown">
         <summary className="btn m-1">Click to Visualize Sweeps</summary>
-        <ul className="menu dropdown-content bg-base-200 rounded-box z-[1] w-52 shadow">
+        <ul className="menu dropdown-content bg-base-200 rounded-box w-52 z-auto shadow">
           <li
             onClick={() => handleOptionSelect(1)}
             className={`p-2 ${
