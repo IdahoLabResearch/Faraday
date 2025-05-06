@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 // Types
 import { TooltipProps } from "recharts";
 import {
-  Payload,
   ValueType,
   NameType,
 } from "recharts/types/component/DefaultTooltipContent";
