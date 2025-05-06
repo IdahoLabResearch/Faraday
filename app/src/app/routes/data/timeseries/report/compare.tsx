@@ -96,14 +96,14 @@ export default function Compare() {
                 </div>
               </div>
               <div className="col-span-5">
-                <div className="prose">
+                <div className="prose flex">
                   {comparison.map((node: NodeT, index: number) => {
                     return (
                       // Iterate through the array of selected cells strings, stripping out their quotation marks and give them a comma delimiter
-                      <p key={index}>
+                      <small key={index}>
                         {index > 0 ? ", " : null}
                         {node.name}
-                      </p>
+                      </small>
                     );
                   })}
                 </div>
