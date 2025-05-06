@@ -52,9 +52,9 @@ jobs:
           az cloud set --name AzureUSGovernment
           az login --service-principal -u $ACR_SP_USER -p $ACR_SP_PASSWORD --tenant $ACR_SP_TENANT
           az account set --subscription $ACR_SUBSCRIPTION
-          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:faraday-dev-$GH_RUN_NUMBER --file app/Dockerfiles/Dockerfile.prod app
-          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:django-dev-$GITHUB_RUN_NUMBER --file server/Dockerfiles/Dockerfile.prod server
-          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:db-dev-$GITHUB_RUN_NUMBER --file postgres/Dockerfiles/Dockerfile.prod postgres
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:app-$GH_RUN_NUMBER --file app/Dockerfiles/Dockerfile.prod app
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:server-$GITHUB_RUN_NUMBER --file server/Dockerfiles/Dockerfile.prod server
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:db-$GITHUB_RUN_NUMBER --file postgres/Dockerfiles/Dockerfile.prod postgres
   kubernetes:
     needs: build
     runs-on: [self-hosted]
