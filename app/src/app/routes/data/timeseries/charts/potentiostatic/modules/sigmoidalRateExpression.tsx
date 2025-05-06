@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "@/lib/store/hooks";
 
 // Functions
-import { SigmoidRegression } from "@/lib/client/faraday";
+import { NoorSigmoidRegression } from "@/lib/client/faraday";
 import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
 
 // Types
@@ -47,8 +47,9 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
   }, [sigmoid]);
 
   const handleSigmoid = async () => {
-    const response = await SigmoidRegression(leaf.name, timeseries);
-    setSigmoid(response);
+    const response = await NoorSigmoidRegression(leaf.name, timeseries);
+    console.log(response);
+    // setSigmoid(response);
   };
 
   return (
