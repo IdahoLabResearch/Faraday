@@ -27,9 +27,6 @@ import { NodeT } from "@/lib/types/warehouse";
 // Styles
 import { charts } from "../../styles";
 
-// Data
-// import { sigmoid_data } from "./sigmoid";
-
 type PropsT = {
   timeseries: Array<PotentiostaticDataT>;
 };
@@ -76,6 +73,8 @@ function zipMechanisms(
 
 export const SigmoidalRateExpressionModule = (props: PropsT) => {
   const timeseries = props.timeseries;
+
+  const [wait, setWait] = useState<boolean>(false);
   const [ticks, setTicks] = useState<Array<number>>();
 
   // Sigmoid Data
@@ -143,10 +142,13 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
   }, [sigmoid, timeseries]);
 
   const handleSigmoid = async () => {
+    setWait(true);
     const response: SigmoidalRateExpressionI = await NoorSigmoidRegression(
       leaf.name,
       timeseries
     );
+
+    setWait(false);
     setSigmoid(response);
   };
 
@@ -244,6 +246,13 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
             ) : null}
           </LineChart>
         </>
+      ) : null}
+      {wait ? (
+        <div className="skeleton w-full h-48">
+          <div className="w-full h-full flex justify-center items-center">
+            Please wait, this regression can take a few minutes
+          </div>
+        </div>
       ) : null}
     </>
   );
