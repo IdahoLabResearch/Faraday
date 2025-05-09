@@ -6,48 +6,104 @@ import { useAppSelector } from "@/lib/store/hooks";
 
 // Functions
 import { NoorSigmoidRegression } from "@/lib/client/faraday";
-import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Label,
+  Legend,
+  Line,
+  LineChart,
+  Scatter,
+  ScatterChart,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // Types
 import { PotentiostaticDataT } from "@/lib/types/timeseries";
+import {
+  SigmoidalRateExpressionI,
+  SigmoidRegressionI,
+} from "@/lib/types/statistics";
 import { NodeT } from "@/lib/types/warehouse";
+
+// Styles
+import { charts } from "../../styles";
+
+// Data
+import { sigmoid_data } from "./sigmoid";
 
 type PropsT = {
   timeseries: Array<PotentiostaticDataT>;
 };
 
+function zip(
+  x: Array<number>,
+  y: Array<number>
+): Array<{ time: number; value: number }> {
+  if (x.length !== y.length) {
+    throw new Error("Input arrays must be of the same length");
+  }
+
+  return x.map((time, index) => ({ time, value: y[index] }));
+}
+
 export const SigmoidalRateExpressionModule = (props: PropsT) => {
   const timeseries = props.timeseries;
   const [ticks, setTicks] = useState<Array<number>>();
-  const [sigmoid, setSigmoid] = useState<
-    | {
-        sre: Array<{ time: number; sigmoid_current_density: number }>;
-        regression: Array<{ time: number; regression: number }>;
-        coefficients: Array<number>;
-      }
+
+  // Sigmoid Data
+  const [sigmoid, setSigmoid] = useState<SigmoidalRateExpressionI | undefined>(
+    sigmoid_data
+  );
+  // Sigmoid Metadata
+  const [regression, setRegression] = useState<
+    | Array<{
+        time: number;
+        value: number;
+      }>
     | undefined
   >();
+  const [mechanisms, setMechanisms] = useState<
+    Array<Array<number>> | undefined
+  >();
+
   const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
   useEffect(() => {
     if (sigmoid) {
-      const ticks = Array.from(
-        new Set(
-          sigmoid.sre.map(
-            (point: { time: number; sigmoid_current_density: number }) => {
-              const tick = Math.round(point.time);
-              return tick % 25 === 0 ? tick : 0;
-            }
-          )
-        )
-      );
+      const data: SigmoidRegressionI | undefined =
+        sigmoid.data.results_data.find((n) => {
+          return n.n_mechanisms == sigmoid.descriptors.best_mechanisms;
+        });
 
-      setTicks(ticks);
+      if (data) {
+        const ticks = Array.from(
+          new Set(
+            data.downsampled_data.t_data_fit.map((time: number) => {
+              const tick = Math.round(time);
+              return tick % 25 === 0 ? tick : 0;
+            })
+          )
+        );
+
+        const regression: Array<{ time: number; value: number }> = zip(
+          data.downsampled_data.t_data_fit,
+          data.downsampled_data.life_metric_data_fit
+        );
+
+        setTicks(ticks);
+        setRegression(regression);
+        setMechanisms(data.mechanisms);
+        console.log(data);
+      }
     }
   }, [sigmoid]);
 
   const handleSigmoid = async () => {
-    const response = await NoorSigmoidRegression(leaf.name, timeseries);
+    const response: SigmoidalRateExpressionI = await NoorSigmoidRegression(
+      leaf.name,
+      timeseries
+    );
     console.log(response);
     // setSigmoid(response);
   };
@@ -59,62 +115,80 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
       </button>
       <br />
       <br />
-      {sigmoid ? (
+      {regression ? (
         <>
           <div className="prose">
             <h4>Sigmoidal Rate Expression</h4>
           </div>
           <br />
-          <LineChart
+          <ScatterChart
             width={730}
             height={250}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid strokeDasharray="3 3" stroke={charts.grid} />
             <XAxis
               dataKey="time"
               domain={["dataMin", "dataMax"]}
               tick={{ fontSize: ".75rem" }}
               ticks={ticks}
+              stroke={charts.axis}
               type="number"
-            />
+            >
+              <Label
+                value={"Time"}
+                stroke={charts.label}
+                position={"centerBottom"}
+                dy={25}
+              />
+            </XAxis>
             <YAxis
               unit={"mA"}
-              type={"number"}
               domain={["auto", "auto"]}
               tick={{ fontSize: ".75rem" }}
               tickFormatter={(value) => {
                 return value.toFixed(2).toString();
               }}
-            />
-            <Legend />
-            <Line
-              data={sigmoid.sre}
-              type="monotone"
-              name="Sigmoid Current Density"
-              dot={false}
-              dataKey="sigmoid_current_density"
-              stroke="palegoldenrod"
-            />
-            {sigmoid.regression ? (
-              <Line
-                data={sigmoid.regression}
-                type="monotone"
-                name="Regression"
-                dot={false}
-                dataKey="regression"
-                stroke="aliceblue"
+              stroke={charts.axis}
+              type={"number"}
+            >
+              <Label
+                value={"Life Metric"}
+                stroke={charts.label}
+                position={"centerBottom"}
+                angle={-90}
+                dx={-40}
               />
-            ) : null}
-          </LineChart>
-          <br />
-          <div className="prose">
-            <h5>Coefficients</h5>
-          </div>
-          <div className="grid grid-rows-2 prose">
-            <small>Slope: {sigmoid.coefficients[0].toExponential(2)}</small>
-            <small>Intercept: {sigmoid.coefficients[1].toExponential(2)}</small>
-          </div>
+            </YAxis>
+            <Legend verticalAlign="top" align="right" />
+            <Scatter
+              data={regression}
+              type="monotone"
+              name="Life Metric"
+              line
+              shape={() => {
+                return <></>;
+              }}
+              dataKey="value"
+              fill="white"
+            />
+            {mechanisms
+              ? mechanisms.map((m: Array<number>, index: number) => {
+                  return (
+                    <>
+                      <Scatter
+                        key={index}
+                        data={m}
+                        type="monotone"
+                        name={`Mechanism ${index}`}
+                        dataKey="value"
+                        fill="white"
+                      />
+                    </>
+                  );
+                })
+              : null}
+          </ScatterChart>
         </>
       ) : null}
     </>

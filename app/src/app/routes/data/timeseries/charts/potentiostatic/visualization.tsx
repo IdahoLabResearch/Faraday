@@ -132,6 +132,7 @@ export function Visualization(props: Props) {
                 angle={-90}
                 position={"left"}
                 dy={-65}
+                dx={-5}
               />
             </YAxis>
             <Tooltip
