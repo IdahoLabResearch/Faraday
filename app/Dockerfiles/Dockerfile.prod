@@ -7,7 +7,7 @@ COPY . .
 RUN apk update && apk upgrade
 RUN yarn 
 
-ENV VITE_DJANGO_SERVER=http://faraday-django-service
+ENV VITE_DJANGO_PROXY=http://server
 
 RUN npm run build
 
