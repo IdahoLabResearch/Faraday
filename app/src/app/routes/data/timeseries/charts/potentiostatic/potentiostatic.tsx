@@ -35,7 +35,7 @@ export function Potentiostatic(props: Props) {
   const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
   useEffect(() => {
-    setModule(undefined);
+    setModule("Select a Python Module");
     setRegression(undefined);
   }, [leaf]);
 
@@ -60,15 +60,20 @@ export function Potentiostatic(props: Props) {
         <div>
           <select
             className="select select-bordered w-full max-w-xs"
+            value={module}
             onChange={(event) => {
               setModule(event.target.value);
             }}
           >
-            <option disabled selected>
+            <option disabled selected value={"Select a Python Module"}>
               Select a Python Module
             </option>
             {analytics.map((module) => {
-              return <option key={module}>{module}</option>;
+              return (
+                <option key={module} value={module}>
+                  {module}
+                </option>
+              );
             })}
           </select>
           <br />
