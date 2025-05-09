@@ -12,8 +12,6 @@ import {
   Legend,
   Line,
   LineChart,
-  Scatter,
-  ScatterChart,
   XAxis,
   YAxis,
 } from "recharts";
@@ -30,7 +28,7 @@ import { NodeT } from "@/lib/types/warehouse";
 import { charts } from "../../styles";
 
 // Data
-import { sigmoid_data } from "./sigmoid";
+// import { sigmoid_data } from "./sigmoid";
 
 type PropsT = {
   timeseries: Array<PotentiostaticDataT>;
@@ -47,14 +45,43 @@ function zip(
   return x.map((time, index) => ({ time, value: y[index] }));
 }
 
+function zipMechanisms(
+  arrays: Array<Array<{ time: number; value: number }>>
+): Array<{ time: number; value: number }> {
+  // Get the time values from the first inner array
+  const timeValues = arrays[0].map((_, i) => arrays[0][i].time);
+
+  // Initialize the result array
+  const result: Array<{ time: number; value: number }> = [];
+
+  // Iterate over the length of the first inner array
+  for (let i = 0; i < arrays[0].length; i++) {
+    // Initialize the sum of values for the current index
+    let sum = 0;
+
+    // Iterate over the inner arrays
+    for (const array of arrays) {
+      // If the current index is within the bounds of the inner array, add its value to the sum
+      if (i < array.length) {
+        sum += array[i].value;
+      }
+    }
+
+    // Add the sum and the time at the current index to the result array
+    result.push({ time: timeValues[i], value: sum });
+  }
+
+  return result;
+}
+
 export const SigmoidalRateExpressionModule = (props: PropsT) => {
   const timeseries = props.timeseries;
   const [ticks, setTicks] = useState<Array<number>>();
 
   // Sigmoid Data
-  const [sigmoid, setSigmoid] = useState<SigmoidalRateExpressionI | undefined>(
-    sigmoid_data
-  );
+  const [sigmoid, setSigmoid] = useState<
+    SigmoidalRateExpressionI | undefined
+  >();
   // Sigmoid Metadata
   const [regression, setRegression] = useState<
     | Array<{
@@ -64,8 +91,9 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
     | undefined
   >();
   const [mechanisms, setMechanisms] = useState<
-    Array<Array<number>> | undefined
+    Array<Array<{ time: number; value: number }>> | undefined
   >();
+  const [total, setTotal] = useState<Array<{ time: number; value: number }>>();
 
   const leaf: NodeT = useAppSelector((state) => state.warehouse.leaf!);
 
@@ -77,35 +105,49 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
         });
 
       if (data) {
+        // Processing
         const ticks = Array.from(
           new Set(
-            data.downsampled_data.t_data_fit.map((time: number) => {
-              const tick = Math.round(time);
-              return tick % 25 === 0 ? tick : 0;
+            timeseries.map((record: PotentiostaticDataT) => {
+              const time = Math.round(record.data.time);
+              return time % 25 === 0 ? time : 0;
             })
           )
         );
 
+        // Downsample Regression
         const regression: Array<{ time: number; value: number }> = zip(
           data.downsampled_data.t_data_fit,
           data.downsampled_data.life_metric_data_fit
         );
 
+        // Mechanisms
+        const time = timeseries.map((record: PotentiostaticDataT) => {
+          return record.data.time;
+        });
+
+        const m: Array<Array<{ time: number; value: number }>> =
+          data.mechanisms.map((mechanism: Array<number>) => {
+            const z = zip(time, mechanism);
+            return z;
+          });
+
+        const total = zipMechanisms(m);
+        setTotal(total);
+
         setTicks(ticks);
         setRegression(regression);
-        setMechanisms(data.mechanisms);
-        console.log(data);
+        setMechanisms(m);
       }
     }
-  }, [sigmoid]);
+  }, [sigmoid, timeseries]);
 
   const handleSigmoid = async () => {
     const response: SigmoidalRateExpressionI = await NoorSigmoidRegression(
       leaf.name,
       timeseries
     );
-    console.log(response);
-    // setSigmoid(response);
+    setSigmoid(response);
   };
 
   return (
@@ -121,12 +163,13 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
             <h4>Sigmoidal Rate Expression</h4>
           </div>
           <br />
-          <ScatterChart
+          <LineChart
             width={730}
             height={250}
             margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke={charts.grid} />
+
             <XAxis
               dataKey="time"
               domain={["dataMin", "dataMax"]}
@@ -161,34 +204,45 @@ export const SigmoidalRateExpressionModule = (props: PropsT) => {
               />
             </YAxis>
             <Legend verticalAlign="top" align="right" />
-            <Scatter
+            <Line
               data={regression}
               type="monotone"
               name="Life Metric"
-              line
-              shape={() => {
-                return <></>;
-              }}
+              dot={false}
               dataKey="value"
-              fill="white"
+              stroke="palegoldenrod"
             />
             {mechanisms
-              ? mechanisms.map((m: Array<number>, index: number) => {
-                  return (
-                    <>
-                      <Scatter
+              ? mechanisms.map(
+                  (
+                    m: Array<{ time: number; value: number }>,
+                    index: number
+                  ) => {
+                    return (
+                      <Line
                         key={index}
                         data={m}
                         type="monotone"
-                        name={`Mechanism ${index}`}
+                        name={`Mechanism ${index + 1}`}
+                        dot={false}
                         dataKey="value"
-                        fill="white"
+                        stroke="white"
                       />
-                    </>
-                  );
-                })
+                    );
+                  }
+                )
               : null}
-          </ScatterChart>
+            {total ? (
+              <Line
+                data={total}
+                type="monotone"
+                name="Total"
+                dot={false}
+                dataKey="value"
+                stroke="white"
+              />
+            ) : null}
+          </LineChart>
         </>
       ) : null}
     </>
