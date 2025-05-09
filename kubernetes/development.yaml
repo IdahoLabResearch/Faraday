@@ -109,21 +109,6 @@ spec:
             - configMapRef:
                 name: faraday-cm
           env:
-            - name: DEEPLYNX_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: faraday-secrets
-                  key: DEEPLYNX_KEY
-            - name: DEEPLYNX_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: faraday-secrets
-                  key: DEEPLYNX_SECRET
-            - name: DEEPLYNX_EXPIRY
-              valueFrom:
-                secretKeyRef:
-                  name: faraday-secrets
-                  key: DEEPLYNX_EXPIRY
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -139,11 +124,6 @@ spec:
                 secretKeyRef:
                   name: faraday-secrets
                   key: SECRET_KEY
-            - name: ENCRYPTION_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: faraday-secrets
-                  key: ENCRYPTION_KEY
           image: ${CI_REGISTRY}/${CI_REGISTRY_PATH}:server-${GITHUB_RUN_NUMBER}
           imagePullPolicy: Always
           name: faraday-django
