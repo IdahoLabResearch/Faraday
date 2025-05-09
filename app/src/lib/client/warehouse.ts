@@ -33,7 +33,7 @@ export const FetchGraph = async (root_id: number) => {
   return await fetch(url, {
     method: "GET",
   }).then(async (response) => {
-    const graph: { data: GraphT } = await response.json();
+    const graph: { data: Array<GraphT> } = await response.json();
     // Return the children of the selected root
     return graph.data;
   });

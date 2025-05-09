@@ -1,0 +1,301 @@
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: faraday-dev
+
+# ConfigMap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faraday-cm
+  namespace: faraday-dev
+data:
+  ALLOWED_HOSTS: "*"
+  ALLOWED_ORIGINS: "http://*"
+  DEBUG: "True"
+  POSTGRES_NAME: "faraday"
+  POSTGRES_HOST: "faraday-db-service"
+  POSTGRES_PORT: "5432"
+
+# APP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faraday-app
+  namespace: faraday-dev
+spec:
+  selector:
+    matchLabels:
+      app: faraday-app
+  template:
+    metadata:
+      labels:
+        app: faraday-app
+    spec:
+      containers:
+        - name: faraday
+          image: ${CI_REGISTRY}/${CI_REGISTRY_PATH}:app-${GH_RUN_NUMBER}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: faraday-app-service
+  namespace: faraday-dev
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: faraday-app
+---
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: faraday-app-ingress
+  namespace: faraday-dev
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  rules:
+    - host: faraday.dev.inl.gov
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: faraday-app-service
+                port:
+                  number: 80
+
+# Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faraday-django
+  namespace: faraday-dev
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: faraday-django
+  template:
+    metadata:
+      labels:
+        app: faraday-django
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: faraday-cm
+          env:
+            - name: DEEPLYNX_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: DEEPLYNX_KEY
+            - name: DEEPLYNX_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: DEEPLYNX_SECRET
+            - name: DEEPLYNX_EXPIRY
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: DEEPLYNX_EXPIRY
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: POSTGRES_PASSWORD
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: SECRET_KEY
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: ENCRYPTION_KEY
+          image: ${CI_REGISTRY}/${CI_REGISTRY_PATH}:server-${GITHUB_RUN_NUMBER}
+          imagePullPolicy: Always
+          name: faraday-django
+          args:
+            - /bin/sh
+            - -c
+            - ./entrypoint.prod.sh
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: "3500m"
+              memory: "2048M"
+      restartPolicy: Always
+
+# Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: faraday-dev
+  name: faraday-django-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+    - name: api
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: faraday-django
+
+# Ingress
+---
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  name: faraday-django-ingress
+  namespace: faraday-dev
+spec:
+  rules:
+    - host: faraday.dev.inl.gov
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: faraday-django-service
+                port:
+                  number: 80
+          - path: /admin(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: faraday-django-service
+                port:
+                  number: 8000
+---
+
+
+# DATABASE
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: faraday-dev
+  labels:
+    app: faraday-db
+  name: faraday-db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: faraday-db
+  template:
+    metadata:
+      labels:
+        app: faraday-db
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: faraday-cm
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: faraday-secrets
+                  key: POSTGRES_PASSWORD
+          image: ${CI_REGISTRY}/${CI_REGISTRY_PATH}:db-${GITHUB_RUN_NUMBER}
+          imagePullPolicy: Always
+          name: faraday-db
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              subPath: postgres
+              name: faraday-pv
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "1024M"
+      restartPolicy: Always
+      volumes:
+        - name: faraday-pv
+          persistentVolumeClaim:
+            claimName: faraday-pvc
+---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: faraday-dev
+  labels:
+    app: faraday-db
+  name: faraday-db-service
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: faraday-db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: faraday-dev
+  labels:
+    app: faraday-db
+  name: faraday-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+
