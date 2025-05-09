@@ -44,7 +44,7 @@ spec:
               memory: "4Gi"
               cpu: "500m"
           ports:
-            - containerPort: 3000
+            - containerPort: 80
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -57,7 +57,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 3000
+      targetPort: 80
   selector:
     app: faraday-app
 ---
@@ -165,7 +165,7 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: faraday-dev
-  name: faraday-django-service
+  name: server
 spec:
   ports:
     - name: http

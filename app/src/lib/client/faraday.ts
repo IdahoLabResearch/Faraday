@@ -57,6 +57,34 @@ export const SigmoidRegression = async (
   }
 };
 
+export const NoorSigmoidRegression = async (
+  name: string,
+  timeseries: Array<PotentiostaticDataT>
+) => {
+  try {
+    const response = await fetch(`${server}/timeseries/statistics/noor`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        timeseries: timeseries,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    return json.data;
+  } catch (error) {
+    console.log("Error: " + error);
+    return error;
+  }
+};
+
 export const LinearRegression = async (data: Array<PotentiostaticDataT>) => {
   try {
     const response = await fetch(`${server}/timeseries/statistics/linear`, {

@@ -823,7 +823,7 @@ def get_results_data(
         n_runs (int): Number of runs.
 
     Returns:
-        list: A list of dictionaries containing the results data.
+        dict: A dictionary having the cell name and a dictionary of results including fitted data, downsampled data, and mechanisms
     """
     results_data = []
 
@@ -838,12 +838,12 @@ def get_results_data(
         fitted_data, mechanisms = SRE(t_data, *params)
 
         result_entry = {
-            "fitted_data": fitted_data.tolist(),
+            "fitted_data": fitted_data,
             "downsampled_data": {
-                "t_data_fit": t_data_fit.tolist(),
-                "life_metric_data_fit": life_metric_data_fit.tolist(),
+                "t_data_fit": t_data_fit,
+                "life_metric_data_fit": life_metric_data_fit,
             },
-            "mechanisms": [mechanism.tolist() for mechanism in mechanisms],
+            "mechanisms": [mechanism for mechanism in mechanisms],
             "n_mechanisms": result["n_mechanisms"],
         }
 

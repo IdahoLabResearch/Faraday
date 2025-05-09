@@ -33,7 +33,6 @@ export const LinearRegressionModule = (props: PropsT) => {
   // Handlers
   const handleRegression = async () => {
     const response = await LinearRegression(timeseries);
-    console.log(response);
     setRegression(response);
   };
 

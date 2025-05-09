@@ -54,7 +54,7 @@ jobs:
           az account set --subscription $ACR_SUBSCRIPTION
           az acr build --registry $ACR_REGISTRY --image $ACR_PATH:app-$GH_RUN_NUMBER --file app/Dockerfiles/Dockerfile.prod app
           az acr build --registry $ACR_REGISTRY --image $ACR_PATH:server-$GITHUB_RUN_NUMBER --file server/Dockerfiles/Dockerfile.prod server
-          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:db-$GITHUB_RUN_NUMBER --file postgres/Dockerfiles/Dockerfile.prod postgres
+          az acr build --registry $ACR_REGISTRY --image $ACR_PATH:db-$GITHUB_RUN_NUMBER --file database/Dockerfiles/Dockerfile.prod database
   kubernetes:
     needs: build
     runs-on: [self-hosted]

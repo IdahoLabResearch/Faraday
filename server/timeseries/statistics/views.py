@@ -30,7 +30,7 @@ def sigmoid_regression(request):
         return HttpResponse("Request missing cell name or timeseries data", status=400)
 
     cache_key = name
-    data = cache.get(cache_key)
+    response = cache.get(cache_key)
 
     if response is None:
         try:
@@ -46,11 +46,13 @@ def sigmoid_regression(request):
             life_metric_data = 1 - np.array(ratio)
 
             response = Noor_Sigmoid_Regression(name, time, life_metric_data)
-            cache.set(cache_key, data, 3600)  # Cache the result for 1 hour
+            cache.set(cache_key, response, 3600)  # Cache the result for 1 hour
         except Exception as e:
             return HttpResponse('Error processing cell data: {}'.format(e), status=500)
 
-    return JsonResponse({'data': data})
+    print(type(response))
+
+    return JsonResponse({'data': response})
 
 
 @csrf_exempt
@@ -59,7 +61,6 @@ def scipy_sigmoid_regression(request):
 
     body = json.loads(request.body)
 
-    name = body.get('name')
     timeseries = body.get('timeseries')
 
     data = [record.get('data') for record in timeseries]
