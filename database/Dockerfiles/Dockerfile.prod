@@ -1,5 +1,1 @@
 FROM postgres:latest
-
-WORKDIR /docker-entrypoint-initdb.d
-
-COPY ./postgres/init/warehouse.sql /docker-entrypoint-initdb.d/
