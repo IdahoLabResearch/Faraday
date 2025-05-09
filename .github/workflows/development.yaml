@@ -2,7 +2,7 @@ name: Build Development
 on:
   workflow_dispatch:
   push:
-    branches: ["prototyping"]
+    branches: ["development"]
 jobs:
   build:
     runs-on: [self-hosted]
@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: prototyping
+          ref: development
       - shell: bash
         name: Environment Setup
         # NextJS needs environment variables at build time
@@ -63,7 +63,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: prototyping
+          ref: development
       - uses: azure/setup-kubectl@v3
       - shell: bash
         name: Manifest env substitute
