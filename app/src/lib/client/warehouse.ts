@@ -1,5 +1,5 @@
 // Environment
-const base = import.meta.env.VITE_DJANGO_PROXY;
+const base = import.meta.env.VITE_DJANGO_PROXY!;
 
 // Types
 import { CategoryT, TypeT, BatchT, CellT } from "../types/warehouse";
