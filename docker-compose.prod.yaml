@@ -1,11 +1,11 @@
 services:
-  app:
+  faraday-app-service:
     build:
       context: ./app
       dockerfile: Dockerfiles/Dockerfile.prod.local
     ports:
       - "5173:5173"
-  server:
+  faraday-server-service:
     build:
       context: ./server
       dockerfile: Dockerfiles/Dockerfile.prod.local
@@ -16,7 +16,7 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
-  postgres:
+  faraday-db-service:
     build:
       context: ./database
       dockerfile: Dockerfiles/Dockerfile.prod.local
@@ -24,7 +24,7 @@ services:
       - ./database/.env.local
     ports:
       - "5432:5432"
-  pgAdmin:
+  faraday-pgadmin-service:
     image: dpage/pgadmin4
     env_file:
       - ./database/.env.local
