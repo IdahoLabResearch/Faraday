@@ -84,8 +84,15 @@ spec:
                 name: faraday-app-service
                 port:
                   number: 80
+          - path: /admin(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: faraday-server-service
+                port:
+                  number: 8000
 
-# Deployment
+# SERVER
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -138,8 +145,6 @@ spec:
               cpu: "3500m"
               memory: "8G"
       restartPolicy: Always
-
-# Service
 ---
 apiVersion: v1
 kind: Service
@@ -153,32 +158,6 @@ spec:
       targetPort: 8000
   selector:
     app: faraday-server
-
-# Ingress
----
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-  name: faraday-server-ingress
-  namespace: faraday-dev
-spec:
-  rules:
-    - host: faraday.dev.inl.gov
-      http:
-        paths:
-          - path: /admin(/|$)(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: faraday-server-service
-                port:
-                  number: 8000
 ---
 
 
