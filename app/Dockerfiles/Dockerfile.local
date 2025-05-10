@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:current-alpine
 	
 # Add missing packages
 RUN apk --no-check-certificate add wget ca-certificates

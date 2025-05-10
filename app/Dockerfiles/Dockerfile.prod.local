@@ -1,5 +1,5 @@
 # Build stage
-FROM node:lts-alpine AS build
+FROM node:current-alpine AS build
 
 # Add missing packages
 RUN apk --no-check-certificate add wget ca-certificates
@@ -20,7 +20,7 @@ COPY . .
 RUN apk update && apk upgrade
 RUN yarn
 
-ENV VITE_DJANGO_SERVER=http://faraday-django-service
+ENV VITE_DJANGO_PROXY=/server
 
 RUN npm run build
 

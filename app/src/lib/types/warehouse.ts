@@ -19,28 +19,6 @@ export type GraphT = {
   children: Array<GraphT>;
 };
 
-export type CategoryT = {
-  id: number;
-  name: string;
-};
-
-export type TypeT = {
-  id: number;
-  category_id: number;
-  name: string;
-};
-
-export type BatchT = {
-  id: number;
-  name: string;
-};
-
-export type CellT = {
-  id: number;
-  batch_id: number;
-  name: string;
-};
-
 export type UserT = {
   id: number;
   last_login: Date;

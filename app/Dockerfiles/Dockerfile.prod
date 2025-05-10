@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS build
+FROM node:current-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -7,7 +7,7 @@ COPY . .
 RUN apk update && apk upgrade
 RUN yarn 
 
-ENV VITE_DJANGO_PROXY /server
+ENV VITE_DJANGO_PROXY=/server
 
 RUN npm run build
 

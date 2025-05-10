@@ -156,6 +156,9 @@ spec:
     - name: http
       port: 80
       targetPort: 8000
+    - name: api
+      port: 8000
+      targetPort: 8000
   selector:
     app: faraday-server
 ---

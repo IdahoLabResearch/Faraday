@@ -4,18 +4,21 @@ services:
       context: ./app
       dockerfile: Dockerfiles/Dockerfile.prod.local
     ports:
-      - "5173:5173"
+      - "5173:80"
+    depends_on:
+      - faraday-server-service
   faraday-server-service:
     build:
       context: ./server
       dockerfile: Dockerfiles/Dockerfile.prod.local
     env_file:
-      - ./server/server/.env.local
+      - ./server/server/.env.production
     entrypoint: ["bash", "./entrypoint.prod.sh"]
     ports:
       - "8000:8000"
+      - "80:8000"
     depends_on:
-      - postgres
+      - faraday-db-service
   faraday-db-service:
     build:
       context: ./database

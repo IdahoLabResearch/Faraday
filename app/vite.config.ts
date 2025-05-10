@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
+// Proxy
+import { proxy } from "./vite.proxy.ts";
+
 dotenv.config();
 
 // https://vite.dev/config/
@@ -21,5 +24,7 @@ export default defineConfig({
       host: "localhost",
       port: 5173,
     },
+    cors: true,
+    proxy: proxy,
   },
 });
