@@ -7,7 +7,7 @@ COPY . .
 RUN apk update && apk upgrade
 RUN yarn 
 
-ENV VITE_DJANGO_PROXY http://server
+ENV VITE_DJANGO_PROXY /server
 
 RUN npm run build
 
