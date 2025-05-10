@@ -46,7 +46,8 @@ def sigmoid_regression(request):
             life_metric_data = 1 - np.array(ratio)
 
             response = Noor_Sigmoid_Regression(name, time, life_metric_data)
-            cache.set(cache_key, response, 3600)  # Cache the result for 1 hour
+            # Cache the result for 1 year. to-do: just turn off cache expiry
+            cache.set(cache_key, response, 31536000)
         except Exception as e:
             return HttpResponse('Error processing cell data: {}'.format(e), status=500)
 
