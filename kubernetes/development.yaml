@@ -142,8 +142,8 @@ spec:
             - containerPort: 8000
           resources:
             limits:
-              cpu: "3500m"
-              memory: "8G"
+              cpu: "8"
+              memory: "16G"
       restartPolicy: Always
 ---
 apiVersion: v1
