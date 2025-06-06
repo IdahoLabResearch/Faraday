@@ -39,7 +39,7 @@ const Ontologies = () => {
       <div className="p-4">
         <div className="prose flex flex-col justify-center align-center">
           <h3>Data Providers</h3>
-          <p>Select a dataset being exploring</p>
+          <p>Select a dataset begin exploring</p>
         </div>
         <div className="divider"></div>
         {ontologies ? (
