@@ -1,9 +1,6 @@
 # Models
 from django.db import models
 
-# Validation
-from django.core.exceptions import ValidationError
-
 
 class Ontology(models.Model):
     """
@@ -35,7 +32,7 @@ class Class(models.Model):
     """
     Model for node class
     """
-    name = models.CharField(max_length=25, unique=True)
+    name = models.CharField(max_length=25)
     description = models.CharField(max_length=25)
     ontology = models.ForeignKey(
         Ontology, related_name='classes', on_delete=models.CASCADE)
@@ -43,9 +40,10 @@ class Class(models.Model):
     class Meta:
         verbose_name = "class"
         verbose_name_plural = "classes"
+        unique_together = ['name', 'ontology']
 
     def __str__(self):
-        return self.name
+        return f"{self.ontology}: {self.name}"
 
 
 class Node(models.Model):
@@ -66,7 +64,7 @@ class Node(models.Model):
         unique_together = ('name', 'cls', 'ontology')
 
     def __str__(self):
-        return f"{self.cls.name} {self.name}"
+        return f"{self.ontology}: {self.name} ({self.cls})"
 
 
 class Relationship(models.Model):

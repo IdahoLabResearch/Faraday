@@ -1,19 +1,27 @@
 from django.contrib import admin
 from .models import Node, Relationship, Ontology, Class
+from django import forms
 
 
-@admin.register(Node)
-class NodeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'cls', 'ontology']
-    search_fields = ['name', 'cls', 'ontology']
-    list_filter = ['cls']
+class RelationshipForm(forms.ModelForm):
+
+    class Meta:
+        model = Relationship
+        fields = ['ontology', 'source', 'target']
 
 
 @admin.register(Relationship)
 class RelationshipAdmin(admin.ModelAdmin):
-    list_display = ['source', 'target', 'ontology']
-    search_fields = ['ontology']
+    list_display = ['ontology', 'source', 'target']
     list_filter = ['ontology']
+
+    form = RelationshipForm
+
+
+@admin.register(Node)
+class NodeAdmin(admin.ModelAdmin):
+    list_display = ['ontology', 'name', 'cls']
+    list_filter = ['cls']
 
 
 @admin.register(Ontology)
@@ -24,6 +32,5 @@ class OntologyAdmin(admin.ModelAdmin):
 
 @admin.register(Class)
 class ClassAdmin(admin.ModelAdmin):
-    list_display = ['name', 'ontology']
-    search_fields = ['name', 'ontology']
-    list_filter = ['name', 'ontology']
+    list_display = ['ontology', 'name', ]
+    list_filter = ['ontology', 'name', ]
