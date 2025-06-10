@@ -10,7 +10,7 @@ import { GraphT, UserT, NodeT, OntologyT } from "@/lib/types/warehouse";
 
 // Functions
 import { FetchGraph } from "@/lib/client/warehouse";
-import { FetchCellData } from "@/lib/client/timeseries";
+import { FetchCellData, FetchStackData } from "@/lib/client/timeseries";
 
 // Components
 import { RenderTree } from "./Tree";
@@ -49,6 +49,22 @@ const Graph = () => {
         provider: leaf.ontology,
         cell: leaf.name,
         batch: leaf.parent,
+      });
+      storeDispatch(
+        warehouseActions.data({
+          type: ancestor,
+          timeseries: data,
+        })
+      );
+    }
+
+    if (leaf.cls === "Stack") {
+      storeDispatch(warehouseActions.leaf(leaf));
+
+      const data = await FetchStackData({
+        test: tree.name,
+        provider: leaf.ontology,
+        stackid: leaf.name,
       });
       storeDispatch(
         warehouseActions.data({

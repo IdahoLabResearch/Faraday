@@ -8,7 +8,7 @@ from django.http import JsonResponse
 import json
 
 # Models
-from .models import ElectrolysisCell
+from .models import ElectrolysisCell, ElectrolysisStack
 
 
 @csrf_exempt
@@ -25,5 +25,22 @@ def electrolysis_cell_data(request):
     query = cell & batch & test & provider
 
     data = list(ElectrolysisCell.objects.filter(query).values())
+
+    return JsonResponse({'data': data})
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def electrolysis_stack_data(request):
+
+    body = json.loads(request.body)
+
+    stackid = Q(stackid=body.get('stackid'))
+    provider = Q(provider=body.get('provider'))
+    test = Q(test=body.get('test'))
+
+    query = stackid & test & provider
+
+    data = list(ElectrolysisStack.objects.filter(query).values())
 
     return JsonResponse({'data': data})
