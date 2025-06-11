@@ -4,11 +4,15 @@ from django.views.decorators.http import require_http_methods
 
 # Utilities
 from django.db.models import Q
+from django.db import connection
 from django.http import JsonResponse
 import json
 
 # Models
 from .models import ElectrolysisCell, ElectrolysisStack
+
+# Helpers
+from .helpers.cursor import CursorManager
 
 
 @csrf_exempt
@@ -35,12 +39,14 @@ def electrolysis_stack_data(request):
 
     body = json.loads(request.body)
 
-    stackid = Q(stackid=body.get('stackid'))
-    provider = Q(provider=body.get('provider'))
-    test = Q(test=body.get('test'))
+    provider = body.get('provider')
+    stackid = body.get('stackid')
+    test = body.get('test')
 
-    query = stackid & test & provider
+    with connection.cursor() as c:
+        c.execute("SELECT * FROM electrolysisstacks_downsampled WHERE provider=%s AND stackid=%s AND test=%s",
+                  [provider, stackid, test])
 
-    data = list(ElectrolysisStack.objects.filter(query).values())
+        data = CursorManager.fetchall(c)
 
     return JsonResponse({'data': data})
