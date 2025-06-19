@@ -70,18 +70,17 @@ export type ElectrolysisCellQueryResultT = {
 
 export type GalvanostaticDataT = {
   uuid: string;
-  cell: string;
   date: number;
   provider: string;
   test: string;
-  batch: string;
+  stackid: string;
   data: {
     time: number;
-    current_density: number;
+    state: string;
+    anonymized_current: number;
+    anonymized_voltage: number;
   };
-  metadata: {
-    voltage: number;
-  };
+  metadata: object;
 };
 
 export type ElectrolysisStackQueryResultT = {

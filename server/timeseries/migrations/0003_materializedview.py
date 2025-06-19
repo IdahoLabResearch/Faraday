@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             CREATE MATERIALIZED VIEW electrolysisstacks_downsampled AS
             WITH time_buckets AS (
                 SELECT
-                    EXTRACT(EPOCH FROM date_trunc('hour', to_timestamp(ROUND((data->>'time')::numeric))))::BIGINT as bucket,
+                    EXTRACT(EPOCH FROM date_bin('5 min', to_timestamp(ROUND((data->>'time')::numeric)), '1970-01-01'))::BIGINT as bucket,
                     uuid,
                     date,
                     provider,
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                     data,
                     metadata,
                     ROW_NUMBER() OVER (
-                        PARTITION BY date_trunc('hour', to_timestamp(ROUND((data->>'time')::numeric))), provider, test, stackid
+                        PARTITION BY date_bin('5 min', to_timestamp(ROUND((data->>'time')::numeric)), '1970-01-01'), provider, test, stackid
                         ORDER BY (data->>'time')::numeric
                     ) as row_number
                 FROM timeseries_electrolysisstack

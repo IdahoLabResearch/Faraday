@@ -13,6 +13,7 @@ from .models import ElectrolysisCell, ElectrolysisStack
 
 # Helpers
 from .helpers.cursor import CursorManager
+from .helpers.jsonb import parse_jsonb
 
 
 @csrf_exempt
@@ -48,5 +49,8 @@ def electrolysis_stack_data(request):
                   [provider, stackid, test])
 
         data = CursorManager.fetchall(c)
+
+    # Postgres stores jsonb as strings in materialized views, so they have to be parsed here
+    data = [parse_jsonb(item) for item in data]
 
     return JsonResponse({'data': data})

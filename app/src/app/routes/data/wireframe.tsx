@@ -39,9 +39,9 @@ export default function Visualizer({
 
   // Retrieve a token
   useEffect(() => {
-    if (!user) {
-      navigate("/auth");
-    }
+    // if (!user) {
+    //   navigate("/auth");
+    // }
   }, [navigate, user]);
 
   return user ? (

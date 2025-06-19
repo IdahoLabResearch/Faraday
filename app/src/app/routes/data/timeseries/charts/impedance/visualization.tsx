@@ -54,6 +54,7 @@ export function Visualization(props: Props) {
         props.sweeps.includes(record.metadata.sweep)
       );
       setSubset(subset);
+      console.log(subset);
     }
   }, [props.timeseries, props.sweeps, leaf]);
 
