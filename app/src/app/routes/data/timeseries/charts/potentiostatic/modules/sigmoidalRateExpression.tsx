@@ -25,7 +25,7 @@ import {
 import { NodeT } from "@/lib/types/warehouse";
 
 // Styles
-import { charts } from "../../styles";
+import { charts } from "../../styles/styles";
 
 type PropsT = {
   timeseries: Array<PotentiostaticDataT>;

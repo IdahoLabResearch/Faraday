@@ -9,10 +9,42 @@ import { RefObject } from "react";
 import { NodeT } from "@/lib/types/warehouse";
 import { GalvanostaticDataT } from "@/lib/types/timeseries";
 
+// uPlot
+import uPlot from "uplot";
+import UplotReact from "uplot-react";
+import "../styles/uPlot.min.css";
+
 type Props = {
   state: Array<string>;
   setState: (state: Array<string>) => void;
   timeseries: Array<GalvanostaticDataT>;
+};
+
+const options: uPlot.Options = {
+  title: "Electrolysis Stack Data",
+  width: 400,
+  height: 300,
+  scales: {
+    x: {
+      time: false,
+      range: [-0.5, 5.5],
+    },
+  },
+  axes: [{}],
+  series: [
+    {
+      points: {
+        show: false,
+        stroke: "yellow",
+      },
+    },
+    {
+      points: {
+        show: true,
+        stroke: "white",
+      },
+    },
+  ],
 };
 
 export function Visualization(props: Props) {
@@ -67,7 +99,15 @@ export function Visualization(props: Props) {
       <br />
       <>
         {subset.length ? (
-          <div ref={chartRef as RefObject<HTMLDivElement | null>}></div>
+          <div ref={chartRef as RefObject<HTMLDivElement | null>}>
+            <UplotReact
+              options={options}
+              data={[
+                [0, 1, 2, 3],
+                [0, 1, 2, 3],
+              ]}
+            />
+          </div>
         ) : null}
       </>
       <br />

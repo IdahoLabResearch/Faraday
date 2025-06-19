@@ -14,7 +14,7 @@ import {
 import { useAppSelector } from "@/lib/store/hooks";
 
 // Styles
-import { charts } from "../styles";
+import { charts } from "../styles/styles";
 
 // Components
 import { PWMTooltip } from "../../helpers/tooltips";
