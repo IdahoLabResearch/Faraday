@@ -69,11 +69,6 @@ export type ElectrolysisCellQueryResultT = {
 };
 
 export type GalvanostaticDataT = {
-  uuid: string;
-  date: number;
-  provider: string;
-  test: string;
-  stackid: string;
   data: {
     time: number;
     state: string;

@@ -45,7 +45,7 @@ def electrolysis_stack_data(request):
     test = body.get('test')
 
     with connection.cursor() as c:
-        c.execute("SELECT * FROM electrolysisstacks_downsampled WHERE provider=%s AND stackid=%s AND test=%s",
+        c.execute("SELECT data FROM electrolysisstacks_downsampled WHERE provider=%s AND stackid=%s AND test=%s",
                   [provider, stackid, test])
 
         data = CursorManager.fetchall(c)

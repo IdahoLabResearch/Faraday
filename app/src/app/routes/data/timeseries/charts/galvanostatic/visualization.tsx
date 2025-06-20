@@ -1,5 +1,5 @@
 // Hooks
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 // Store
 import { useAppSelector } from "@/lib/store/hooks";
@@ -9,42 +9,13 @@ import { RefObject } from "react";
 import { NodeT } from "@/lib/types/warehouse";
 import { GalvanostaticDataT } from "@/lib/types/timeseries";
 
-// uPlot
-import uPlot from "uplot";
-import UplotReact from "uplot-react";
-import "../styles/uPlot.min.css";
+// Components
+import { CustomLineChart } from "./linechart";
 
 type Props = {
   state: Array<string>;
   setState: (state: Array<string>) => void;
   timeseries: Array<GalvanostaticDataT>;
-};
-
-const options: uPlot.Options = {
-  title: "Electrolysis Stack Data",
-  width: 400,
-  height: 300,
-  scales: {
-    x: {
-      time: false,
-      range: [-0.5, 5.5],
-    },
-  },
-  axes: [{}],
-  series: [
-    {
-      points: {
-        show: false,
-        stroke: "yellow",
-      },
-    },
-    {
-      points: {
-        show: true,
-        stroke: "white",
-      },
-    },
-  ],
 };
 
 export function Visualization(props: Props) {
@@ -61,20 +32,6 @@ export function Visualization(props: Props) {
 
   // Chart ref for report generation
   const chartRef = useRef<RefObject<HTMLDivElement>>(null);
-
-  useEffect(() => {
-    setSubset(props.timeseries);
-    console.log(subset);
-  }, [setSubset, subset, props.timeseries]);
-
-  // useEffect(() => {
-  //   if (props.timeseries.length) {
-  //     const subset = props.timeseries.filter((record: GalvanostaticDataT) => {
-  //       props.state.includes(record.data.state);
-  //     });
-  //     setSubset(subset);
-  //   }
-  // }, [props.timeseries, props.state, leaf]);
 
   // Handlers
   const handleOptionSelect = (select: string) => {
@@ -98,15 +55,9 @@ export function Visualization(props: Props) {
       </div>
       <br />
       <>
-        {subset.length ? (
+        {props.timeseries ? (
           <div ref={chartRef as RefObject<HTMLDivElement | null>}>
-            <UplotReact
-              options={options}
-              data={[
-                [0, 1, 2, 3],
-                [0, 1, 2, 3],
-              ]}
-            />
+            <CustomLineChart timeseries={props.timeseries} />
           </div>
         ) : null}
       </>
