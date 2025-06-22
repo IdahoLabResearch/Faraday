@@ -16,4 +16,10 @@ def parse_jsonb(obj):
         except json.JSONDecodeError as e:
             print(f"Error parsing 'data' entry: {e}")
 
+    if obj['metadata'] is not None:
+        try:
+            obj['metadata'] = json.loads(obj['metadata'])
+        except json.JSONDecodeError as e:
+            print(f"Error parsing 'data' entry: {e}")
+
     return obj

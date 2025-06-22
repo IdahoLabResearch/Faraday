@@ -45,12 +45,12 @@ def electrolysis_stack_data(request):
     test = body.get('test')
 
     with connection.cursor() as c:
-        c.execute("SELECT data FROM electrolysisstacks_downsampled WHERE provider=%s AND stackid=%s AND test=%s",
+        c.execute("SELECT * FROM electrolysisstacks_downsampled WHERE provider=%s AND stackid=%s AND test=%s;",
                   [provider, stackid, test])
 
         data = CursorManager.fetchall(c)
 
     # Postgres stores jsonb as strings in materialized views, so they have to be parsed here
-    data = [parse_jsonb(item) for item in data]
+    parse = [parse_jsonb(item) for item in data]
 
-    return JsonResponse({'data': data})
+    return JsonResponse({'data': parse})
