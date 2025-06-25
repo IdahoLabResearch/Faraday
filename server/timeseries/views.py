@@ -40,17 +40,12 @@ def electrolysis_stack_data(request):
 
     body = json.loads(request.body)
 
-    provider = body.get('provider')
-    stackid = body.get('stackid')
-    test = body.get('test')
+    provider = Q(provider=body.get('provider'))
+    stackid = Q(stackid=body.get('stackid'))
+    test = Q(test=body.get('test'))
 
-    with connection.cursor() as c:
-        c.execute("SELECT * FROM electrolysisstacks_downsampled WHERE provider=%s AND stackid=%s AND test=%s;",
-                  [provider, stackid, test])
+    query = provider & stackid & test
 
-        data = CursorManager.fetchall(c)
+    data = list(ElectrolysisStack.objects.filter(query).values())
 
-    # Postgres stores jsonb as strings in materialized views, so they have to be parsed here
-    parse = [parse_jsonb(item) for item in data]
-
-    return JsonResponse({'data': parse})
+    return JsonResponse({'data': data})

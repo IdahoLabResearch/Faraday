@@ -218,17 +218,17 @@
   {
     "model": "warehouse.node",
     "pk": 34,
-    "fields": { "name": "Stack 1", "cls": 9, "ontology": 2, "root": false }
+    "fields": { "name": "1", "cls": 9, "ontology": 2, "root": false }
   },
   {
     "model": "warehouse.node",
     "pk": 35,
-    "fields": { "name": "Stack 2", "cls": 9, "ontology": 2, "root": false }
+    "fields": { "name": "2", "cls": 9, "ontology": 2, "root": false }
   },
   {
     "model": "warehouse.node",
     "pk": 36,
-    "fields": { "name": "Stack 3", "cls": 9, "ontology": 2, "root": false }
+    "fields": { "name": "3", "cls": 9, "ontology": 2, "root": false }
   },
   {
     "model": "warehouse.relationship",

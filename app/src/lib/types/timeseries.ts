@@ -69,11 +69,21 @@ export type ElectrolysisCellQueryResultT = {
 };
 
 export type GalvanostaticDataT = {
+  uuid: string;
+  date: number;
+  provider: string;
+  test: string;
+  stackid: string;
   data: {
     time: number;
     state: string;
     anonymized_current: number;
     anonymized_voltage: number;
+    air_flow: number;
+    air_temperature: number;
+    furnace_temperature: number;
+    h2_flow: number;
+    n2_flow: number;
   };
   metadata: object;
 };
