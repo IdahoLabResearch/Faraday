@@ -14,7 +14,7 @@ metadata:
 data:
   ALLOWED_HOSTS: "*"
   ALLOWED_ORIGINS: "http://*"
-  DEBUG: "True"
+  DEBUG: "False"
   POSTGRES_NAME: "faraday"
   POSTGRES_HOST: "faraday-db-service"
   POSTGRES_PORT: "5432"
@@ -91,6 +91,13 @@ spec:
                 name: faraday-server-service
                 port:
                   number: 8000
+          - path: /server(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: faraday-server-service
+                port:
+                  number: 8080
           - path: /static(/|$)(.*)
             pathType: Prefix
             backend:
