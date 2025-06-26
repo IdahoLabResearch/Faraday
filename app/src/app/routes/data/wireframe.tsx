@@ -39,9 +39,9 @@ export default function Visualizer({
 
   // Retrieve a token
   useEffect(() => {
-    // if (!user) {
-    //   navigate("/auth");
-    // }
+    if (!user) {
+      navigate("/auth");
+    }
   }, [navigate, user]);
 
   return user ? (
@@ -100,7 +100,7 @@ export default function Visualizer({
     </div>
   ) : (
     <div className="h-screen w-screen flex justify-center align-center">
-      <div className="prose">
+      <div>
         <small>Authenticating</small>
       </div>
     </div>
