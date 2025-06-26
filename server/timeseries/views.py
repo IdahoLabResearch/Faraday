@@ -4,11 +4,16 @@ from django.views.decorators.http import require_http_methods
 
 # Utilities
 from django.db.models import Q
+from django.db import connection
 from django.http import JsonResponse
 import json
 
 # Models
-from .models import ElectrolysisCell
+from .models import ElectrolysisCell, ElectrolysisStack
+
+# Helpers
+from .helpers.cursor import CursorManager
+from .helpers.jsonb import parse_jsonb
 
 
 @csrf_exempt
@@ -25,5 +30,22 @@ def electrolysis_cell_data(request):
     query = cell & batch & test & provider
 
     data = list(ElectrolysisCell.objects.filter(query).values())
+
+    return JsonResponse({'data': data})
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def electrolysis_stack_data(request):
+
+    body = json.loads(request.body)
+
+    provider = Q(provider=body.get('provider'))
+    stackid = Q(stackid=body.get('stackid'))
+    test = Q(test=body.get('test'))
+
+    query = provider & stackid & test
+
+    data = list(ElectrolysisStack.objects.filter(query).values())
 
     return JsonResponse({'data': data})

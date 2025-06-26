@@ -24,7 +24,7 @@ class ElectrolysisCell(TimeseriesData):
     Provider: The name of the organization providing the data
     Test: The test type which generated this data
     Batch: The name of the cell batch
-    Ddata: The data which composes the chart, for example dependent and independent variables in the experiment
+    Data: The data which composes the chart, for example dependent and independent variables in the experiment
     Metadata: The metadata about the cell, or about the experiment parameters
     """
 
@@ -41,17 +41,23 @@ class ElectrolysisCell(TimeseriesData):
         ]
 
 
-# class ElectrolysisStack(TimeseriesData):
-#     """
-#     Model for electrolysis stacks
+class ElectrolysisStack(TimeseriesData):
+    """
+    Model for electrolysis stacks
 
-#     Add technical fields like compression here
-#     """
-#     provider = models.ForeignKey(
-#         Ontology, related_name='stack', on_delete=models.CASCADE)
-#     test = models.ForeignKey(
-#         Node, related_name='stack_test', on_delete=models.CASCADE)
-#     stack = models.ForeignKey(
-#         Node, related_name='stack_leaf', on_delete=models.CASCADE)
-#     data = models.JSONField()
-#     metadata = models.JSONField()
+    Provider: The name of the organization providing the data
+    Test: The test type which generated this data
+    Stack: The name of the cell batch
+    Data: The data which composes the chart, for example dependent and independent variables in the experiment
+    Metadata: The metadata about the cell, or about the experiment parameters
+    """
+    provider = models.CharField(max_length=25)
+    test = models.CharField(max_length=25)
+    stackid = models.CharField(max_length=25)
+    data = models.JSONField()
+    metadata = models.JSONField(null=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['provider', 'test', 'stackid']),
+        ]

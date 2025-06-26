@@ -39,14 +39,14 @@ export default function Visualizer({
 
   // Retrieve a token
   useEffect(() => {
-    if (!user) {
-      navigate("/auth");
-    }
+    // if (!user) {
+    //   navigate("/auth");
+    // }
   }, [navigate, user]);
 
   return user ? (
     <div>
-      <div className="drawer">
+      <div className="drawer z-100">
         <input
           id="my-drawer"
           type="checkbox"

@@ -93,3 +93,27 @@ export const PotentiostaticTooltip = (
 
   return null;
 };
+
+// Galvanostatic
+export const GalvanostaticTooltip = (
+  props: TooltipProps<ValueType, NameType>
+) => {
+  if (props.active && props.payload && props.payload.length) {
+    const data = props.payload[0].payload.data;
+    return (
+      <>
+        {Object.entries(data).map(([key, value]: [string, unknown]) => {
+          return (
+            <>
+              <div className="bg-black prose text-white px-2">
+                {key}: {value as number} <br />
+              </div>
+            </>
+          );
+        })}
+      </>
+    );
+  }
+
+  return null;
+};

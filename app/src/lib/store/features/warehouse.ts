@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Types
 import { UserT, OntologyT, NodeT, GraphT } from "@/lib/types/warehouse";
-import { QueryResultT } from "@/lib/types/timeseries";
+import {
+  ElectrolysisCellQueryResultT,
+  ElectrolysisStackQueryResultT,
+} from "@/lib/types/timeseries";
 
 type State = {
   user: UserT | undefined;
@@ -13,7 +16,10 @@ type State = {
   root: NodeT | undefined;
   leaf: NodeT | undefined;
   graph: Array<GraphT> | undefined;
-  data: QueryResultT | undefined;
+  data:
+    | ElectrolysisCellQueryResultT
+    | ElectrolysisStackQueryResultT
+    | undefined;
 };
 
 const initialState: State = {
