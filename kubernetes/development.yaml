@@ -84,7 +84,14 @@ spec:
                 name: faraday-app-service
                 port:
                   number: 80
-          - path: /admin(/|$)(.*)
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: faraday-server-service
+                port:
+                  number: 8000
+          - path: /static(/|$)(.*)
             pathType: Prefix
             backend:
               service:
