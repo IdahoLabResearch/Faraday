@@ -46,7 +46,7 @@ export default function Visualizer({
 
   return user ? (
     <div>
-      <div className="drawer">
+      <div className="drawer z-100">
         <input
           id="my-drawer"
           type="checkbox"

@@ -54,7 +54,6 @@ export function Visualization(props: Props) {
         props.sweeps.includes(record.metadata.sweep)
       );
       setSubset(subset);
-      console.log(subset);
     }
   }, [props.timeseries, props.sweeps, leaf]);
 
@@ -154,33 +153,87 @@ export function Visualization(props: Props) {
           Select one or more measurement intervals to visualize impedance
         </small>
       </div>
-      <details className="dropdown">
+      <details>
         <summary className="btn m-1">Click to Visualize Sweeps</summary>
         <ul className="menu dropdown-content bg-base-200 rounded-box w-52 z-auto shadow">
-          <li
+          <div
             onClick={() => handleOptionSelect(1)}
             className={`p-2 ${
               sweeps.includes(1) ? "bg-base-100" : "bg-base-200"
-            } bg-selected-unset`}
+            } bg-selected-unset flex flex-row`}
           >
-            0 hours <input type="checkbox" className="hidden" value={1} />
-          </li>
-          <li
+            0 hours
+            <div className="grow" />
+            <input type="checkbox" className="hidden" value={1} />
+            {sweeps.includes(1) ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="white"
+                className="size-4 bg-transparent"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"
+                />
+              </svg>
+            ) : null}
+          </div>
+          <div
             onClick={() => handleOptionSelect(2)}
             className={`p-2 ${
               sweeps.includes(2) ? "bg-base-100" : "bg-base-200"
-            }`}
+            } flex flex-row`}
           >
-            50 hours <input type="checkbox" className="hidden" value={2} />
-          </li>
-          <li
+            50 hours
+            <div className="grow" />
+            <input type="checkbox" className="hidden" value={2} />
+            {sweeps.includes(2) ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="white"
+                className="size-4 bg-transparent"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"
+                />
+              </svg>
+            ) : null}
+          </div>
+          <div
             onClick={() => handleOptionSelect(3)}
             className={`p-2 ${
               sweeps.includes(3) ? "bg-base-100" : "bg-base-200"
-            }`}
+            } flex flex-row`}
           >
-            100 hours <input type="checkbox" className="hidden" value={3} />
-          </li>
+            100 hours
+            <div className="grow" />
+            <input type="checkbox" className="hidden" value={3} />
+            {sweeps.includes(3) ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="white"
+                className="size-4 bg-transparent"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"
+                />
+              </svg>
+            ) : null}
+          </div>
         </ul>
       </details>
     </>
