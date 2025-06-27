@@ -27,10 +27,11 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 # Whitelist
-ALLOWED_HOSTS = ['*']
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = ["*"]
 
-APPEND_SLASH = False
+# CSRF
+CSRF_TRUSTED_ORIGINS = ['https://faraday.dev.inl.gov',
+                        'https://faraday.acc.inl.gov', 'https://faraday.scan.inl.gov', "https://faraday.inl.gov"]
 
 # Application definition
 
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
