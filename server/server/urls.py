@@ -27,3 +27,7 @@ urlpatterns = [
     path('warehouse/', include('warehouse.urls')),
     path('timeseries/', include('timeseries.urls')),
 ] + static('static/', document_root=settings.STATIC_ROOT)
+
+admin.site.site_header = "Faraday Admin"
+admin.site.site_title = "Faraday Admin"
+admin.site.index_title = "Faraday Admin"
