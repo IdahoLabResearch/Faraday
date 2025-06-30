@@ -149,7 +149,7 @@ export function Visualization(props: Props) {
                 tick={{ fontSize: ".75rem" }}
               >
                 <Label
-                  value="Normalized Current"
+                  value="Anonymized Current"
                   stroke={charts.label}
                   angle={-90}
                   position="left"
@@ -215,7 +215,7 @@ export function Visualization(props: Props) {
                 tick={{ fontSize: ".75rem" }}
               >
                 <Label
-                  value="Normalized Voltage"
+                  value="Anonymized Voltage"
                   stroke={charts.label}
                   angle={-90}
                   position="left"
