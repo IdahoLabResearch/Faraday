@@ -13,31 +13,6 @@ jobs:
         with:
           ref: development
       - shell: bash
-        name: Environment Setup
-        # NextJS needs environment variables at build time
-
-        # Builds the Next app
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DEEPLYNX_KEY: ${{ secrets.DEEPLYNX_KEY }}
-          DEEPLYNX_SECRET: ${{ secrets.DEEPLYNX_SECRET }}
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
-          NEXT_PUBLIC_HOST: http://localhost:3000
-          DEEPLYNX_BASE: https://deeplynx.dev.inl.gov
-          DEEPLYNX_CONTAINER: "257"
-          DJANGO_PROXY: /server
-        run: |
-          cd $GITHUB_WORKSPACE/app
-          touch .env.production
-          echo DATA_BASE_URL=$DATABASE_URL >> .env.production
-          echo DEEPLYNX_KEY=$DEEPLYNX_KEY >> .env.production
-          echo DEEPLYNX_SECRET=$DEEPLYNX_SECRET >> .env.production
-          echo ENCRYPTION_KEY=$ENCRYPTION_KEY >> .env.production
-          echo NEXT_PUBLIC_HOST=$NEXT_PUBLIC_HOST >> .env.production
-          echo DEEPLYNX_BASE=$DEEPLYNX_BASE >> .env.production
-          echo DEEPLYNX_CONTAINER=$DEEPLYNX_CONTAINER >> .env.production
-          echo DJANGO_PROXY=$DJANGO_PROXY >> .env.production
-      - shell: bash
         name: Container Build
         env:
           ACR_SP_USER: ${{ secrets.CI_SP_USER }}
