@@ -25,3 +25,9 @@ The server application is developed using Django. To start developing, you will 
 #### Database
 
 The database is a Postgres database.
+
+### Cite Me
+
+```
+Woodruff, N., Kane, N., Hartvigsen, J., Casteel, M., Rahman, N., & Sahin, E. (2025). Faraday [Computer software]. GitHub. https://github.com/IdahoLabResearch/Faraday
+```
