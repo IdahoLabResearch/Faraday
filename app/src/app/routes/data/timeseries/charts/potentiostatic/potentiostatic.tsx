@@ -23,7 +23,7 @@ const analytics = ["Linear Regression", "Sigmoidal Rate Expression"];
 
 export function Potentiostatic(props: Props) {
   const [module, setModule] = useState<string | undefined>(undefined);
-  const [voltage, setVoltage] = useState<number>(1.3);
+  const [voltage, setVoltage] = useState<number | undefined>(undefined);
   const [regression, setRegression] = useState<
     | {
         fit: Array<{ time: number; regression: number }>;

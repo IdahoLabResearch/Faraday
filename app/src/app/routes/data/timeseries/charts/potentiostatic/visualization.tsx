@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 // Recharts
 import {
   CartesianGrid,
+  ComposedChart,
+  Dot,
   Label,
   Legend,
   Line,
-  LineChart,
+  Scatter,
   Tooltip,
   XAxis,
   YAxis,
@@ -34,7 +36,7 @@ type Props = {
         coefficients: number[];
       }
     | undefined;
-  voltage: number;
+  voltage: number | undefined;
   setVoltage: (voltage: number) => void;
 };
 
@@ -49,9 +51,13 @@ export function Visualization(props: Props) {
 
   useEffect(() => {
     if (props.timeseries.length) {
-      const subset = props.timeseries.filter(
-        (record: PotentiostaticDataT) => record.metadata.voltage === voltage
-      );
+      let subset = props.timeseries;
+      if (voltage) {
+        subset = props.timeseries.filter(
+          (record: PotentiostaticDataT) => record.metadata.voltage === voltage
+        );
+      }
+
       setData(subset);
 
       const ticks = Array.from(
@@ -87,6 +93,7 @@ export function Visualization(props: Props) {
           }}
         >
           <option disabled>Voltage</option>
+          <option value={undefined}>Any</option>
           <option value={1.3}>1.3</option>
           <option value={1.7}>1.7</option>
         </select>
@@ -95,7 +102,7 @@ export function Visualization(props: Props) {
       <br />
       <div>
         {data.length ? (
-          <LineChart
+          <ComposedChart
             width={730}
             height={250}
             margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
@@ -139,13 +146,13 @@ export function Visualization(props: Props) {
               content={(props) => <PotentiostaticTooltip {...props} />}
             />
             <Legend verticalAlign="top" align="right" />
-            <Line
+            <Scatter
               data={data}
               type="monotone"
               name="Current Density"
-              dot={false}
               dataKey="data.current_density"
-              stroke="palegoldenrod"
+              fill={"palegoldenrod"}
+              shape={<Dot fill="palegoldenrod" r={1.5} />}
             />
             {regression ? (
               <Line
@@ -157,7 +164,7 @@ export function Visualization(props: Props) {
                 stroke="white"
               />
             ) : null}
-          </LineChart>
+          </ComposedChart>
         ) : (
           <div className="prose">
             <small>
